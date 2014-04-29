@@ -1,0 +1,9 @@
+Info,  T0: Load ./Cube.dae
+Info,  T0: Found a matching importer for this file format
+Info,  T0: Import root directory is './'
+Info,  T0: Entering post processing pipeline
+Info,  T0: TriangulateProcess finished. All polygons have been triangulated.
+Info,  T0: Points: 0, Lines: 0, Triangles: 1, Polygons: 0 (Meshes, X = removed)
+Error, T0: Failed to compute tangents; need UV data in channel0
+Info,  T0: Cache relevant are 1 meshes (12 faces). Average output ACMR is 2.000000
+Info,  T0: Leaving post processing pipeline

@@ -1,0 +1,10 @@
+<ModuleDefinition
+	ModuleId="Player"
+	VersionId="1"
+	Description="Player Module"
+	Dependencies="AppCore=1,GameAssets=1"
+	Group="gameBase"
+	ScriptFile="main.cs"
+	CreateFunction="create"
+	DestroyFunction="destroy">
+</ModuleDefinition>

@@ -1,0 +1,72 @@
+<GuiSpriteCtrl
+    Name="OptionsDialog"
+    Profile="GuiDefaultProfile"
+    HorizSizing="relative"
+    VertSizing="relative"
+    Position="0 0"
+    Extent="1024 768"
+    MinExtent="320 320"
+    Visible="1"
+    Image="@asset=FixMe:MMBackground">
+
+    <!-- Controls-->
+    <GuiButtonCtrl
+		Name="ControlsButton"
+		Profile="RedButtonProfile"
+		Text="Controls"
+		ButtonType="PushButton"
+		canSaveDynamicFields="0"
+		isContainer="0"
+		HorizSizing="relative"
+		VertSizing="relative"
+		Position="412 369"
+		Extent="200 30"
+		MinExtent="100 15"
+		canSave="1"
+		Visible="1"
+		Active="1"
+		hovertime="1000"
+		groupNum="-1"
+		useMouseEvents="1" />
+		
+	<!-- Sound-->
+    <GuiButtonCtrl
+		Name="SoundButton"
+		Profile="RedButtonProfile"
+		Text="Sound"
+		ButtonType="PushButton"
+		canSaveDynamicFields="0"
+		isContainer="0"
+		HorizSizing="relative"
+		VertSizing="relative"
+		Position="412 399"
+		Extent="200 30"
+		MinExtent="100 15"
+		canSave="1"
+		Visible="1"
+		Active="1"
+		hovertime="1000"
+		groupNum="-1"
+		useMouseEvents="1" />
+
+    <!-- Back-->
+    <GuiButtonCtrl
+		Name="BackButton"
+		Profile="RedButtonProfile"
+		Text="Back"
+		ButtonType="PushButton"
+		canSaveDynamicFields="0"
+		isContainer="0"
+		HorizSizing="relative"
+		VertSizing="relative"
+		Position="412 429"
+		Extent="200 30"
+		MinExtent="100 15"
+		canSave="1"
+		Visible="1"
+		Active="1"
+		hovertime="1000"
+		groupNum="-1"
+		useMouseEvents="1" />
+
+</GuiSpriteCtrl>
