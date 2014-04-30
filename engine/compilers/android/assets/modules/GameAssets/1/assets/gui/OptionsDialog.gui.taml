@@ -25,7 +25,6 @@
 		canSave="1"
 		Visible="1"
 		Active="1"
-		hovertime="1000"
 		groupNum="-1"
 		useMouseEvents="1" />
 		
@@ -45,7 +44,6 @@
 		canSave="1"
 		Visible="1"
 		Active="1"
-		hovertime="1000"
 		groupNum="-1"
 		useMouseEvents="1" />
 
@@ -65,7 +63,6 @@
 		canSave="1"
 		Visible="1"
 		Active="1"
-		hovertime="1000"
 		groupNum="-1"
 		useMouseEvents="1" />
 

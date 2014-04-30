@@ -1,71 +1,47 @@
 <GuiSpriteCtrl
-    Name="MenuDialog"
+    Name="LoseDialog"
     Profile="GuiDefaultProfile"
     HorizSizing="relative"
     VertSizing="relative"
     Position="0 0"
     Extent="1024 768"
     MinExtent="320 320"
-    Visible="1"
-    Image="@asset=FixMe:MMBackground">
-
-    <!-- New Game-->
+    Visible="1">
+	
+    <!-- PlayAgainButton -->
     <GuiButtonCtrl
-        Name="PlayButton"
+        Name="PlayAgainButton"
         Profile="RedButtonProfile"
-        Text="Play"
+        Text="Play Again"
         ButtonType="PushButton"
         canSaveDynamicFields="0"
         isContainer="0"
         HorizSizing="relative"
         VertSizing="relative"
-        Position="412 369"
-        Extent="200 30"
+        Position="361 369"
+        Extent="300 50"
         MinExtent="100 15"
         canSave="1"
         Visible="1"
         Active="1"
-        hovertime="1000"
         groupNum="-1"
         useMouseEvents="1" />
 		
-	<!-- Options-->
-    <GuiButtonCtrl
-		Name="OptionsButton"
-		Profile="RedButtonProfile"
-		Text="Options"
-		ButtonType="PushButton"
-		canSaveDynamicFields="0"
-		isContainer="0"
-		HorizSizing="relative"
-		VertSizing="relative"
-		Position="412 399"
-		Extent="200 30"
-		MinExtent="100 15"
-		canSave="1"
-		Visible="1"
-		Active="1"
-		hovertime="1000"
-		groupNum="-1"
-		useMouseEvents="1" />
-
-    <!-- Quit Game-->
-    <GuiButtonCtrl
-        Name="QuitButton"
+	<GuiButtonCtrl
+        Name="BackToMenuButton"
         Profile="RedButtonProfile"
-        Text="Quit"
+        Text="Back to Menu"
         ButtonType="PushButton"
         canSaveDynamicFields="0"
         isContainer="0"
         HorizSizing="relative"
         VertSizing="relative"
-        Position="412 429"
+        Position="412 420"
         Extent="200 30"
         MinExtent="100 15"
         canSave="1"
         Visible="1"
         Active="1"
-        hovertime="1000"
         groupNum="-1"
-        useMouseEvents="1" />       
+        useMouseEvents="1" />
 </GuiSpriteCtrl>

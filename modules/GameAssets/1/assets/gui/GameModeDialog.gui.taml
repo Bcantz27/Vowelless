@@ -1,5 +1,5 @@
 <GuiSpriteCtrl
-    Name="OptionsDialog"
+    Name="GameModeDialog"
     Profile="GuiDefaultProfile"
     HorizSizing="relative"
     VertSizing="relative"
@@ -7,13 +7,13 @@
     Extent="1024 768"
     MinExtent="320 320"
     Visible="1"
-    Image="@asset=FixMe:MMBackground">
+	Image="@asset=GameAssets:MMBackground">
 
-    <!-- Controls-->
+    <!-- Battle-->
     <GuiButtonCtrl
-		Name="ControlsButton"
+		Name="BattleButton"
 		Profile="RedButtonProfile"
-		Text="Controls"
+		Text="Battle"
 		ButtonType="PushButton"
 		canSaveDynamicFields="0"
 		isContainer="0"
@@ -25,15 +25,14 @@
 		canSave="1"
 		Visible="1"
 		Active="1"
-		hovertime="1000"
 		groupNum="-1"
 		useMouseEvents="1" />
 		
-	<!-- Sound-->
+	<!-- Time-->
     <GuiButtonCtrl
-		Name="SoundButton"
+		Name="TimeButton"
 		Profile="RedButtonProfile"
-		Text="Sound"
+		Text="Time Trial"
 		ButtonType="PushButton"
 		canSaveDynamicFields="0"
 		isContainer="0"
@@ -45,15 +44,14 @@
 		canSave="1"
 		Visible="1"
 		Active="1"
-		hovertime="1000"
 		groupNum="-1"
 		useMouseEvents="1" />
-
-    <!-- Back-->
+		
+	<!-- PracticeButton -->
     <GuiButtonCtrl
-		Name="BackButton"
+		Name="PracticeButton"
 		Profile="RedButtonProfile"
-		Text="Back"
+		Text="Practice"
 		ButtonType="PushButton"
 		canSaveDynamicFields="0"
 		isContainer="0"
@@ -65,7 +63,25 @@
 		canSave="1"
 		Visible="1"
 		Active="1"
-		hovertime="1000"
+		groupNum="-1"
+		useMouseEvents="1" />
+
+    <!-- BackButton-->
+    <GuiButtonCtrl
+		Name="GameModeBackButton"
+		Profile="RedButtonProfile"
+		Text="Back"
+		ButtonType="PushButton"
+		canSaveDynamicFields="0"
+		isContainer="0"
+		HorizSizing="relative"
+		VertSizing="relative"
+		Position="412 459"
+		Extent="200 30"
+		MinExtent="100 15"
+		canSave="1"
+		Visible="1"
+		Active="1"
 		groupNum="-1"
 		useMouseEvents="1" />
 

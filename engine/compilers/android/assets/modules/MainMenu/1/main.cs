@@ -1,6 +1,6 @@
 function MainMenu::create( %this )
 {
-	//Canvas.pushDialog(MenuDialog);
+	Canvas.pushDialog(MenuDialog);
 }
 
 //-----------------------------------------------------------------------------
@@ -10,12 +10,22 @@ function MainMenu::destroy( %this )
 
 }
 
-// Adding command for PlayButton.
-function PlayButton::onClick(%this)
+function Answer::onMouseDown()
+{
+
+}
+
+// Adding command for SinglePlayerButton.
+function SinglePlayerButton::onClick(%this)
 {
     Canvas.popDialog(MenuDialog);
-	Canvas.pushDialog(GameGui);
-	//Game.displayNewWord();
+	Canvas.pushDialog(GameModeDialog);
+}
+
+// Adding command for MutliPlayerButton.
+function MutliPlayerButton::onClick(%this)
+{
+
 }
 
 // Adding command for OptionsButton.
@@ -38,14 +48,62 @@ function BackButton::onClick(%this)
 	Canvas.pushDialog(MenuDialog);
 }
 
+// Adding command for GameModeBackButton.
+function GameModeBackButton::onClick(%this)
+{
+	Canvas.popDialog(GameModeDialog);
+	Canvas.pushDialog(MenuDialog);
+}
+
 // Adding command for SoundButton.
 function SoundButton::onClick(%this)
 {
 
 }
 
-// Adding command for ControlsButton.
-function ControlsButton::onClick(%this)
+// Adding command for BattleButton.
+function BattleButton::onClick(%this)
 {
-
+	Game.Mode = "Battle";
+	Canvas.popDialog(GameModeDialog);
+	Canvas.pushDialog(GameGui);
+	Game.setupGame();
 }
+
+// Adding command for TimeButton.
+function TimeButton::onClick(%this)
+{
+	Game.Mode = "Time";
+	Canvas.popDialog(GameModeDialog);
+	Canvas.pushDialog(GameGui);
+	Game.setupGame();
+}
+
+// Adding command for PracticeButton.
+function PracticeButton::onClick(%this)
+{
+	Game.Mode = "Practice";
+	Canvas.popDialog(GameModeDialog);
+	Canvas.pushDialog(GameGui);
+	Game.setupGame();
+}
+
+// Adding command for PlayAgainButton.
+function PlayAgainButton::onClick(%this)
+{
+	MainScene.clear();
+	Game.shuffleWordList();
+	Game.setupGame();
+	Canvas.popDialog(LoseDialog);
+	Canvas.pushDialog(GameGui);
+}
+
+// Adding command for BackToMenuButton.
+function BackToMenuButton::onClick(%this)
+{
+	MainScene.clear();
+	Canvas.popDialog(LoseDialog);
+	Canvas.pushDialog(MenuDialog);
+	Game.reset();
+}
+

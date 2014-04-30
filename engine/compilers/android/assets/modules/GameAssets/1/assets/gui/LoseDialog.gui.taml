@@ -1,0 +1,47 @@
+<GuiSpriteCtrl
+    Name="LoseDialog"
+    Profile="GuiDefaultProfile"
+    HorizSizing="relative"
+    VertSizing="relative"
+    Position="0 0"
+    Extent="1024 768"
+    MinExtent="320 320"
+    Visible="1">
+	
+    <!-- PlayAgainButton -->
+    <GuiButtonCtrl
+        Name="PlayAgainButton"
+        Profile="RedButtonProfile"
+        Text="Play Again"
+        ButtonType="PushButton"
+        canSaveDynamicFields="0"
+        isContainer="0"
+        HorizSizing="relative"
+        VertSizing="relative"
+        Position="361 369"
+        Extent="300 50"
+        MinExtent="100 15"
+        canSave="1"
+        Visible="1"
+        Active="1"
+        groupNum="-1"
+        useMouseEvents="1" />
+		
+	<GuiButtonCtrl
+        Name="BackToMenuButton"
+        Profile="RedButtonProfile"
+        Text="Back to Menu"
+        ButtonType="PushButton"
+        canSaveDynamicFields="0"
+        isContainer="0"
+        HorizSizing="relative"
+        VertSizing="relative"
+        Position="412 420"
+        Extent="200 30"
+        MinExtent="100 15"
+        canSave="1"
+        Visible="1"
+        Active="1"
+        groupNum="-1"
+        useMouseEvents="1" />
+</GuiSpriteCtrl>

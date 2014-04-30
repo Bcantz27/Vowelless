@@ -9,11 +9,11 @@
     Visible="1"
     Image="@asset=GameAssets:MMBackground">
 
-    <!-- New Game-->
+    <!-- Single Player-->
     <GuiButtonCtrl
-        Name="PlayButton"
+        Name="SinglePlayerButton"
         Profile="RedButtonProfile"
-        Text="Play"
+        Text="Singleplayer"
         ButtonType="PushButton"
         canSaveDynamicFields="0"
         isContainer="0"
@@ -25,7 +25,25 @@
         canSave="1"
         Visible="1"
         Active="1"
-        hovertime="1000"
+        groupNum="-1"
+        useMouseEvents="1" />
+	
+	<!-- Multi Player-->
+    <GuiButtonCtrl
+        Name="MutliPlayerButton"
+        Profile="RedButtonProfile"
+        Text="Multiplayer"
+        ButtonType="PushButton"
+        canSaveDynamicFields="0"
+        isContainer="0"
+        HorizSizing="relative"
+        VertSizing="relative"
+        Position="412 399"
+        Extent="200 30"
+        MinExtent="100 15"
+        canSave="1"
+        Visible="1"
+        Active="1"
         groupNum="-1"
         useMouseEvents="1" />
 		
@@ -39,13 +57,12 @@
 		isContainer="0"
 		HorizSizing="relative"
 		VertSizing="relative"
-		Position="412 399"
+		Position="412 429"
 		Extent="200 30"
 		MinExtent="100 15"
 		canSave="1"
 		Visible="1"
 		Active="1"
-		hovertime="1000"
 		groupNum="-1"
 		useMouseEvents="1" />
 
@@ -59,13 +76,12 @@
         isContainer="0"
         HorizSizing="relative"
         VertSizing="relative"
-        Position="412 429"
+        Position="412 459"
         Extent="200 30"
         MinExtent="100 15"
         canSave="1"
         Visible="1"
         Active="1"
-        hovertime="1000"
         groupNum="-1"
         useMouseEvents="1" />       
 </GuiSpriteCtrl>

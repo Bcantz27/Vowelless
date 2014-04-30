@@ -1,7 +1,7 @@
 <ModuleDefinition
     ModuleId="MainMenu"
     VersionId="1"
-    Dependencies="AppCore=1,GameAssets=1"
+    Dependencies="AppCore=1,GameAssets=1,Game=1"
     Group="gameBase"
     Description="Main Menu."
     ScriptFile="main.cs"

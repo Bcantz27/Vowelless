@@ -8,6 +8,8 @@ function GameAssets::create( %this )
 	GameAssets.add(TamlRead("./assets/gui/GameGui.gui.taml"));
     GameAssets.add(TamlRead("./assets/gui/MenuDialog.gui.taml"));
 	GameAssets.add(TamlRead("./assets/gui/OptionsDialog.gui.taml"));
+	GameAssets.add(TamlRead("./assets/gui/GameModeDialog.gui.taml"));
+	GameAssets.add(TamlRead("./assets/gui/LoseDialog.gui.taml"));
 	echo("Gui's Loaded");
 }
 
