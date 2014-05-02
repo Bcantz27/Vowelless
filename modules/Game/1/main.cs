@@ -1,5 +1,6 @@
 function Game::create( %this )
 {
+	exec("./scripts/BattleMode.cs");
 	exec("./scripts/Utils.cs");
 	
 	Game.FullWordListSize = 0;
@@ -7,6 +8,7 @@ function Game::create( %this )
 	Game.Mode = "";
 	Game.ComboDelay = 3000;
 	Game.Time = -1;
+	Game.Round = -1;
 
 	setupVowels();
 	readWordsFile();
@@ -19,6 +21,10 @@ function Game::setupGame(%this)
 	if(stricmp(Game.Mode,"Battle") == 0)
 	{
 		%this.displayHealth();
+		Game.Round = 1;
+		Game.Time = 30;
+		%this.displayTime();
+		%this.startTimeGame();
 	}
 	else if(stricmp(Game.Mode,"Time") == 0)
 	{
@@ -28,11 +34,11 @@ function Game::setupGame(%this)
 	}
 	else if(stricmp(Game.Mode,"Practice") == 0)
 	{
-	
+		SkipButton.Visible = 1;
 	}
 	
 	%this.displayScore();
-	%this.displayDifficulty();
+	//%this.displayDifficulty();
 	%this.displayNewWord();
 }
 
@@ -54,6 +60,7 @@ function Game::reset(%this)
 	Game.ComboDelay = 3000;
 	Game.Time = -1;
 	Player.reset();
+	AI.reset();
 }
 function Game::checkAnswer(%this)
 {
@@ -65,6 +72,8 @@ function Game::checkAnswer(%this)
 		%this.incrementScore(getWordValue(%answer));
 		Player.CurrentWord++;
 		Player.Streak++;
+		
+		Player.Damage = Player.Damage + getWordDamage($GameWordList[Player.CurrentWord]);
 		
 		if(Player.Combo == 0 || ((getRealTime() - Player.LastCorrectTime) <= Game.ComboDelay))
 		{
@@ -89,7 +98,6 @@ function Game::checkAnswer(%this)
 		if(stricmp(Game.Mode,"Battle") == 0)
 		{
 			%this.incrementScore(-5);
-			Player.changeHealth(getWordDamage($GameWordList[Player.CurrentWord]));
 		}
 		else if(stricmp(Game.Mode,"Time") == 0)
 		{
@@ -122,6 +130,48 @@ function Game::getDifficulty(%this)
 	}
 }
 
+function Game::incrementTime(%this)
+{
+	if(Game.Time > 0)
+	{
+		Game.Time--;
+		%this.displayTime();
+		%this.schedule(1000,"incrementTime");
+	}
+	else
+	{
+		Game.Time = 0;
+		%this.displayTime();
+		
+		if(stricmp(Game.Mode,"Battle") == 0)
+		{
+			startBattle();
+		}
+		else if(stricmp(Game.Mode,"Time") == 0)
+		{
+			Canvas.popDialog(GameGui);
+			%this.displayEndScreen();
+		}
+	}
+}
+
+function Game::startTimeGame(%this)
+{
+	%this.schedule(3000,"incrementTime");
+}
+
+function Game::incrementScore(%this,%amount)
+{
+	Player.score = Player.score + %amount;
+	%this.displayScore();
+}
+
+function Game::updateComboAndStreak(%this)
+{
+	%this.displayCombo();
+	%this.displayStreak();
+}
+
 function Game::displayNewWord(%this)
 {
 	if(isObject(Word))
@@ -142,6 +192,24 @@ function Game::displayNewWord(%this)
 	MainScene.add(%obj);
 }
 
+function Game::displayCorrectWord(%this)
+{
+	if(isObject(Word))
+		Word.delete();
+	
+	%obj = new ImageFont(Word)  
+	{   
+		Image = "GameAssets:font";
+		Position = "0 0";
+		FontSize = "12 12";
+		Layer = 2;
+		TextAlignment = "Center";
+		Text = $GameWordList[Player.CurrentWord];
+	};  
+		
+	MainScene.add(%obj);
+}
+
 function Game::displayDifficulty(%this)
 {
 	%obj = new ImageFont()  
@@ -155,39 +223,6 @@ function Game::displayDifficulty(%this)
 	};  
 	
 	MainScene.add(%obj);
-}
-
-function Game::incrementTime(%this)
-{
-	if(Game.Time > 0)
-	{
-		Game.Time--;
-		%this.displayTime();
-		%this.schedule(1000,"incrementTime");
-	}
-	else
-	{
-		Game.Time = 0;
-		%this.displayTime();
-		%this.endGame();
-	}
-}
-
-function Game::startTimeGame(%this)
-{
-	%this.schedule(3000,"incrementTime");
-}
-
-function Game::incrementScore(%this,%amount)
-{
-	Player.score = Player.score + %amount;
-	%this.displayScore();
-}
-
-function Game::updateComboAndStreak(%this)
-{
-	%this.displayCombo();
-	%this.displayStreak();
 }
 
 function Game::displayScore(%this)
@@ -279,7 +314,7 @@ function Game::displayTime(%this)
 	%obj = new ImageFont(Time)  
 	{   
 		Image = "GameAssets:font";
-		Position = "0 33";
+		Position = "0 35";
 		FontSize = "2 2";
 		Layer = 2;
 		TextAlignment = "Center";
@@ -287,15 +322,6 @@ function Game::displayTime(%this)
 	};  
 	
 	MainScene.add(%obj);
-}
-
-function Game::endGame(%this)
-{
-	MainScene.clear();
-	Game.displayFinalScore();
-	Player.reset();
-	Canvas.popDialog(GameGui);
-	Canvas.pushDialog(LoseDialog);
 }
 
 function Game::displayHealth(%this)
@@ -314,4 +340,24 @@ function Game::displayHealth(%this)
 	};  
 	
 	MainScene.add(%obj);
+}
+
+function Game::displayEndScreen()
+{
+	MainScene.clear();
+	Game.displayFinalScore();
+	Player.reset();
+	AI.reset();
+	Canvas.pushDialog(LoseDialog);
+}
+
+function Game::skipWord()
+{
+	echo("Skipping word");
+	Player.Streak = 0;
+	Player.Combo = 0;
+	Game.updateComboAndStreak();
+	Game.displayCorrectWord();
+	Player.CurrentWord++;
+	Game.schedule(1000,"displayNewWord");
 }

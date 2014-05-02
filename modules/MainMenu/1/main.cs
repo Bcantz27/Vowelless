@@ -98,6 +98,15 @@ function PlayAgainButton::onClick(%this)
 	Canvas.pushDialog(GameGui);
 }
 
+// Adding command for SkipButton.
+function SkipButton::onClick(%this)
+{
+	if(stricmp(Game.Mode,"Practice") == 0)
+	{
+		Game.skipWord();
+	}
+}
+
 // Adding command for BackToMenuButton.
 function BackToMenuButton::onClick(%this)
 {

@@ -2,6 +2,7 @@ function Player::create( %this )
 {	
     Player.Health = 100;
 	Player.Score = 0;
+	Player.Damage = 0;
 	Player.Alive = true;
 	Player.CurrentWord = 0;
 	Player.Difficulty = 1;
@@ -26,6 +27,7 @@ function Player::reset(%this)
 	Player.Streak = 0;
 	Player.Combo = 0;
 	Player.LastCorrectTime = 0;
+	Player.Damage = 0;
 }
 
 function Player::changeHealth(%this,%amount)
@@ -43,12 +45,13 @@ function Player::changeHealth(%this,%amount)
 	else
 	{
 		Player.Health = 0;
-		%this.onPlayerDeath();
+		%this.onDeath();
 	}
 }
 
-function Player::onPlayerDeath(%this)
+function Player::onDeath(%this)
 {
+	%this.Alive = false;
 	Game.endGame();
 }
 
