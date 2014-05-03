@@ -9,12 +9,26 @@ function Player::create( %this )
 	Player.Streak = 0;
 	Player.WrongStreak = 0;
 	Player.Combo = 0;
+	Player.endCombo = true;
 	Player.LastCorrectTime = 0;
 }
 
 function Player::destroy( %this )
 {
 
+}
+
+function Player::checkCombo(%this)
+{
+	if(%this.endCombo)
+	{
+		Player.Combo = 0;
+		Game.displayCombo();
+	}
+	else
+	{
+		%this.endCombo = true;
+	}
 }
 
 function Player::reset(%this)
@@ -34,12 +48,13 @@ function Player::changeHealth(%this,%amount)
 {
 	if(%amount < 0)
 	{
-		MainWindow.startCameraShake((10*%amount), 2);
+		MainWindow.startCameraShake(%amount, 1);
 	}
 
 	if((Player.Health + %amount) > 0)
 	{
 		Player.Health = Player.Health + %amount;
+		Player.Health = mFloatLength(Player.Health, 0);
 		Game.displayHealth();
 	}
 	else
@@ -52,7 +67,7 @@ function Player::changeHealth(%this,%amount)
 function Player::onDeath(%this)
 {
 	%this.Alive = false;
-	Game.endGame();
+	//Game.endGame();
 }
 
 //-----------------------------------------------------------------------------

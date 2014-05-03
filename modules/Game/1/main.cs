@@ -6,7 +6,7 @@ function Game::create( %this )
 	Game.FullWordListSize = 0;
 	Game.GameWordListSize = 0;
 	Game.Mode = "";
-	Game.ComboDelay = 3000;
+	Game.ComboDelay = 5000;
 	Game.Time = -1;
 	Game.Round = -1;
 
@@ -20,10 +20,9 @@ function Game::setupGame(%this)
 {
 	if(stricmp(Game.Mode,"Battle") == 0)
 	{
-		%this.displayHealth();
 		Game.Round = 1;
 		Game.Time = 30;
-		%this.displayTime();
+		%this.displayBattleGame();
 		%this.startTimeGame();
 	}
 	else if(stricmp(Game.Mode,"Time") == 0)
@@ -78,6 +77,8 @@ function Game::checkAnswer(%this)
 		if(Player.Combo == 0 || ((getRealTime() - Player.LastCorrectTime) <= Game.ComboDelay))
 		{
 			Player.Combo++;
+			Player.schedule(Game.ComboDelay,"checkCombo");
+			Player.endCombo = false;
 		}
 		else
 		{
@@ -145,12 +146,13 @@ function Game::incrementTime(%this)
 		
 		if(stricmp(Game.Mode,"Battle") == 0)
 		{
-			startBattle();
+			AI.Attacking = false;
+			%this.startBattle();
 		}
 		else if(stricmp(Game.Mode,"Time") == 0)
 		{
 			Canvas.popDialog(GameGui);
-			%this.displayEndScreen();
+			%this.displayWinScreen();
 		}
 	}
 }
@@ -158,6 +160,7 @@ function Game::incrementTime(%this)
 function Game::startTimeGame(%this)
 {
 	%this.schedule(3000,"incrementTime");
+	AI.schedule(3000,"attackPlayer");
 }
 
 function Game::incrementScore(%this,%amount)
@@ -342,10 +345,18 @@ function Game::displayHealth(%this)
 	MainScene.add(%obj);
 }
 
-function Game::displayEndScreen()
+function Game::displayWinScreen()
 {
 	MainScene.clear();
 	Game.displayFinalScore();
+	Player.reset();
+	AI.reset();
+	Canvas.pushDialog(LoseDialog);
+}
+
+function Game::displayLoseScreen()
+{
+	MainScene.clear();
 	Player.reset();
 	AI.reset();
 	Canvas.pushDialog(LoseDialog);

@@ -10,9 +10,9 @@ function MainMenu::destroy( %this )
 
 }
 
-function Answer::onMouseDown()
+function Answer::onTouchDown(%this, %touchID, %worldPosition)
 {
-
+	Answer.setText("");
 }
 
 // Adding command for SinglePlayerButton.
