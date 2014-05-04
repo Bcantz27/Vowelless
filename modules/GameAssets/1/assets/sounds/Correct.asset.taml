@@ -1,0 +1,7 @@
+<AudioAsset  
+    AssetName="correctSound"  
+    VolumeChannel="1"  
+    AssetAutoUnload="0"  
+    Looping="0"  
+    Radius="10"  
+    AudioFile="Correct.wav" />  

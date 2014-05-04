@@ -1,0 +1,7 @@
+<AudioAsset  
+    AssetName="strongHit"  
+    VolumeChannel="1"  
+    AssetAutoUnload="0"  
+    Looping="0"  
+    Radius="5"  
+    AudioFile="Stronghit.wav" />  

@@ -3,9 +3,10 @@ function Game::displayBattleGame()
 	MainScene.clear();
 	Game.displayScore();
 	Game.displayNewWord();
-	Game.displayHealth();
+	Game.displayHealthBar(Player.Health,"-10 32");
 	Game.displayTime();
 	Game.displayRound();
+	Game.displayBackPanel("GameAssets:panelbeige");
 	Canvas.pushDialog(GameGui);
 }
 
@@ -54,7 +55,7 @@ function Game::startNewRound()
 			Answer.setText("");
 			Game.displayBattleGame();
 			Game.schedule(2000,"incrementTime");
-			AI.schedule(2000,"attackPlayer");
+			AI.schedule(2000,"readWord");
 		}
 	}
 }
@@ -102,29 +103,8 @@ function Game::displayBattleStats()
 		
 	MainScene.add(%obj);
 	
-	%health = new ImageFont()  
-	{   
-		Image = "GameAssets:font";
-		Position = "-30 10";
-		FontSize = "4 4";
-		Layer = 2;
-		TextAlignment = "Center";
-		Text = "HP:" SPC Player.Health;
-	};  
-		
-	MainScene.add(%health);
-	
-	%Enemyhealth = new ImageFont()  
-	{   
-		Image = "GameAssets:font";
-		Position = "30 10";
-		FontSize = "4 4";
-		Layer = 2;
-		TextAlignment = "Center";
-		Text = "HP:" SPC AI.Health;
-	};  
-		
-	MainScene.add(%Enemyhealth);
+	Game.displayHealthBar(Player.Health,"-40 10");
+	Game.displayHealthBar(AI.Health,"20 10");
 	
 	%playerDamage = new ImageFont()  
 	{   
@@ -144,21 +124,51 @@ function Game::endBattleGame(%winner)
 
 }
 
+function Game::playImpactSound(%this)
+{
+	setRandomSeed(getRealTime());
+	
+	%roll = getRandom(0,2);
+	
+	if(%roll == 0)
+	{
+		alxPlay("GameAssets:impact1");
+	}
+	else if(%roll == 1)
+	{
+		alxPlay("GameAssets:impact2");
+	}
+	else if(%roll == 2)
+	{
+		alxPlay("GameAssets:impact3");
+	}
+}
+
+function Game::playHitSound(%this, %damage)
+{
+	if(mAbs(%damage) <= 5)
+	{
+		alxPlay("GameAssets:Weakhit");
+	}
+	else if(mAbs(%damage) <= 10)
+	{
+		alxPlay("GameAssets:Mediumhit");
+	}
+	else if(mAbs(%damage) <= 15)
+	{
+		alxPlay("GameAssets:Stronghit");
+	}
+}
+
 function Game::startBattle()
 {
 	Canvas.popDialog(GameGui);
 	Game.displayBattleStats();
-	Player.schedule(1000,"changeHealth",-AI.Damage/3);
-	Game.schedule(1000,"displayBattleStats");
-	Player.schedule(2000,"changeHealth",-AI.Damage/3);
-	Game.schedule(2000,"displayBattleStats");
-	Player.schedule(3000,"changeHealth",-AI.Damage/3);
-	Game.schedule(3000,"displayBattleStats");
-	AI.schedule(4000,"changeHealth",-Player.Damage/3);
-	Game.schedule(4000,"displayBattleStats");
-	AI.schedule(5000,"changeHealth",-Player.Damage/3);
-	Game.schedule(5000,"displayBattleStats");
-	AI.schedule(6000,"changeHealth",-Player.Damage/3);
-	Game.schedule(6000,"displayBattleStats");
+	Player.schedule(1000,"attackAI",-Player.Damage/3);
+	Player.schedule(2000,"attackAI",-Player.Damage/3);
+	Player.schedule(3000,"attackAI",-Player.Damage/3);
+	AI.schedule(4000,"attackPlayer",-AI.Damage/3);
+	AI.schedule(5000,"attackPlayer",-AI.Damage/3);
+	AI.schedule(6000,"attackPlayer",-AI.Damage/3);
 	Game.schedule(7000,"startNewRound");
 }

@@ -55,13 +55,19 @@ function Player::changeHealth(%this,%amount)
 	{
 		Player.Health = Player.Health + %amount;
 		Player.Health = mFloatLength(Player.Health, 0);
-		Game.displayHealth();
 	}
 	else
 	{
 		Player.Health = 0;
 		%this.onDeath();
 	}
+}
+
+function Player::attackAI(%this, %damage)
+{
+	AI.changeHealth(%damage);
+	Game.playHitSound(%damage);
+	Game.displayBattleStats();
 }
 
 function Player::onDeath(%this)

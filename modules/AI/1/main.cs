@@ -18,15 +18,15 @@ function AI::destroy( %this )
 
 }
 
-function AI::attackPlayer(%this)
+function AI::readWord(%this)
 {
 	echo("Starting Attack");
 	setRandomSeed(getRealTime());
 	%this.Attacking = true;
-	%this.tryToAttack();
+	%this.tryToAnswer();
 }
 
-function AI::tryToAttack(%this)
+function AI::tryToAnswer(%this)
 {
 	%roll = getRandom(1,%this.HitChance + getWordDifficulty($GameWordList[AI.CurrentWord]));
 	echo("AI: Trying to attack" SPC %roll);
@@ -38,7 +38,17 @@ function AI::tryToAttack(%this)
 	}
 
 	if(%this.Attacking)
-		%this.schedule(500,"tryToAttack");
+		%this.schedule(500,"tryToAnswer");
+}
+
+function AI::attackPlayer(%this, %damage)
+{
+	Player.changeHealth(%damage);
+	if(%damage > 0)
+	{
+		Game.playImpactSound();
+	}
+	Game.displayBattleStats();
 }
 
 function AI::reset(%this)

@@ -14,10 +14,13 @@ function Game::create( %this )
 	readWordsFile();
 
 	hideSplashScreen();
+	
+	$menuMusic = alxPlay("GameAssets:Menuloop");
 }
 
 function Game::setupGame(%this)
 {
+	alxStopAll();
 	if(stricmp(Game.Mode,"Battle") == 0)
 	{
 		Game.Round = 1;
@@ -28,17 +31,14 @@ function Game::setupGame(%this)
 	else if(stricmp(Game.Mode,"Time") == 0)
 	{
 		Game.Time = 60;
-		%this.displayTime();
+		%this.displayTimeGame();
 		%this.startTimeGame();
 	}
 	else if(stricmp(Game.Mode,"Practice") == 0)
 	{
 		SkipButton.Visible = 1;
+		%this.displayPracticeGame();
 	}
-	
-	%this.displayScore();
-	//%this.displayDifficulty();
-	%this.displayNewWord();
 }
 
 function Game::destroy( %this )
@@ -60,6 +60,7 @@ function Game::reset(%this)
 	Game.Time = -1;
 	Player.reset();
 	AI.reset();
+	$menuMusic = alxPlay("GameAssets:Menuloop");
 }
 function Game::checkAnswer(%this)
 {
@@ -71,6 +72,7 @@ function Game::checkAnswer(%this)
 		%this.incrementScore(getWordValue(%answer));
 		Player.CurrentWord++;
 		Player.Streak++;
+		alxPlay("GameAssets:correctSound");
 		
 		Player.Damage = Player.Damage + getWordDamage($GameWordList[Player.CurrentWord]);
 		
@@ -95,6 +97,8 @@ function Game::checkAnswer(%this)
 		Player.Streak = 0;
 		Player.Combo = 0;
 		Game.updateComboAndStreak();
+		
+		alxPlay("GameAssets:Wronganswer");
 		
 		if(stricmp(Game.Mode,"Battle") == 0)
 		{
@@ -160,7 +164,11 @@ function Game::incrementTime(%this)
 function Game::startTimeGame(%this)
 {
 	%this.schedule(3000,"incrementTime");
-	AI.schedule(3000,"attackPlayer");
+	
+	if(stricmp(Game.Mode,"Battle") == 0)
+	{
+		AI.schedule(3000,"readWord");
+	}
 }
 
 function Game::incrementScore(%this,%amount)
@@ -173,6 +181,75 @@ function Game::updateComboAndStreak(%this)
 {
 	%this.displayCombo();
 	%this.displayStreak();
+}
+
+function Game::displayHealthBar(%this,%health,%position)
+{
+	%leftBack = new Sprite();
+	%leftBack.Size = "1 2";
+	%leftBack.Position = %position;
+	%leftBack.SceneLayer = 30;
+	%leftBack.setBodyType("static");
+	%leftBack.Image = "GameAssets:barBackLeft";
+	
+	if(%health > 0)
+	{
+		%leftRed = new Sprite();
+		%leftRed.Size = "1 2";
+		%leftRed.Position = %position;
+		%leftRed.SceneLayer = 29;
+		%leftRed.setBodyType("static");
+		%leftRed.Image = "GameAssets:barRedLeft";
+		MainScene.add(%leftRed);
+	}
+	
+	%midBack = new Sprite();
+	%midBack.Size = "20 2";
+	%midBack.Position = VectorAdd(%position,"10.5 0");
+	%midBack.SceneLayer = 30;
+	%midBack.setBodyType("static");
+	%midBack.Image = "GameAssets:barBackMid";
+	
+	%midRed = new Sprite();
+	%midRed.Size = 20*(%health/100) SPC "2";
+	%midRed.Position = VectorAdd(%position, (((20*(%health/100))/2)+0.5) SPC "0");
+	%midRed.SceneLayer = 29;
+	%midRed.setBodyType("static");
+	%midRed.Image = "GameAssets:barRedMid";
+	
+	%rightBack = new Sprite();
+	%rightBack.Size = "1 2";
+	%rightBack.Position = VectorAdd(%position,"21 0");
+	%rightBack.SceneLayer = 30;
+	%rightBack.setBodyType("static");
+	%rightBack.Image = "GameAssets:barBackRight";
+	
+	if(%health == 100)
+	{
+		%rightRed = new Sprite();
+		%rightRed.Size = "1 2";
+		%rightRed.Position = VectorAdd(%position,"21 0");
+		%rightRed.SceneLayer = 29;
+		%rightRed.setBodyType("static");
+		%rightRed.Image = "GameAssets:barRedRight";
+		MainScene.add(%rightRed);
+	}
+	
+	MainScene.add(%midRed);
+	MainScene.add(%leftBack);
+	MainScene.add(%midBack);
+	MainScene.add(%rightBack);
+}
+
+function Game::displayBackPanel(%this, %image)
+{
+	%backPanel = new Sprite();
+	%backPanel.Size = "104 77";
+	%backPanel.Position = "0 0";
+	%backPanel.SceneLayer = 31;
+	%backPanel.setBodyType("static");
+	%backPanel.Image = %image;
+	MainScene.add(%backPanel);
 }
 
 function Game::displayNewWord(%this)

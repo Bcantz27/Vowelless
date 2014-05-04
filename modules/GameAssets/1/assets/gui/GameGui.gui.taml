@@ -24,6 +24,7 @@
         text="Enter Answer Here"
         MaxLength="1024"
         truncate="0"
+		useMouseEvents="1"
         validate="Game.checkAnswer();"
         escapeCommand="Game.checkAnswer();" />
 		
