@@ -79,7 +79,7 @@ function InputHandler::onTouchUp(%this, %touchID, %worldPosition)
 				
 				if(Game.CorrectVowels == Game.MissingVowels)
 				{
-					Player.incrementScore(getWordValue(%answer));
+					Player.incrementScore(getWordValue($GameWordList[Player.CurrentWord]));
 					Player.CurrentWord++;
 					Player.Streak++;
 					alxPlay("GameAssets:correctSound");
@@ -100,6 +100,14 @@ function InputHandler::onTouchUp(%this, %touchID, %worldPosition)
 					if(Player.Combo == 0 || ((getRealTime() - Player.LastCorrectTime) <= Game.ComboDelay))
 					{
 						Player.Combo++;
+						
+						if((Player.Defense + Player.Combo) < Player.MaxDefense)
+							Player.Defense = Player.Defense + (Player.Combo/2);
+						else
+							Player.Defense = Player.MaxDefense;
+							
+						Player.displayDefenseBar(Player.Defense,"-10 30");
+							
 						Player.schedule(Game.ComboDelay,"checkCombo");
 						Player.endCombo = false;
 					}
@@ -123,9 +131,17 @@ function InputHandler::onTouchUp(%this, %touchID, %worldPosition)
 			{
 				echo("Guess" SPC Game.VowelSel SPC "Answer" SPC getSubStr(%correctWord,%spriteId - 1, 1));
 				SelectedVowel.safeDelete();
+				Game.VowelSel = "";
 				Player.Streak = 0;
 				Player.Combo = 0;
 				Game.updateComboAndStreak();
+				
+				Player.Defense = Player.Defense - 2;
+				
+				if(Player.Defense < 0)
+					Player.Defense = 0;
+				
+				Player.displayDefenseBar(Player.Defense,"-10 30");
 				
 				alxPlay("GameAssets:Wronganswer");
 				
@@ -146,6 +162,7 @@ function InputHandler::onTouchUp(%this, %touchID, %worldPosition)
 		else
 		{
 			SelectedVowel.safeDelete();
+			Game.VowelSel = "";
 			return;
 		}
     }

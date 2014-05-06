@@ -1,0 +1,69 @@
+<GuiSpriteCtrl
+    Name="MultiplayerModeDialog"
+    Profile="GuiDefaultProfile"
+    HorizSizing="relative"
+    VertSizing="relative"
+    Position="0 0"
+    Extent="1024 768"
+    MinExtent="320 320"
+    Visible="1"
+	Image="@asset=GameAssets:MMBackground">
+
+    <!-- Battle-->
+    <GuiButtonCtrl
+		Name="MultiplayerBattleButton"
+		Profile="RedButtonProfile"
+		Text="Battle"
+		ButtonType="PushButton"
+		canSaveDynamicFields="0"
+		isContainer="0"
+		HorizSizing="relative"
+		VertSizing="relative"
+		Position="412 369"
+		Extent="200 30"
+		MinExtent="100 15"
+		canSave="1"
+		Visible="1"
+		Active="1"
+		groupNum="-1"
+		useMouseEvents="1" />
+		
+	<!-- Race-->
+    <GuiButtonCtrl
+		Name="MultiplayerRaceButton"
+		Profile="RedButtonProfile"
+		Text="Race"
+		ButtonType="PushButton"
+		canSaveDynamicFields="0"
+		isContainer="0"
+		HorizSizing="relative"
+		VertSizing="relative"
+		Position="412 399"
+		Extent="200 30"
+		MinExtent="100 15"
+		canSave="1"
+		Visible="1"
+		Active="1"
+		groupNum="-1"
+		useMouseEvents="1" />
+
+    <!-- BackButton-->
+    <GuiButtonCtrl
+		Name="GameModeBackButton"
+		Profile="RedButtonProfile"
+		Text="Back"
+		ButtonType="PushButton"
+		canSaveDynamicFields="0"
+		isContainer="0"
+		HorizSizing="relative"
+		VertSizing="relative"
+		Position="412 429"
+		Extent="200 30"
+		MinExtent="100 15"
+		canSave="1"
+		Visible="1"
+		Active="1"
+		groupNum="-1"
+		useMouseEvents="1" />
+
+</GuiSpriteCtrl>

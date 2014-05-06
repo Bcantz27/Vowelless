@@ -4,7 +4,7 @@ function Game::displayRaceGame()
 	Game.displayScore();
 	Game.displayNewWord();
 	Game.displayBackPanel("GameAssets:panelbeige");
-	Canvas.pushDialog(GameGui);
+	Game.displayVowelButtons();
 	Answer.Visible = 0;
 }
 

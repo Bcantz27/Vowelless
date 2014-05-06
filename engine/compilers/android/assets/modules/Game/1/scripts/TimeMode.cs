@@ -5,5 +5,5 @@ function Game::displayTimeGame()
 	Game.displayNewWord();
 	Game.displayTime();
 	Game.displayBackPanel("GameAssets:panelbeige");
-	Canvas.pushDialog(GameGui);
+	Game.displayVowelButtons();
 }

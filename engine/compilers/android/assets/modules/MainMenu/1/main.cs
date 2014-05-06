@@ -10,11 +10,6 @@ function MainMenu::destroy( %this )
 
 }
 
-function Answer::onTouchDown(%this, %touchID, %worldPosition)
-{
-	Answer.setText("");
-}
-
 // Adding command for SinglePlayerButton.
 function SinglePlayerButton::onClick(%this)
 {
@@ -25,7 +20,8 @@ function SinglePlayerButton::onClick(%this)
 // Adding command for MutliPlayerButton.
 function MutliPlayerButton::onClick(%this)
 {
-
+	Canvas.popDialog(MenuDialog);
+	Canvas.pushDialog(NetworkMenu);
 }
 
 // Adding command for OptionsButton.
@@ -100,7 +96,6 @@ function PlayAgainButton::onClick(%this)
 	Game.shuffleWordList();
 	Game.setupGame();
 	Canvas.popDialog(LoseDialog);
-	Canvas.pushDialog(GameGui);
 }
 
 // Adding command for SkipButton.
@@ -119,5 +114,15 @@ function BackToMenuButton::onClick(%this)
 	Canvas.popDialog(LoseDialog);
 	Canvas.pushDialog(MenuDialog);
 	Game.reset();
+}
+
+function MultiplayerBattleButton::onClick(%this)
+{
+	MSClient.registerGame("MYGAME:UNIQUEID1", "localhost", 1234, "Battle Game");  
+}
+
+function MultiplayerRaceButton::onClick(%this)
+{
+
 }
 

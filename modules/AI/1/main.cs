@@ -1,6 +1,9 @@
 function AI::create( %this )
 {	
-    AI.Health = 100;
+	AI.MaxHealth = 100;
+    AI.Health = AI.MaxHealth;
+	AI.MaxDefense = 50;
+	AI.Defense = AI.MaxDefense;
 	AI.Score = 0;
 	AI.Damage = 0;
 	AI.Alive = true;
@@ -69,7 +72,8 @@ function AI::attackPlayer(%this, %damage)
 
 function AI::reset(%this)
 {
-	%this.Health = 100;
+	%this.Health = %this.MaxHealth;
+	%this.Defense = %this.MaxDefense;
 	%this.Score = 0;
 	%this.Alive = true;
 	%this.CurrentWord = 0;
@@ -126,8 +130,8 @@ function AI::displayHealthBar(%this,%health,%position)
 	%this.midBack.Image = "GameAssets:barBackMid";
 	
 	%this.midRed = new Sprite();
-	%this.midRed.Size = 20*(%health/100) SPC "2";
-	%this.midRed.Position = VectorAdd(%position, (((20*(%health/100))/2)+0.5) SPC "0");
+	%this.midRed.Size = 20*(%health/%this.MaxHealth) SPC "2";
+	%this.midRed.Position = VectorAdd(%position, (((20*(%health/%this.MaxHealth))/2)+0.5) SPC "0");
 	%this.midRed.SceneLayer = 29;
 	%this.midRed.setBodyType("static");
 	%this.midRed.Image = "GameAssets:barRedMid";
@@ -139,7 +143,7 @@ function AI::displayHealthBar(%this,%health,%position)
 	%this.rightBack.setBodyType("static");
 	%this.rightBack.Image = "GameAssets:barBackRight";
 	
-	if(%health == 100)
+	if(%health == %this.MaxHealth)
 	{
 		%this.rightRed = new Sprite();
 		%this.rightRed.Size = "1 2";
@@ -156,13 +160,107 @@ function AI::displayHealthBar(%this,%health,%position)
 	MainScene.add(%this.rightBack);
 }
 
+function AI::displayDefenseBar(%this,%health,%position)
+{
+	if(isObject(%this.LeftBackDefense))
+		%this.LeftBackDefense.delete();
+
+	if(isObject(%this.LeftRedDefense))
+		%this.LeftRedDefense.delete();
+	
+	if(isObject(%this.MidBackDefense))
+		%this.MidBackDefense.delete();
+	
+	if(isObject(%this.MidRedDefense))
+		%this.MidRedDefense.delete();
+	
+	if(isObject(%this.RightBackDefense))
+		%this.RightBackDefense.delete();
+		
+	if(isObject(%this.RightRedDefense))
+		%this.RightRedDefense.delete();
+	
+	%this.leftBackDefense = new Sprite();
+	%this.leftBackDefense.Size = "1 2";
+	%this.leftBackDefense.Position = %position;
+	%this.leftBackDefense.SceneLayer = 30;
+	%this.leftBackDefense.setBodyType("static");
+	%this.leftBackDefense.Image = "GameAssets:barBackLeft";
+	
+	if(%health > 0)
+	{
+		%this.leftRedDefense = new Sprite();
+		%this.leftRedDefense.Size = "1 2";
+		%this.leftRedDefense.Position = %position;
+		%this.leftRedDefense.SceneLayer = 29;
+		%this.leftRedDefense.setBodyType("static");
+		%this.leftRedDefense.Image = "GameAssets:barBlueLeft";
+		MainScene.add(%this.leftRedDefense);
+	}
+	
+	%this.midBackDefense = new Sprite();
+	%this.midBackDefense.Size = "20 2";
+	%this.midBackDefense.Position = VectorAdd(%position,"10.5 0");
+	%this.midBackDefense.SceneLayer = 30;
+	%this.midBackDefense.setBodyType("static");
+	%this.midBackDefense.Image = "GameAssets:barBackMid";
+	
+	%this.midRedDefense = new Sprite();
+	%this.midRedDefense.Size = 20*(%health/%this.MaxDefense) SPC "2";
+	%this.midRedDefense.Position = VectorAdd(%position, (((20*(%health/%this.MaxDefense))/2)+0.5) SPC "0");
+	%this.midRedDefense.SceneLayer = 29;
+	%this.midRedDefense.setBodyType("static");
+	%this.midRedDefense.Image = "GameAssets:barBlueMid";
+	
+	%this.rightBackDefense = new Sprite();
+	%this.rightBackDefense.Size = "1 2";
+	%this.rightBackDefense.Position = VectorAdd(%position,"21 0");
+	%this.rightBackDefense.SceneLayer = 30;
+	%this.rightBackDefense.setBodyType("static");
+	%this.rightBackDefense.Image = "GameAssets:barBackRight";
+	
+	if(%health == %this.MaxDefense)
+	{
+		%this.rightRedDefense = new Sprite();
+		%this.rightRedDefense.Size = "1 2";
+		%this.rightRedDefense.Position = VectorAdd(%position,"21 0");
+		%this.rightRedDefense.SceneLayer = 29;
+		%this.rightRedDefense.setBodyType("static");
+		%this.rightRedDefense.Image = "GameAssets:barBlueRight";
+		MainScene.add(%this.rightRedDefense);
+	}
+	
+	MainScene.add(%this.midRedDefense);
+	MainScene.add(%this.leftBackDefense);
+	MainScene.add(%this.midBackDefense);
+	MainScene.add(%this.rightBackDefense);
+}
+
+
 function AI::changeHealth(%this,%amount)
 {
 	if((%this.Health + %amount) > 0)
 	{
-		%this.Health = %this.Health + %amount;
-		AI.Health = mFloatLength(AI.Health, 0);
-		Game.displayHitDamage(%amount,"30 10");
+		if(AI.Defense > 0)
+		{
+			AI.Defense = AI.Defense + %amount;
+			AI.Defense = mFloatLength(AI.Defense, 0);
+			
+			if(AI.Defense < 0)
+			{
+				AI.Health = AI.Health + AI.Defense;
+				AI.Health = mFloatLength(AI.Health, 0);
+				AI.Defense = 0;
+			}
+			
+			Game.displayHitDamage(%amount,"30 12");
+		}
+		else
+		{
+			AI.Health = AI.Health + %amount;
+			AI.Health = mFloatLength(AI.Health, 0);
+			Game.displayHitDamage(%amount,"30 10");
+		}
 	}
 	else
 	{

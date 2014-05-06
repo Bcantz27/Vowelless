@@ -3,7 +3,8 @@ function Game::displayBattleGame()
 	MainScene.clear();
 	Game.displayScore();
 	Game.displayNewWord();
-	Player.displayHealthBar(Player.Health,"-10 32");
+	Player.displayDefenseBar(Player.Defense,"-10 30");
+	Player.displayHealthBar(Player.Health,"-10 28");
 	Game.displayTime();
 	Game.displayRound();
 	Game.displayVowelButtons();
@@ -17,20 +18,20 @@ function Game::startNewRound()
 	{
 		if(Player.Health <= 0)
 		{
-			Canvas.popDialog(GameGui);
+			//Canvas.popDialog(GameGui);
 			Game.displayLoseScreen();
 			return;
 		}
 		else if(AI.Health <= 0)
 		{
-			Canvas.popDialog(GameGui);
+			//Canvas.popDialog(GameGui);
 			Game.displayWinScreen();
 			return;
 		}
 	
 		if(Game.Round == 3)	//Determine Winner
 		{
-			Canvas.popDialog(GameGui);
+			//Canvas.popDialog(GameGui);
 			
 			if(Player.Health > AI.Health)
 			{
@@ -146,13 +147,10 @@ function Game::displayBattleStats()
 		
 	MainScene.add(%obj);
 	
-	Player.displayHealthBar(Player.Health,"-40 10");
-	AI.displayHealthBar(AI.Health,"20 10");
-}
-
-function Game::endBattleGame(%winner)
-{
-
+	Player.displayDefenseBar(Player.Defense,"-40 2");
+	Player.displayHealthBar(Player.Health,"-40 0");
+	AI.displayDefenseBar(AI.Defense,"20 2");
+	AI.displayHealthBar(AI.Health,"20 0");
 }
 
 function Game::playImpactSound(%this)

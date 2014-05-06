@@ -1,0 +1,14 @@
+<ModuleDefinition
+	ModuleId="Network"
+	VersionId="1"
+	Description="Network module"
+	Group="gameBase"
+	ScriptFile="main.cs"
+	CreateFunction="create"
+	DestroyFunction="destroy">
+	
+	<DeclaredAssets
+			Path="assets"
+			Extension="asset.taml"
+			Recurse="true"/>			
+</ModuleDefinition>
