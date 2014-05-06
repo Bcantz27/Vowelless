@@ -44,8 +44,8 @@ public class SplashScreen extends Dialog {
 							view.setImageBitmap(splashBitmap);
 							view.setScaleType(ScaleType.FIT_CENTER);
 							view.setBackgroundColor(Color.BLACK);
-							_instance.getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON/*FLAG_ALT_FOCUSABLE_IM*/,
-							         WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON/*FLAG_ALT_FOCUSABLE_IM*/);
+							_instance.getWindow().setFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM,
+							         WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
 							_instance.requestWindowFeature(Window.FEATURE_NO_TITLE); 
 							_instance.setCancelable(false);
 							_instance.setContentView(view);

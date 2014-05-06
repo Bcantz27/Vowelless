@@ -67,4 +67,4 @@ $pref::Video::windowedRes = "1024 768 32";
 $pref::OpenGL::gammaCorrection = 0.5;
 
 /// Fonts.
-$Gui::fontCacheDirectory = expandPath( "^AppCore/fonts" );
+$Gui::fontCacheDirectory = expandPath( "^GameAssets/assets/fonts" );

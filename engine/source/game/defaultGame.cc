@@ -58,9 +58,6 @@
 #include "platform/nativeDialogs/msgBox.h"
 #include "platform/nativeDialogs/fileDialog.h"
 #include "memory/safeDelete.h"
-//#include "Banana_Modifications/Module_Banana/Module_Banana.h"
-#include "Banana_Modifications/Struct_Module/Struct_Module.h"
-//#include "Banana_Modifications/Struct_Module_Assimp/Struct_Module_Assimp.h"
 
 #include <stdio.h>
 
@@ -129,7 +126,7 @@ bool initializeLibraries()
     // Create the stock colors.
     StockColor::create();
     
-#if defined(TORQUE_OS_IOS) || defined(TORQUE_OS_ANDROID)
+#if defined(TORQUE_OS_IOS) || defined(TORQUE_OS_ANDROID) || defined(TORQUE_OS_EMSCRIPTEN)
    //3MB default is way too big for iPhone!!!
 #ifdef	TORQUE_SHIPPING
     FrameAllocator::init(256 * 1024);	//256KB for now... but let's test and see!
@@ -167,25 +164,6 @@ bool initializeLibraries()
     // Initialize the particle system.
     ParticleSystem::Init();
     
-    //Struct_Module_Banana_This=Machine_Banana_Create();
-
-    Pointer_Struct_Module_Main=Function_Struct_Module_Main_Create();
-
-    Function_Struct_Module_Main_Initialize(Pointer_Struct_Module_Main);
-
-    struct Struct_Module *Pointer_Struct_Module_Child=
-    Pointer_Struct_Module_Main->Pointer_Function_Create();
-
-    Pointer_Struct_Module_Main->Pointer_Function_Initialize(Pointer_Struct_Module_Child);
-
-    Pointer_Struct_Module_Main->Pointer_Function_Link(Pointer_Struct_Module_Main,Pointer_Struct_Module_Child);
-
-    /*Pointer_Struct_Module_Assimp=Function_Struct_Module_Assimp_Create();
-
-    Function_Struct_Module_Assimp_Initialize(Pointer_Struct_Module_Assimp);
-
-    Pointer_Struct_Module_Assimp->Pointer_Function_Link(Pointer_Struct_Module_Main,Pointer_Struct_Module_Assimp);
-	*/
 #if defined(TORQUE_OS_IOS) && defined(_USE_STORE_KIT)
     storeInit();
 #endif // TORQUE_OS_IOS && _USE_STORE_KIT
@@ -226,10 +204,6 @@ void shutdownLibraries()
 
     // Destroy the particle system.
     ParticleSystem::destroy();
-
-    //Machine_Banana_Destroy(Struct_Module_Banana_This);
-
-    Function_Struct_Module_Main_Destroy(Pointer_Struct_Module_Main);
   
 #ifdef _USE_STORE_KIT
     storeCleanup();
@@ -259,8 +233,6 @@ bool initializeGame(int argc, const char **argv)
     ActionMap* globalMap = new ActionMap;
     globalMap->registerObject("GlobalActionMap");
     Sim::getActiveActionMapSet()->pushObject(globalMap);
-
-	Sim::getClientGroup()->assignName("ClientGroup");
 
     // Let the remote debugger process the command-line.
     RemoteDebuggerBridge::processCommandLine( argc, argv );
@@ -371,6 +343,11 @@ bool DefaultGame::mainInitialize(int argc, const char **argv)
 {
     if(!initializeLibraries())
         return false;
+    
+#ifdef TORQUE_OS_EMSCRIPTEN
+    // temp hack
+    argc = 0;
+#endif
     
     // Set up the command line args for the console scripts...
     Con::setIntVariable("$GameProject::argc", argc);
@@ -505,10 +482,6 @@ void DefaultGame::mainLoop( void )
     Game->processEvents(); // process all non-sim posted events.
          PROFILE_END();
          PROFILE_END();
-
-         //Machine_Banana_Process(Struct_Module_Banana_This);
-
-         Pointer_Struct_Module_Main->Pointer_Function_Loop(Pointer_Struct_Module_Main);
     
 #ifdef TORQUE_OS_IOS_PROFILE
     iPhoneProfilerEnd("MAIN_LOOP");

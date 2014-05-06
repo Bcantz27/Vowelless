@@ -26,14 +26,33 @@ function AI::readWord(%this)
 	%this.tryToAnswer();
 }
 
+function AI::incrementScore(%this,%amount)
+{
+	%this.score = %this.score + %amount;
+}
+
 function AI::tryToAnswer(%this)
 {
 	%roll = getRandom(1,%this.HitChance + getWordDifficulty($GameWordList[AI.CurrentWord]));
-	echo("AI: Trying to attack" SPC %roll);
+	//echo("AI: Trying to attack" SPC %roll);
 	if(%roll == 1)
 	{
-		echo("AI: Attack" SPC getWordDamage($GameWordList[AI.CurrentWord]));
-		%this.Damage = %this.Damage + getWordDamage($GameWordList[AI.CurrentWord]);
+		//echo("AI: Attack" SPC getWordDamage($GameWordList[AI.CurrentWord]));
+		AI.incrementScore(getWordValue($GameWordList[AI.CurrentWord]));
+
+		if(stricmp(Game.Mode,"Battle") == 0)
+		{
+			%this.Damage = %this.Damage + getWordDamage($GameWordList[AI.CurrentWord]);
+		}
+		else if(stricmp(Game.Mode,"Race") == 0)
+		{
+			if(AI.Score >= Game.RaceTo)
+			{
+				Game.endRace();
+				return;
+			}
+		}
+		
 		AI.CurrentWord++;
 	}
 
@@ -44,10 +63,7 @@ function AI::tryToAnswer(%this)
 function AI::attackPlayer(%this, %damage)
 {
 	Player.changeHealth(%damage);
-	if(%damage > 0)
-	{
-		Game.playImpactSound();
-	}
+	Game.playHitSound(%damage);
 	Game.displayBattleStats();
 }
 
@@ -64,12 +80,89 @@ function AI::reset(%this)
 	%this.Damage = 0;
 }
 
+function AI::displayHealthBar(%this,%health,%position)
+{
+	if(isObject(%this.LeftBack))
+		%this.LeftBack.delete();
+
+	if(isObject(%this.LeftRed))
+		%this.LeftRed.delete();
+	
+	if(isObject(%this.MidBack))
+		%this.MidBack.delete();
+	
+	if(isObject(%this.MidRed))
+		%this.MidRed.delete();
+	
+	if(isObject(%this.RightBack))
+		%this.RightBack.delete();
+		
+	if(isObject(%this.RightRed))
+		%this.RightRed.delete();
+	
+	%this.leftBack = new Sprite();
+	%this.leftBack.Size = "1 2";
+	%this.leftBack.Position = %position;
+	%this.leftBack.SceneLayer = 30;
+	%this.leftBack.setBodyType("static");
+	%this.leftBack.Image = "GameAssets:barBackLeft";
+	
+	if(%health > 0)
+	{
+		%this.leftRed = new Sprite();
+		%this.leftRed.Size = "1 2";
+		%this.leftRed.Position = %position;
+		%this.leftRed.SceneLayer = 29;
+		%this.leftRed.setBodyType("static");
+		%this.leftRed.Image = "GameAssets:barRedLeft";
+		MainScene.add(%this.leftRed);
+	}
+	
+	%this.midBack = new Sprite();
+	%this.midBack.Size = "20 2";
+	%this.midBack.Position = VectorAdd(%position,"10.5 0");
+	%this.midBack.SceneLayer = 30;
+	%this.midBack.setBodyType("static");
+	%this.midBack.Image = "GameAssets:barBackMid";
+	
+	%this.midRed = new Sprite();
+	%this.midRed.Size = 20*(%health/100) SPC "2";
+	%this.midRed.Position = VectorAdd(%position, (((20*(%health/100))/2)+0.5) SPC "0");
+	%this.midRed.SceneLayer = 29;
+	%this.midRed.setBodyType("static");
+	%this.midRed.Image = "GameAssets:barRedMid";
+	
+	%this.rightBack = new Sprite();
+	%this.rightBack.Size = "1 2";
+	%this.rightBack.Position = VectorAdd(%position,"21 0");
+	%this.rightBack.SceneLayer = 30;
+	%this.rightBack.setBodyType("static");
+	%this.rightBack.Image = "GameAssets:barBackRight";
+	
+	if(%health == 100)
+	{
+		%this.rightRed = new Sprite();
+		%this.rightRed.Size = "1 2";
+		%this.rightRed.Position = VectorAdd(%position,"21 0");
+		%this.rightRed.SceneLayer = 29;
+		%this.rightRed.setBodyType("static");
+		%this.rightRed.Image = "GameAssets:barRedRight";
+		MainScene.add(%this.rightRed);
+	}
+	
+	MainScene.add(%this.midRed);
+	MainScene.add(%this.leftBack);
+	MainScene.add(%this.midBack);
+	MainScene.add(%this.rightBack);
+}
+
 function AI::changeHealth(%this,%amount)
 {
 	if((%this.Health + %amount) > 0)
 	{
 		%this.Health = %this.Health + %amount;
 		AI.Health = mFloatLength(AI.Health, 0);
+		Game.displayHitDamage(%amount,"30 10");
 	}
 	else
 	{

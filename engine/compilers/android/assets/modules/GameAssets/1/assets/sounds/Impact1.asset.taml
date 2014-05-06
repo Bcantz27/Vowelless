@@ -1,0 +1,7 @@
+<AudioAsset  
+    AssetName="impact1"  
+    VolumeChannel="1"  
+    AssetAutoUnload="0"  
+    Looping="0"  
+    Radius="5"  
+    AudioFile="Impact1.wav" />  

@@ -739,8 +739,8 @@ ConsoleMethodWithDocs(SceneObject, getWorldPoint, ConsoleString, 3, 4, (float lo
    // Invalid
    else
    {
-      Con::warnf("SceneObject::getWorldPoint() - Invalid number of parameters!");
-      return false;
+        Con::warnf("SceneObject::getWorldPoint() - Invalid number of parameters!");
+        return NULL;
    }
 
     // Calculate world coordinate.
@@ -812,7 +812,7 @@ ConsoleMethodWithDocs(SceneObject, getWorldVector, ConsoleString, 3, 4, (float l
    else
    {
       Con::warnf("SceneObject::getWorldVector() - Invalid number of parameters!");
-      return false;
+      return NULL;
    }
 
     // Calculate world vector.
@@ -1177,13 +1177,13 @@ ConsoleMethodWithDocs(SceneObject, getContact, ConsoleString, 3, 3, (contactInde
             normalImpulse1,
             tangentImpulse1 );
     }
-	else
-	{
+    else
+    {
         dSprintf(pReturnBuffer, 64,
             "%d %d %d",
             pSceneObjectCollider->getId(),
             shapeIndexThis, shapeIndexCollider );
-	}
+    }
 
     return pReturnBuffer;
 }
@@ -2028,7 +2028,7 @@ ConsoleMethodWithDocs(SceneObject, applyForce, ConsoleVoid, 4, 6, (worldForce X/
     {
         // Apply force.
         object->applyForce( worldForce );
-		return;
+        return;
     }
 
     // World point.
@@ -2048,7 +2048,7 @@ ConsoleMethodWithDocs(SceneObject, applyForce, ConsoleVoid, 4, 6, (worldForce X/
     // Invalid
     else
     {
-		Con::warnf("Scene::applyForce() - Invalid number of parameters!");
+        Con::warnf("Scene::applyForce() - Invalid number of parameters!");
         return;
     }
 
@@ -2108,7 +2108,7 @@ ConsoleMethodWithDocs(SceneObject, applyLinearImpulse, ConsoleVoid, 4, 6, (world
     {
         // Apply force.
         object->applyForce( worldImpulse );
-		return;
+        return;
     }
 
     // World point.
@@ -3059,14 +3059,14 @@ ConsoleMethodWithDocs( SceneObject, getChainCollisionShapeAdjacentStart, Console
     if ( shapeIndex >= shapeCount )
     {
         Con::warnf("SceneObject::getChainCollisionShapeAdjacentStart() - Invalid shape index of %d.", shapeIndex);
-        return false;
+        return NULL;
     }
 
     // Sanity!
     if ( object->getCollisionShapeType( shapeIndex ) != b2Shape::e_chain )
     {
         Con::warnf("SceneObject::getChainCollisionShapeAdjacentStart() - Not a chain shape at index of %d.", shapeIndex);
-        return false;
+        return NULL;
     }
 
     return object->getChainCollisionShapeAdjacentStart( shapeIndex ).scriptThis();
@@ -3090,14 +3090,14 @@ ConsoleMethodWithDocs( SceneObject, getChainCollisionShapeAdjacentEnd, ConsoleSt
     if ( shapeIndex >= shapeCount )
     {
         Con::warnf("SceneObject::getChainCollisionShapeAdjacentEnd() - Invalid shape index of %d.", shapeIndex);
-        return false;
+        return NULL;
     }
 
     // Sanity!
     if ( object->getCollisionShapeType( shapeIndex ) != b2Shape::e_chain )
     {
         Con::warnf("SceneObject::getChainCollisionShapeAdjacentEnd() - Not a chain shape at index of %d.", shapeIndex);
-        return false;
+        return NULL;
     }
 
     return object->getChainCollisionShapeAdjacentEnd( shapeIndex ).scriptThis();
@@ -3227,14 +3227,14 @@ ConsoleMethodWithDocs( SceneObject, getEdgeCollisionShapeLocalPositionStart, Con
     if ( shapeIndex >= shapeCount )
     {
         Con::warnf("SceneObject::getEdgeCollisionShapeLocalPositionStart() - Invalid shape index of %d.", shapeIndex);
-        return false;
+        return NULL;
     }
 
     // Sanity!
     if ( object->getCollisionShapeType( shapeIndex ) != b2Shape::e_edge )
     {
         Con::warnf("SceneObject::getEdgeCollisionShapeLocalPositionStart() - Not an edge shape at index of %d.", shapeIndex);
-        return false;
+        return NULL;
     }
 
     return object->getEdgeCollisionShapeLocalPositionStart( shapeIndex ).scriptThis();
@@ -3258,14 +3258,14 @@ ConsoleMethodWithDocs( SceneObject, getEdgeCollisionShapeLocalPositionEnd, Conso
     if ( shapeIndex >= shapeCount )
     {
         Con::warnf("SceneObject::getEdgeCollisionShapeLocalPositionEnd() - Invalid shape index of %d.", shapeIndex);
-        return false;
+        return NULL;
     }
 
     // Sanity!
     if ( object->getCollisionShapeType( shapeIndex ) != b2Shape::e_edge )
     {
         Con::warnf("SceneObject::getEdgeCollisionShapeLocalPositionEnd() - Not an edge shape at index of %d.", shapeIndex);
-        return false;
+        return NULL;
     }
 
     return object->getEdgeCollisionShapeLocalPositionEnd( shapeIndex ).scriptThis();
@@ -3351,14 +3351,14 @@ ConsoleMethodWithDocs( SceneObject, getEdgeCollisionShapeAdjacentStart, ConsoleS
     if ( shapeIndex >= shapeCount )
     {
         Con::warnf("SceneObject::getEdgeCollisionShapeAdjacentStart() - Invalid shape index of %d.", shapeIndex);
-        return false;
+        return NULL;
     }
 
     // Sanity!
     if ( object->getCollisionShapeType( shapeIndex ) != b2Shape::e_edge )
     {
         Con::warnf("SceneObject::getEdgeCollisionShapeAdjacentStart() - Not an edge shape at index of %d.", shapeIndex);
-        return false;
+        return NULL;
     }
 
     return object->getEdgeCollisionShapeAdjacentStart( shapeIndex ).scriptThis();
@@ -3382,14 +3382,14 @@ ConsoleMethodWithDocs( SceneObject, getEdgeCollisionShapeAdjacentEnd, ConsoleStr
     if ( shapeIndex >= shapeCount )
     {
         Con::warnf("SceneObject::getEdgeCollisionShapeAdjacentEnd() - Invalid shape index of %d.", shapeIndex);
-        return false;
+        return NULL;
     }
 
     // Sanity!
     if ( object->getCollisionShapeType( shapeIndex ) != b2Shape::e_edge )
     {
         Con::warnf("SceneObject::getEdgeCollisionShapeAdjacentEnd() - Not an edge shape at index of %d.", shapeIndex);
-        return false;
+        return NULL;
     }
 
     return object->getEdgeCollisionShapeAdjacentEnd( shapeIndex ).scriptThis();
@@ -4046,7 +4046,7 @@ ConsoleMethodWithDocs(SceneObject, setDebugOff, ConsoleVoid, 3, 2 + DEBUG_MODE_C
     @param sizeControl Whether or not to size the GuiControl to the size of this object.
     @return No return Value.
 */
-ConsoleMethodWithDocs(SceneObject, attachGui, ConsoleVoid, 6, 7, (guiControl guiObject, SceneWindow window, [sizeControl? = false], Vector2 offset))
+ConsoleMethodWithDocs(SceneObject, attachGui, ConsoleVoid, 4, 5, (guiControl guiObject, SceneWindow window, [sizeControl? = false]))
 {
     // Find GuiControl Object.
     GuiControl* pGuiControl = dynamic_cast<GuiControl*>(Sim::findObject(argv[2]));
@@ -4071,29 +4071,8 @@ ConsoleMethodWithDocs(SceneObject, attachGui, ConsoleVoid, 6, 7, (guiControl gui
     // Calculate Send to Mount.
     const bool sizeControl = argc >= 5 ? dAtob(argv[4]) : false;
 
-	// The new offset.
-   Vector2 offset(0,0);
-
-   // Elements in the first argument.
-   U32 elementCount = Utility::mGetStringElementCount(argv[5]);
-
-   // ("x y")
-   if ((elementCount == 2) && (argc == 6))
-      offset = Utility::mGetStringElementVector(argv[5]);
-
-   // (x, y)
-   else if ((elementCount == 1) && (argc == 7))
-      offset = Vector2(dAtof(argv[5]), dAtof(argv[6]));
-
-   // Invalid
-   else
-   {
-      Con::warnf("SceneObject::attachGui() - Invalid number of parameters!");
-      return;
-   }
-
     // Attach GUI Control.
-    object->attachGui( pGuiControl, pSceneWindow, sizeControl, offset);
+    object->attachGui( pGuiControl, pSceneWindow, sizeControl );
 }
 
 //-----------------------------------------------------------------------------
@@ -4171,95 +4150,5 @@ ConsoleMethodWithDocs(SceneObject, safeDelete, ConsoleVoid, 2, 2, ())
     // Script Delete.
     object->safeDelete();
 }
-
-//-----------------------------------------------------------------------------
-
-/*! Mounts the camera onto the specified object.
-    @param sceneObject The scene object to mount the camera to.
-    @param offsetX / offsetY The offset from the objects position to mount the camera to.  Optional: Defaults to no offset.
-    @param mountForce The force to use to keep the camera mounted to the object.  Zero is a rigid mount.  Optional: Defaults to zero.
-    @param sendToMount Whether to immediately move the camera to the objects position or not.  Optional: Defaults to true.
-    @param mountAngle Whether to mount the cameras angle to the objects angle or not.  Optional: Defaults to false.
-    @return No return value
-*/
-ConsoleMethodWithDocs(SceneObject, mount, ConsoleVoid, 3, 8, (sceneObject, [offsetX / offsetY], [mountForce], [sendToMount?], [mountAngle?]))
-{
-    // Grab the object. Always specified.
-    SceneObject* pSceneObject = dynamic_cast<SceneObject*>(Sim::findObject(argv[2]));
-
-    // Validate Object.
-    if (!pSceneObject)
-    {
-        Con::warnf("SceneWindow::mount() - Couldn't find/Invalid object '%s'.", argv[2]);
-        return;
-    }
-
-    // Set defaults.
-    Vector2 mountOffset(0.0f, 0.0f);
-    F32 mountForce = 0.0f;
-    bool sendToMount = true;
-    F32 mountAngle = 0.0f;
-    
-    U32 nextArg = 3;
-    if ( (U32)argc > nextArg )
-    {
-        // Fetch Element Count.
-        const U32 elementCount = Utility::mGetStringElementCount(argv[nextArg]);
-
-        // (object, "offsetX offsetY", ...)
-        if ( elementCount == 2 )
-        {
-            mountOffset = Utility::mGetStringElementVector(argv[nextArg++]);
-        }
-        // (object, offsetX, offsetY, ...)
-        else if ( elementCount == 1 && (U32)argc >= nextArg+1 )
-        {
-            mountOffset = Vector2(dAtof(argv[nextArg]), dAtof(argv[nextArg+1]));
-            nextArg += 2;
-        }
-        // Invalid.
-        else
-        {
-            Con::warnf("SceneWindow::mount() - Invalid number of parameters!");
-            return;
-        }
-    }
-
-    // Grab the mount force - if it's specified.
-    if ( (U32)argc > nextArg )
-        mountForce = dAtof(argv[nextArg++]);
-
-    // Grab the send to mount flag.
-
-    if ( (U32)argc > nextArg )
-        sendToMount = dAtob(argv[nextArg++]);
-
-
-    if ( (U32)argc > nextArg )
-        mountAngle = dAtof(argv[nextArg++]);
-
-    // Mount Object.
-    object->mount( pSceneObject, mountOffset, mountForce, sendToMount, mountAngle );
-}
-
-//-----------------------------------------------------------------------------
-
-/*! Dismounts Camera from object.
-    @return No return value
-*/
-ConsoleMethodWithDocs(SceneObject, dismount, ConsoleVoid, 2, 2, ())
-{
-    // Dismount Object.
-    object->dismount();
-}
-
-//-----------------------------------------------------------------------------
-
-ConsoleMethodWithDocs(SceneObject, isMounted, ConsoleBool, 2, 2, ())
-{
-    return object->isSceneObjectMounted();
-}
-
-//-----------------------------------------------------------------------------
 
 ConsoleMethodGroupEndWithDocs(SceneObject)

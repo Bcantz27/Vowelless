@@ -1494,9 +1494,9 @@ void Platform::init()
 //--------------------------------------
 void Platform::shutdown()
 {
-   sgQueueEvents = false;
-
+   sgQueueEvents = false;   
    setMouseLock( false );
+   Audio::OpenALShutdown();
    Video::destroy();
    Input::destroy();
    WinConsole::destroy();
@@ -1638,11 +1638,9 @@ S32 main(S32 argc, const char **argv)
    return run(argc, argv);
 }
 
-
 //--------------------------------------
 S32 PASCAL WinMain( HINSTANCE hInstance, HINSTANCE, LPSTR lpszCmdLine, S32)
 {
-
    Vector<char *> argv;
    char moduleName[256];
    GetModuleFileNameA(NULL, moduleName, sizeof(moduleName));

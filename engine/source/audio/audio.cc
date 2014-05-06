@@ -356,7 +356,7 @@ static bool cullSource(U32 *index, F32 volume)
 static F32 approximate3DVolume(const Audio::Description& desc, const Point3F &position)
 {
    Point3F p1;
-   alGetListener3f(AL_POSITION, &p1.x, &p1.y, &p1.z);
+   alxGetListenerPoint3F(AL_POSITION, &p1);
 
    p1 -= position;
    F32 distance = p1.magnitudeSafe();
@@ -958,37 +958,6 @@ AUDIOHANDLE alxPlay(const AudioAsset *profile, const MatrixF *transform, const P
    if(handle != NULL_AUDIOHANDLE)
       return(alxPlay(handle));
    return(handle);
-}
-
-bool alxCheckError(const char* sourceFuncName, const char* alFuncName)
-{
-  ALenum errorVal = alGetError();
-  switch (errorVal)
-  {
-    case AL_NO_ERROR:
-      break;
-    case AL_INVALID_NAME:
-      Con::errorf("%s - %s OpenAL AL_INVALID_NAME error code returned", sourceFuncName, alFuncName);
-      break;
-    case AL_INVALID_ENUM:
-      Con::errorf("%s - %s OpenAL AL_INVALID_ENUM error code returned", sourceFuncName, alFuncName);
-      break;
-    case AL_INVALID_VALUE:
-      Con::errorf("%s - %s OpenAL AL_INVALID_VALUE error code returned", sourceFuncName, alFuncName);
-      break;
-    case AL_INVALID_OPERATION:
-      Con::errorf("%s - %s OpenAL AL_INVALID_OPERATION error code returned", sourceFuncName, alFuncName);
-      break;
-    case AL_OUT_OF_MEMORY:
-      Con::errorf("%s - %s OpenAL AL_OUT_OF_MEMORY error code returned", sourceFuncName, alFuncName);
-      break;
-    default:
-      Con::errorf("%s - %s OpenAL has encountered a problem and won't tell us what it is. %d", errorVal, sourceFuncName, alFuncName);
-  };
-  if (errorVal == AL_NO_ERROR)
-    return true;
-  else
-    return false;
 }
 
 bool alxPause( AUDIOHANDLE handle )
@@ -2000,7 +1969,7 @@ void alxCloseHandles()
 void alxUpdateScores(bool sourcesOnly)
 {
    Point3F listener;
-   alGetListener3f(AL_POSITION, &listener.x, &listener.y, &listener.z);
+   alxGetListenerPoint3F(AL_POSITION, &listener);
 
    // do the base sources
    for(U32 i = 0; i < mNumSources; i++)
@@ -2116,7 +2085,7 @@ void alxUpdateScores(bool sourcesOnly)
 void alxUpdateMaxDistance()
 {
    Point3F listener;
-   alGetListener3f(AL_POSITION, &listener.x, &listener.y, &listener.z);
+   alxGetListenerPoint3F(AL_POSITION, &listener);
 
    for(U32 i = 0; i < mNumSources; i++)
    {
@@ -2194,6 +2163,37 @@ ALuint alxGetWaveLen(ALuint buffer)
 
    ALuint len = (ALuint)((F64(size) * 8000.f) / F64(frequency * bits * channels));
    return(len);
+}
+
+bool alxCheckError(const char* sourceFuncName, const char* alFuncName)
+{
+  ALenum errorVal = alGetError();
+  switch (errorVal)
+  {
+    case AL_NO_ERROR:
+      break;
+    case AL_INVALID_NAME:
+      Con::errorf("%s - %s OpenAL AL_INVALID_NAME error code returned", sourceFuncName, alFuncName);
+      break;
+    case AL_INVALID_ENUM:
+      Con::errorf("%s - %s OpenAL AL_INVALID_ENUM error code returned", sourceFuncName, alFuncName);
+      break;
+    case AL_INVALID_VALUE:
+      Con::errorf("%s - %s OpenAL AL_INVALID_VALUE error code returned", sourceFuncName, alFuncName);
+      break;
+    case AL_INVALID_OPERATION:
+      Con::errorf("%s - %s OpenAL AL_INVALID_OPERATION error code returned", sourceFuncName, alFuncName);
+      break;
+    case AL_OUT_OF_MEMORY:
+      Con::errorf("%s - %s OpenAL AL_OUT_OF_MEMORY error code returned", sourceFuncName, alFuncName);
+      break;
+    default:
+      Con::errorf("%s - %s OpenAL has encountered a problem and won't tell us what it is. %d", errorVal, sourceFuncName, alFuncName);
+  };
+  if (errorVal == AL_NO_ERROR)
+    return true;
+  else
+    return false;
 }
 
 //--------------------------------------------------------------------------
@@ -2490,9 +2490,13 @@ bool OpenALInit()
       0x100, freq,
       0
    };
+
    mContext = alcCreateContext((ALCdevice*)mDevice,attrlist);
-#elif TORQUE_OS_ANDROID
+#elif defined(TORQUE_OS_ANDROID)
    mContext = alcCreateContext((ALCdevice*)mDevice, NULL);
+#elif defined(TORQUE_OS_EMSCRIPTEN)
+   mContext = alcCreateContext((ALCdevice*)mDevice, NULL);;
+#elif defined(TORQUE_OS_IOS)
 #else
    mContext = alcCreateContext(mDevice,NULL);
 #endif
@@ -2500,7 +2504,7 @@ bool OpenALInit()
       return false;
 
    // Make this context the active context
-#if defined(TORQUE_OS_ANDROID) || defined(TORQUE_OS_LINUX)
+#if defined(TORQUE_OS_ANDROID) || defined(TORQUE_OS_LINUX) || defined(TORQUE_OS_EMSCRIPTEN)
    alcMakeContextCurrent((ALCcontext*)mContext);
 #else
    alcMakeContextCurrent(mContext);
@@ -2588,6 +2592,8 @@ void OpenALShutdown()
    {
 #if defined(TORQUE_OS_ANDROID) || defined(TORQUE_OS_LINUX)
 	   alcDestroyContext((ALCcontext*)mContext);
+#elif defined(TORQUE_OS_EMSCRIPTEN)
+      alcDestroyContext((ALCcontext*)mContext);
 #else
 	   alcDestroyContext(mContext);
 #endif
@@ -2598,6 +2604,8 @@ void OpenALShutdown()
    {
 #if defined(TORQUE_OS_ANDROID) || defined(TORQUE_OS_LINUX)
 	   alcCloseDevice((ALCdevice*)mDevice);
+#elif defined(TORQUE_OS_EMSCRIPTEN)
+      alcCloseDevice((ALCdevice*)mDevice);
 #else
 	   alcCloseDevice(mDevice);
 #endif

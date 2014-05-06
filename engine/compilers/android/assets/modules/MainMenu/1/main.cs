@@ -10,9 +10,9 @@ function MainMenu::destroy( %this )
 
 }
 
-function Answer::onMouseDown()
+function Answer::onTouchDown(%this, %touchID, %worldPosition)
 {
-
+	Answer.setText("");
 }
 
 // Adding command for SinglePlayerButton.
@@ -66,7 +66,14 @@ function BattleButton::onClick(%this)
 {
 	Game.Mode = "Battle";
 	Canvas.popDialog(GameModeDialog);
-	Canvas.pushDialog(GameGui);
+	Game.setupGame();
+}
+
+// Adding command for RaceButton.
+function RaceButton::onClick(%this)
+{
+	Game.Mode = "Race";
+	Canvas.popDialog(GameModeDialog);
 	Game.setupGame();
 }
 
@@ -75,7 +82,6 @@ function TimeButton::onClick(%this)
 {
 	Game.Mode = "Time";
 	Canvas.popDialog(GameModeDialog);
-	Canvas.pushDialog(GameGui);
 	Game.setupGame();
 }
 
@@ -84,7 +90,6 @@ function PracticeButton::onClick(%this)
 {
 	Game.Mode = "Practice";
 	Canvas.popDialog(GameModeDialog);
-	Canvas.pushDialog(GameGui);
 	Game.setupGame();
 }
 
@@ -96,6 +101,15 @@ function PlayAgainButton::onClick(%this)
 	Game.setupGame();
 	Canvas.popDialog(LoseDialog);
 	Canvas.pushDialog(GameGui);
+}
+
+// Adding command for SkipButton.
+function SkipButton::onClick(%this)
+{
+	if(stricmp(Game.Mode,"Practice") == 0)
+	{
+		Game.skipWord();
+	}
 }
 
 // Adding command for BackToMenuButton.

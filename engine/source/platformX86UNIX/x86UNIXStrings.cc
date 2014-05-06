@@ -239,15 +239,11 @@ char* dStrncpy(char *dst, const char *src, U32 len)
    return strncpy(dst,src,len);
 }   
 
-/*U32 dStrlen(const char *str)
+U32 dStrlen(const char *str)
 {
    return strlen(str);
-}*/   
+}   
 
-dsize_t dStrlen(const char *str)
-{
-   return (dsize_t)strlen(str);
-} 
 
 char* dStrupr(char *str)
 {
@@ -288,25 +284,16 @@ char* dStrrchr(char *str, S32 c)
    return strrchr(str,c);
 }   
 
-/*U32 dStrspn(const char *str, const char *set)
+U32 dStrspn(const char *str, const char *set)
 {
    return(strspn(str, set));
-}*/
-
-dsize_t dStrspn(const char *str, const char *set)
-{
-   return (dsize_t)strspn(str, set);
 }
 
-/*U32 dStrcspn(const char *str, const char *set)
+U32 dStrcspn(const char *str, const char *set)
 {
    return strcspn(str, set);
-}*/   
+}   
 
-dsize_t dStrcspn(const char *str, const char *set)
-{
-   return (dsize_t)strcspn(str, set);
-}
 
 char* dStrstr(char *str1, char *str2)
 {
@@ -367,12 +354,6 @@ void dPrintf(const char *format, ...)
    vprintf(format, args);
    va_end(args);
 }   
-
-/*S32 dVprintf(const char *format, void *arglist)
-{
-   S32 len = vprintf(format, (char*)arglist);
-   return (len);
-}*/
 
 S32 dVprintf(const char *format, va_list arglist)
 {

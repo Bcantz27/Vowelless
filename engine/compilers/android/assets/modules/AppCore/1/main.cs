@@ -1,5 +1,7 @@
 function AppCore::create( %this )
-{
+{	
+	writeFontCache();
+
     // Load system scripts
     exec("./scripts/constants.cs");
     exec("./scripts/defaultPreferences.cs");

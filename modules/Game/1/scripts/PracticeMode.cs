@@ -4,5 +4,5 @@ function Game::displayPracticeGame()
 	Game.displayScore();
 	Game.displayNewWord();
 	Game.displayBackPanel("GameAssets:panelbeige");
-	Canvas.pushDialog(GameGui);
+	Game.displayVowelButtons();
 }

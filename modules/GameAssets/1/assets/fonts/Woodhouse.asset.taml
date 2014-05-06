@@ -1,0 +1,7 @@
+<ImageAsset
+    AssetName="Woodhouse"
+    ImageFile="Woodhouse.png"
+    CellCountX="16"
+    CellCountY="6"
+    CellWidth="32"
+    CellHeight="32" />

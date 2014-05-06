@@ -23,7 +23,7 @@
 ConsoleMethodGroupBeginWithDocs(ImageAsset, AssetBase)
 
 /*! Sets the image file (bitmap file).
-@return No return value.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ImageAsset, setImageFile, ConsoleVoid, 3, 3, (ImageFile))
 {
@@ -33,7 +33,7 @@ ConsoleMethodWithDocs(ImageAsset, setImageFile, ConsoleVoid, 3, 3, (ImageFile))
 //-----------------------------------------------------------------------------
 
 /*! Gets the image file.
-@return Returns the bitmap image file.
+    @return Returns the bitmap image file.
 */
 ConsoleMethodWithDocs(ImageAsset, getImageFile, ConsoleString, 2, 2, ())
 {
@@ -43,7 +43,7 @@ ConsoleMethodWithDocs(ImageAsset, getImageFile, ConsoleString, 2, 2, ())
 //------------------------------------------------------------------------------
 
 /*! Sets the filter mode.
-@return No return value.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ImageAsset, setFilterMode, ConsoleVoid, 3, 3, (mode))
 {
@@ -66,7 +66,7 @@ ConsoleMethodWithDocs(ImageAsset, setFilterMode, ConsoleVoid, 3, 3, (mode))
 //------------------------------------------------------------------------------
 
 /*! Gets the filter mode.
-@return The filter mode.
+    @return The filter mode.
 */
 ConsoleMethodWithDocs(ImageAsset, getFilterMode, ConsoleString, 2, 2, ())
 {
@@ -76,7 +76,7 @@ ConsoleMethodWithDocs(ImageAsset, getFilterMode, ConsoleString, 2, 2, ())
 //-----------------------------------------------------------------------------
 
 /*! Sets whether 16-bit image is forced or not.
-@return No return value.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ImageAsset, setForce16Bit, ConsoleVoid, 3, 3, (force16Bit?))
 {
@@ -86,7 +86,7 @@ ConsoleMethodWithDocs(ImageAsset, setForce16Bit, ConsoleVoid, 3, 3, (force16Bit?
 //-----------------------------------------------------------------------------
 
 /*! Gets whether 16-bit image is forced or not.
-@return Whether 16-bit image is forced or not.
+    @return Whether 16-bit image is forced or not.
 */
 ConsoleMethodWithDocs(ImageAsset, getForce16Bit, ConsoleBool, 2, 2, ())
 {
@@ -96,7 +96,7 @@ ConsoleMethodWithDocs(ImageAsset, getForce16Bit, ConsoleBool, 2, 2, ())
 //-----------------------------------------------------------------------------
 
 /*! Sets whether CELL row order should be used or not.
-@return No return value.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ImageAsset, setCellRowOrder, ConsoleVoid, 3, 3, (rowOrder?))
 {
@@ -106,7 +106,7 @@ ConsoleMethodWithDocs(ImageAsset, setCellRowOrder, ConsoleVoid, 3, 3, (rowOrder?
 //-----------------------------------------------------------------------------
 
 /*! Gets whether CELL row order should be used or not.
-@return Whether CELL row order should be used or not.
+    @return Whether CELL row order should be used or not.
 */
 ConsoleMethodWithDocs(ImageAsset, getCellRowOrder, ConsoleBool, 2, 2, ())
 {
@@ -116,7 +116,7 @@ ConsoleMethodWithDocs(ImageAsset, getCellRowOrder, ConsoleBool, 2, 2, ())
 //-----------------------------------------------------------------------------
 
 /*! Sets the CELL offset X.
-@return No return value.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ImageAsset, setCellOffsetX, ConsoleVoid, 3, 3, (offsetX))
 {
@@ -126,7 +126,7 @@ ConsoleMethodWithDocs(ImageAsset, setCellOffsetX, ConsoleVoid, 3, 3, (offsetX))
 //-----------------------------------------------------------------------------
 
 /*! Gets the CELL offset X.
-@return The CELL offset X.
+    @return The CELL offset X.
 */
 ConsoleMethodWithDocs(ImageAsset, getCellOffsetX, ConsoleInt, 2, 2, ())
 {
@@ -136,7 +136,7 @@ ConsoleMethodWithDocs(ImageAsset, getCellOffsetX, ConsoleInt, 2, 2, ())
 //-----------------------------------------------------------------------------
 
 /*! Sets the CELL offset Y.
-@return No return value.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ImageAsset, setCellOffsetY, ConsoleVoid, 3, 3, (offsetY))
 {
@@ -146,7 +146,7 @@ ConsoleMethodWithDocs(ImageAsset, setCellOffsetY, ConsoleVoid, 3, 3, (offsetY))
 //-----------------------------------------------------------------------------
 
 /*! Gets the CELL offset Y.
-@return The CELL offset Y.
+    @return The CELL offset Y.
 */
 ConsoleMethodWithDocs(ImageAsset, getCellOffsetY, ConsoleInt, 2, 2, ())
 {
@@ -156,7 +156,7 @@ ConsoleMethodWithDocs(ImageAsset, getCellOffsetY, ConsoleInt, 2, 2, ())
 //-----------------------------------------------------------------------------
 
 /*! Sets the CELL stride X.
-@return No return value.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ImageAsset, setCellStrideX, ConsoleVoid, 3, 3, (strideX))
 {
@@ -166,7 +166,7 @@ ConsoleMethodWithDocs(ImageAsset, setCellStrideX, ConsoleVoid, 3, 3, (strideX))
 //-----------------------------------------------------------------------------
 
 /*! Gets the CELL stride X.
-@return The CELL stride X.
+    @return The CELL stride X.
 */
 ConsoleMethodWithDocs(ImageAsset, getCellStrideX, ConsoleInt, 2, 2, ())
 {
@@ -176,7 +176,7 @@ ConsoleMethodWithDocs(ImageAsset, getCellStrideX, ConsoleInt, 2, 2, ())
 //-----------------------------------------------------------------------------
 
 /*! Sets the CELL stride Y.
-@return No return value.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ImageAsset, setCellStrideY, ConsoleVoid, 3, 3, (strideY))
 {
@@ -186,7 +186,7 @@ ConsoleMethodWithDocs(ImageAsset, setCellStrideY, ConsoleVoid, 3, 3, (strideY))
 //-----------------------------------------------------------------------------
 
 /*! Gets the CELL stride Y.
-@return The CELL stride Y.
+    @return The CELL stride Y.
 */
 ConsoleMethodWithDocs(ImageAsset, getCellStrideY, ConsoleInt, 2, 2, ())
 {
@@ -196,7 +196,7 @@ ConsoleMethodWithDocs(ImageAsset, getCellStrideY, ConsoleInt, 2, 2, ())
 //-----------------------------------------------------------------------------
 
 /*! Sets the CELL count X.
-@return No return value.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ImageAsset, setCellCountX, ConsoleVoid, 3, 3, (countX))
 {
@@ -206,7 +206,7 @@ ConsoleMethodWithDocs(ImageAsset, setCellCountX, ConsoleVoid, 3, 3, (countX))
 //-----------------------------------------------------------------------------
 
 /*! Gets the CELL count X.
-@return The CELL count X.
+    @return The CELL count X.
 */
 ConsoleMethodWithDocs(ImageAsset, getCellCountX, ConsoleInt, 2, 2, ())
 {
@@ -216,7 +216,7 @@ ConsoleMethodWithDocs(ImageAsset, getCellCountX, ConsoleInt, 2, 2, ())
 //-----------------------------------------------------------------------------
 
 /*! Sets the CELL count Y.
-@return No return value.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ImageAsset, setCellCountY, ConsoleVoid, 3, 3, (countY))
 {
@@ -226,7 +226,7 @@ ConsoleMethodWithDocs(ImageAsset, setCellCountY, ConsoleVoid, 3, 3, (countY))
 //-----------------------------------------------------------------------------
 
 /*! Gets the CELL count Y.
-@return The CELL count Y.
+    @return The CELL count Y.
 */
 ConsoleMethodWithDocs(ImageAsset, getCellCountY, ConsoleInt, 2, 2, ())
 {
@@ -236,7 +236,7 @@ ConsoleMethodWithDocs(ImageAsset, getCellCountY, ConsoleInt, 2, 2, ())
 //-----------------------------------------------------------------------------
 
 /*! Sets the CELL width.
-@return No return value.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ImageAsset, setCellWidth, ConsoleVoid, 3, 3, (Width))
 {
@@ -246,7 +246,7 @@ ConsoleMethodWithDocs(ImageAsset, setCellWidth, ConsoleVoid, 3, 3, (Width))
 //-----------------------------------------------------------------------------
 
 /*! Gets the CELL width.
-@return The CELL width.
+    @return The CELL width.
 */
 ConsoleMethodWithDocs(ImageAsset, getCellWidth, ConsoleInt, 2, 2, ())
 {
@@ -255,34 +255,8 @@ ConsoleMethodWithDocs(ImageAsset, getCellWidth, ConsoleInt, 2, 2, ())
 
 //-----------------------------------------------------------------------------
 
-/*! Gets the CELL width in Explicit Mode.
-@return the specified CELL width.
-*/
-ConsoleMethodWithDocs(ImageAsset, getExplicitCellWidth, ConsoleInt, 3,3, (CellIndex))
-{
-    // Fetch cell index.
-    const S32 cellIndex = dAtoi( argv[2] );
-
-    return(object->getExplicitCellWidth(cellIndex));
-}
-
-//-----------------------------------------------------------------------------
-
-/*! Gets the CELL height in Explicit Mode.
-@return the specified CELL height.
-*/
-ConsoleMethodWithDocs(ImageAsset, getExplicitCellHeight, ConsoleInt, 3,3, (CellIndex))
-{
-    // Fetch cell index.
-    const S32 cellIndex = dAtoi( argv[2] );
-
-    return(object->getExplicitCellHeight(cellIndex));
-}
-
-//-----------------------------------------------------------------------------
-
 /*! Sets the CELL height.
-@return No return value.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ImageAsset, setCellHeight, ConsoleVoid, 3, 3, (Height))
 {
@@ -292,7 +266,7 @@ ConsoleMethodWithDocs(ImageAsset, setCellHeight, ConsoleVoid, 3, 3, (Height))
 //-----------------------------------------------------------------------------
 
 /*! Gets the CELL height.
-@return The CELL height.
+    @return The CELL height.
 */
 ConsoleMethodWithDocs(ImageAsset, getCellHeight, ConsoleInt, 2, 2, ())
 {
@@ -302,7 +276,7 @@ ConsoleMethodWithDocs(ImageAsset, getCellHeight, ConsoleInt, 2, 2, ())
 //-----------------------------------------------------------------------------
 
 /*! Gets the image width.
-@return The image width.
+    @return The image width.
 */
 ConsoleMethodWithDocs(ImageAsset, getImageWidth, ConsoleInt, 2, 2, ())
 {
@@ -312,7 +286,7 @@ ConsoleMethodWithDocs(ImageAsset, getImageWidth, ConsoleInt, 2, 2, ())
 //-----------------------------------------------------------------------------
 
 /*! Gets the image height.
-@return The image width.
+    @return The image width.
 */
 ConsoleMethodWithDocs(ImageAsset, getImageHeight, ConsoleInt, 2, 2, ())
 {
@@ -322,7 +296,7 @@ ConsoleMethodWithDocs(ImageAsset, getImageHeight, ConsoleInt, 2, 2, ())
 //-----------------------------------------------------------------------------
 
 /*! Gets the image size.
-@return The image size.
+    @return The image size.
 */
 ConsoleMethodWithDocs(ImageAsset, getImageSize, ConsoleString, 2, 2, ())
 {
@@ -339,7 +313,7 @@ ConsoleMethodWithDocs(ImageAsset, getImageSize, ConsoleString, 2, 2, ())
 //-----------------------------------------------------------------------------
 
 /*! Gets whether the image has a power-of-two dimensions or not.
-@return Whether the image has a power-of-two dimensions or not.
+    @return Whether the image has a power-of-two dimensions or not.
 */
 ConsoleMethodWithDocs(ImageAsset, getIsImagePOT, ConsoleBool, 2, 2, ())
 {
@@ -349,18 +323,18 @@ ConsoleMethodWithDocs(ImageAsset, getIsImagePOT, ConsoleBool, 2, 2, ())
 //-----------------------------------------------------------------------------
 
 /*! Gets the frame count.
-@return The frame count.
+    @return The frame count.
 */
 ConsoleMethodWithDocs(ImageAsset, getFrameCount, ConsoleInt, 2, 2, ())
 {
-    return object->getFrameCount();
+    return object->getFrameCount(); 
 }
 
 //-----------------------------------------------------------------------------
 
 /*! Gets the specified frames size.
-@param frame The frame number to use.
-@return The specified frames size.
+    @param frame The frame number to use.
+    @return The specified frames size.
 */
 ConsoleMethodWithDocs(ImageAsset, getFrameSize, ConsoleString, 3, 3, (int frame))
 {
@@ -392,8 +366,8 @@ ConsoleMethodWithDocs(ImageAsset, getFrameSize, ConsoleString, 3, 3, (int frame)
 //-----------------------------------------------------------------------------
 
 /*! Clears all explicit cells.
-The image asset stays in explicit mode however with no explicit cells a single full-frame cell becomes default.
-@return Whether the operation was successful or not.
+    The image asset stays in explicit mode however with no explicit cells a single full-frame cell becomes default.
+    @return Whether the operation was successful or not.
 */
 ConsoleMethodWithDocs(ImageAsset, clearExplicitCells, ConsoleBool, 2, 2, ())
 {
@@ -403,13 +377,13 @@ ConsoleMethodWithDocs(ImageAsset, clearExplicitCells, ConsoleBool, 2, 2, ())
 //-----------------------------------------------------------------------------
 
 /*! Add an explicit cell.
-@param cellOffsetX The offset in the X axis to the top-left of the cell.
-@param cellOffsetY The offset in the Y axis to the top-left of the cell.
-@param cellWidth The width of the cell.
-@param cellHeight The height of the cell.
-@param cellName The name of the cell's region.
-The image asset must be in explicit mode for this operation to succeed.
-@return Whether the operation was successful or not.
+    @param cellOffsetX The offset in the X axis to the top-left of the cell.
+    @param cellOffsetY The offset in the Y axis to the top-left of the cell.
+    @param cellWidth The width of the cell.
+    @param cellHeight The height of the cell.
+    @param cellName The name of the cell's region.
+    The image asset must be in explicit mode for this operation to succeed.
+    @return Whether the operation was successful or not.
 */
 ConsoleMethodWithDocs(ImageAsset, addExplicitCell, ConsoleBool, 7, 7, (int cellOffsetX, int cellOffsetY, int cellWidth, int cellHeight, string cellName))
 {
@@ -427,14 +401,14 @@ ConsoleMethodWithDocs(ImageAsset, addExplicitCell, ConsoleBool, 7, 7, (int cellO
 //-----------------------------------------------------------------------------
 
 /*! Insert an explicit cell at the specified index.
-@param cellIndex The zero-based index to insert the cell. This will work when no cells are present. If the index is beyond the cell count then the cell is simply added.
-@param cellOffsetX The offset in the X axis to the top-left of the cell.
-@param cellOffsetY The offset in the Y axis to the top-left of the cell.
-@param cellWidth The width of the cell.
-@param cellHeight The height of the cell.
-@param cellName The name of the cell's region.
-The image asset must be in explicit mode for this operation to succeed.
-@return Whether the operation was successful or not.
+    @param cellIndex The zero-based index to insert the cell.  This will work when no cells are present.  If the index is beyond the cell count then the cell is simply added.
+    @param cellOffsetX The offset in the X axis to the top-left of the cell.
+    @param cellOffsetY The offset in the Y axis to the top-left of the cell.
+    @param cellWidth The width of the cell.
+    @param cellHeight The height of the cell.
+    @param cellName The name of the cell's region.
+    The image asset must be in explicit mode for this operation to succeed.
+    @return Whether the operation was successful or not.
 */
 ConsoleMethodWithDocs(ImageAsset, insertExplicitCell, ConsoleBool, 8, 8, (int cellIndex, int cellOffsetX, int cellOffsetY, int cellWidth, int cellHeight, string cellName))
 {
@@ -456,8 +430,8 @@ ConsoleMethodWithDocs(ImageAsset, insertExplicitCell, ConsoleBool, 8, 8, (int ce
 //-----------------------------------------------------------------------------
 
 /*! Remove an explicit cell from the specified index.
-@param cellIndex The zero-based index to remove the cell from.
-@return Whether the operation was successful or not.
+    @param cellIndex The zero-based index to remove the cell from.
+    @return Whether the operation was successful or not.
 */
 ConsoleMethodWithDocs(ImageAsset, removeExplicitCell, ConsoleBool, 7, 7, (int cellIndex))
 {
@@ -470,14 +444,14 @@ ConsoleMethodWithDocs(ImageAsset, removeExplicitCell, ConsoleBool, 7, 7, (int ce
 //-----------------------------------------------------------------------------
 
 /*! Set an explicit cell at the specified index.
-@param cellIndex The zero-based index to insert the cell. This will work when no cells are present. If the index is beyond the cell count then the cell is simply added.
-@param cellOffsetX The offset in the X axis to the top-left of the cell.
-@param cellOffsetY The offset in the Y axis to the top-left of the cell.
-@param cellWidth The width of the cell.
-@param cellHeight The height of the cell.
-@param cellName The name of the cell's region.
-The image asset must be in explicit mode for this operation to succeed.
-@return Whether the operation was successful or not.
+    @param cellIndex The zero-based index to set the cell.
+    @param cellOffsetX The offset in the X axis to the top-left of the cell.
+    @param cellOffsetY The offset in the Y axis to the top-left of the cell.
+    @param cellWidth The width of the cell.
+    @param cellHeight The height of the cell.
+    @param cellName The name of the cell's region.
+    The image asset must be in explicit mode for this operation to succeed.
+    @return Whether the operation was successful or not.
 */
 ConsoleMethodWithDocs(ImageAsset, setExplicitCell, ConsoleBool, 8, 8, (int cellIndex, int cellOffsetX, int cellOffsetY, int cellWidth, int cellHeight, string cellName))
 {
@@ -498,11 +472,117 @@ ConsoleMethodWithDocs(ImageAsset, setExplicitCell, ConsoleBool, 8, 8, (int cellI
 //-----------------------------------------------------------------------------
 
 /*! Gets the explicit cell count.
-@return The explicit cell count.
+    @return The explicit cell count.
 */
 ConsoleMethodWithDocs(ImageAsset, getExplicitCellCount, ConsoleInt, 2, 2, ())
 {
     return object->getExplicitCellCount();
+}
+
+//-----------------------------------------------------------------------------
+
+/*! Gets the CELL offset in Explicit Mode.
+    @param cell The cell index or cell name to use to find the specific offset.
+    @return The specified CELL width.
+*/
+ConsoleMethodWithDocs(ImageAsset, getExplicitCellOffset, ConsoleString, 3, 3, (cell))
+{
+    // Was it a number or a string?
+    if (!dIsalpha(*argv[2]))
+    {
+        // Using cell index.
+        const S32 cellIndex = dAtoi(argv[2]);
+        
+        return object->getExplicitCellOffset(cellIndex).scriptThis();
+    }
+    else
+    {
+        // Using cell name.
+        ImageAsset::FrameArea& frameRegion = object->getCellByName(argv[2]);
+        
+        const Vector2 offset = frameRegion.mPixelArea.mPixelOffset;
+        
+        return offset.scriptThis();
+    }
+}
+
+//-----------------------------------------------------------------------------
+
+/*! Gets the CELL width in Explicit Mode.
+    @param cell The cell index or cell name to use to find the specific width.
+    @return The specified CELL width.
+*/
+ConsoleMethodWithDocs(ImageAsset, getExplicitCellWidth, ConsoleInt, 3, 3, (cell))
+{
+    S32 cellIndex;
+    
+    // Was it a number or a string?
+    if (!dIsalpha(*argv[2]))
+    {
+        // Using cell index.
+        cellIndex = dAtoi(argv[2]);
+        
+        return object->getExplicitCellWidth(cellIndex);
+    }
+    else
+    {
+        // Using cell name.
+        ImageAsset::FrameArea& frameRegion = object->getCellByName(argv[2]);
+        
+        return frameRegion.mPixelArea.mPixelWidth;
+    }
+}
+
+//-----------------------------------------------------------------------------
+
+/*! Gets the CELL height in Explicit Mode.
+    @param cell The cell index or cell name to use to find the specific height.
+    @return The specified CELL height.
+*/
+ConsoleMethodWithDocs(ImageAsset, getExplicitCellHeight, ConsoleInt, 3, 3, (cell))
+{
+    S32 cellIndex;
+    
+    // Was it a number or a string?
+    if (!dIsalpha(*argv[2]))
+    {
+        // Using cell index.
+        cellIndex = dAtoi(argv[2]);
+        
+        return object->getExplicitCellHeight(cellIndex);
+    }
+    else
+    {
+        // Using cell name.
+        ImageAsset::FrameArea& frameRegion = object->getCellByName(argv[2]);
+        
+        return frameRegion.mPixelArea.mPixelHeight;
+    }
+}
+
+//-----------------------------------------------------------------------------
+
+/*! Gets the CELL region name in Explicit Mode.
+    @param cell The cell index to use to find the specific name.
+    @return The specified CELL region name.
+*/
+ConsoleMethodWithDocs(ImageAsset, getExplicitCellName, ConsoleString, 3, 3, (cell))
+{
+    // Fetch cell index.
+    const S32 cellIndex = dAtoi(argv[2]);
+
+    return object->getExplicitCellName(cellIndex);
+}
+
+//-----------------------------------------------------------------------------
+
+/*! Gets the CELL index number in Explicit Mode.
+    @param cellName The cell name to use to find the specific index.
+    @return The specified CELL index number.
+*/
+ConsoleMethodWithDocs(ImageAsset, getExplicitCellIndex, ConsoleInt, 3, 3, (cellName))
+{
+    return object->getExplicitCellIndex( argv[2] );
 }
 
 ConsoleMethodGroupEndWithDocs(ImageAsset)

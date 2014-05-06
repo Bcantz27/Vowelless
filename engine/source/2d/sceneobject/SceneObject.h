@@ -102,7 +102,7 @@ class SceneObject :
 
 private:
     typedef BehaviorComponent Parent;
-	
+
 public:
     friend class Scene;
     friend class SceneWindow;
@@ -201,7 +201,6 @@ protected:
     bool                    mAttachedGuiSizeControl;
     GuiControl*             mpAttachedGui;
     SceneWindow*            mpAttachedGuiSceneWindow;
-	Vector2					mAttachedGuiOffset;
 
     /// Safe deletion.
     bool                    mBeingSafeDeleted;
@@ -525,7 +524,7 @@ public:
     inline void             dismountCamera( void )                      { if ( mpAttachedCamera ) mpAttachedCamera->dismountMe( this ); }
 
     // GUI attachment.
-    void                    attachGui( GuiControl* pGuiControl, SceneWindow* pSceneWindow, const bool sizeControl, Vector2 offset );
+    void                    attachGui( GuiControl* pGuiControl, SceneWindow* pSceneWindow, const bool sizeControl );
     void                    detachGui( void );
     inline void             updateAttachedGui( void );
 
@@ -573,24 +572,6 @@ public:
     static S32 getDstBlendFactorEnum(const char* label);
     static const char* getSrcBlendFactorDescription(const GLenum factor);
     static const char* getDstBlendFactorDescription(const GLenum factor);
-
-	//sceneobject mounting :)
-	bool mSceneObjectMounted;
-	SceneObject* mpAttachedSceneObject;
-	SceneObject*        mpMountedTo;
-    Vector2             mMountOffset;
-    U32                 mMountToID;
-    F32                 mMountForce;
-    F32                 mMountAngle;
-	inline bool isSceneObjectMounted( void ) { return mSceneObjectMounted; }
-	void mount( SceneObject* pSceneObject, const Vector2& mountOffset, const F32 mountForce, const bool sendToMount, F32 mountAngle );
-    void dismount( void );
-    void dismountMe( SceneObject* pSceneObject );
-    void calculateSceneObjectMount( const F32 elapsedTime );
-    inline void             addSceneObjectMountReference( SceneObject* pAttachedSceneObject ) { mpAttachedSceneObject = pAttachedSceneObject; }
-    inline void             removeSceneObjectMountReference( void )          { mpAttachedSceneObject = NULL; }
-    inline void             dismountSceneObject( void )                      { if ( mpAttachedSceneObject ) mpAttachedSceneObject->dismountMe( this ); }
-	
 
     /// Declare Console Object.
     DECLARE_CONOBJECT( SceneObject );

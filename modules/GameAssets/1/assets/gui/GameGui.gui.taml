@@ -6,6 +6,7 @@
     Position="0 0"
     Extent="1024 768"
     MinExtent="320 320"
+	useMouseEvents="1"
     Visible="1">
 	
     <GuiTextEditCtrl

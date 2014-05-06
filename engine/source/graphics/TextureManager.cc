@@ -124,6 +124,28 @@ void TextureManager::postTextureEvent(const TextureEventCode eventCode)
 
 //--------------------------------------------------------------------------------------------------------------------
 
+U8 *getLuminanceAlphaBits(GBitmap *bmp)
+{
+   U8 *data = new U8[bmp->getWidth() * bmp->getHeight() * 2];
+   
+   S32 w = bmp->getWidth();
+   S32 h = bmp->getHeight();
+   U8 *src = bmp->getAddress(0, 0);
+   U8 *dest = data;
+   for (int y=0; y<h; y++)
+   {
+      for (int x=0; x<w; x++)
+      {
+         *dest++ = 255;
+         *dest++ = *src++;
+      }
+   }
+   
+   return data;
+}
+
+//--------------------------------------------------------------------------------------------------------------------
+
 void TextureManager::create()
 {
     AssertISV(mManagerState == NotInitialized, "TextureManager::create() - already created!");
@@ -229,7 +251,8 @@ void TextureManager::resurrectManager( void )
                     AssertISV(pBitmap != NULL, "Error resurrecting the texture cache.\n""Possible cause: a bitmap was deleted during the course of gameplay.");
 
                     // Register texture.
-                    TextureObject* pTextureObject = registerTexture(probe->mTextureKey, pBitmap, probe->mHandleType, probe->mClamp);
+                    TextureObject* pTextureObject;
+                    pTextureObject = registerTexture(probe->mTextureKey, pBitmap, probe->mHandleType, probe->mClamp);
 
                     // Sanity!
                     AssertFatal(pTextureObject == probe, "A new texture was returned during resurrection.");
@@ -358,7 +381,7 @@ void TextureManager::getSourceDestByteFormat(GBitmap *pBitmap, U32 *sourceFormat
 {
     *byteFormat = GL_UNSIGNED_BYTE;
     U32 byteSize = 1;
-#if defined(TORQUE_OS_IOS) || defined(TORQUE_OS_ANDROID)
+#if defined(TORQUE_OS_IOS) || defined(TORQUE_OS_ANDROID) || defined(TORQUE_OS_EMSCRIPTEN)
     switch(pBitmap->getFormat()) 
     {
     case GBitmap::Intensity:
@@ -369,7 +392,11 @@ void TextureManager::getSourceDestByteFormat(GBitmap *pBitmap, U32 *sourceFormat
         break;
     case GBitmap::Luminance:
         *sourceFormat = GL_LUMINANCE;
-        break;
+          break;
+    case GBitmap::LuminanceAlpha:
+          *sourceFormat = GL_LUMINANCE_ALPHA;
+          byteSize = 2;
+          break;
     case GBitmap::RGB:
         *sourceFormat = GL_RGB;
         break;
@@ -415,7 +442,7 @@ void TextureManager::getSourceDestByteFormat(GBitmap *pBitmap, U32 *sourceFormat
     *destFormat = *sourceFormat;
     *texelSize = byteSize;
     return;
-#else	
+#else   
     switch(pBitmap->getFormat()) 
     {
     case GBitmap::Intensity:
@@ -428,6 +455,9 @@ void TextureManager::getSourceDestByteFormat(GBitmap *pBitmap, U32 *sourceFormat
 
     case GBitmap::Luminance:
         *sourceFormat = GL_LUMINANCE;
+        break;
+    case GBitmap::LuminanceAlpha:
+        *sourceFormat = GL_LUMINANCE_ALPHA;
         break;
     case GBitmap::RGB:
         *sourceFormat = GL_RGB;
@@ -567,10 +597,27 @@ void TextureManager::refresh( TextureObject* pTextureObject )
     // Fetch bitmaps.
     GBitmap* pSourceBitmap = pTextureObject->mpBitmap;
     GBitmap* pNewBitmap = createPowerOfTwoBitmap(pSourceBitmap);
+   
+    U8 *bits = (U8*)pNewBitmap->getBits();
+    U8 *lumBits = NULL;
 
     // Fetch source/dest formats.
     U32 sourceFormat, destFormat, byteFormat, texelSize;
-    getSourceDestByteFormat(pSourceBitmap, &sourceFormat, &destFormat, &byteFormat, &texelSize);
+   
+#if defined(TORQUE_OS_EMSCRIPTEN)
+    if (pSourceBitmap->getFormat() == GBitmap::Alpha)
+    {
+        // special case: alpha should be converted to luminancealpha
+        bits = lumBits = getLuminanceAlphaBits(pNewBitmap);
+        sourceFormat = destFormat = GL_LUMINANCE_ALPHA;
+        byteFormat = GL_UNSIGNED_BYTE;
+        texelSize = 2;
+    }
+    else
+#endif
+    {
+        getSourceDestByteFormat(pSourceBitmap, &sourceFormat, &destFormat, &byteFormat, &texelSize);
+    }
 
 #if defined(TORQUE_OS_IOS)
     bool isCompressed = (pNewBitmap->getFormat() >= GBitmap::PVR2) && (pNewBitmap->getFormat() <= GBitmap::PVR4A);
@@ -633,7 +680,7 @@ void TextureManager::refresh( TextureObject* pTextureObject )
             0,
             sourceFormat,
             byteFormat,
-            pNewBitmap->getBits());
+            bits);
     }
 
     const GLuint filter = pTextureObject->getFilter();
@@ -653,6 +700,9 @@ void TextureManager::refresh( TextureObject* pTextureObject )
     {
         delete pNewBitmap;
     }
+   
+    if (lumBits)
+        delete[] lumBits;
 }
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -681,7 +731,8 @@ void TextureManager::refresh( const char *textureName )
         return;
 
     // Register texture.
-    TextureObject* pNewTextureObject = registerTexture(pTextureObject->mTextureKey, pBitmap, pTextureObject->mHandleType, pTextureObject->mClamp);
+    TextureObject* pNewTextureObject;
+    pNewTextureObject = registerTexture(pTextureObject->mTextureKey, pBitmap, pTextureObject->mHandleType, pTextureObject->mClamp);
 
     // Sanity!
     AssertFatal(pNewTextureObject == pTextureObject, "A new texture was returned during refresh.");
@@ -859,7 +910,7 @@ TextureObject *TextureManager::loadTexture(const char* pTextureKey, TextureHandl
 GBitmap *TextureManager::loadBitmap( const char* pTextureKey, bool recurse, bool nocompression )
 {
     char fileNameBuffer[512];
-    Platform::makeFullPathName( pTextureKey, fileNameBuffer, 512 );
+    Con::expandPath( fileNameBuffer, sizeof(fileNameBuffer), pTextureKey );
     GBitmap *bmp = NULL;
 
     // Loop through the supported extensions to find the file.

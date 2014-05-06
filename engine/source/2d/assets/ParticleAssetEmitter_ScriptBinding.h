@@ -27,7 +27,7 @@ ConsoleMethodGroupBeginWithDocs(ParticleAssetEmitter, SimObject)
 //-----------------------------------------------------------------------------
 
 /*! Gets the asset owner of the emitter.
-@return The asset owner of the emitter or nothing if no owner assigned.
+    @return The asset owner of the emitter or nothing if no owner assigned.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getOwner, ConsoleString, 2, 2, ())
 {
@@ -40,8 +40,8 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getOwner, ConsoleString, 2, 2, ())
 //-----------------------------------------------------------------------------
 
 /*! Sets the name of the emitter.
-@param emitterName The name to set the emitter to.
-@return No return value.
+    @param emitterName The name to set the emitter to.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setEmitterName, ConsoleVoid, 3, 3, (emitterName))
 {
@@ -51,7 +51,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, setEmitterName, ConsoleVoid, 3, 3, (
 //-----------------------------------------------------------------------------
 
 /*! Gets the name of the emitter.
-@return The name of the emitter.
+    @return The name of the emitter.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getEmitterName, ConsoleString, 2, 2, ())
 {
@@ -61,14 +61,14 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getEmitterName, ConsoleString, 2, 2,
 //-----------------------------------------------------------------------------
 
 /*! Sets the type of the emitter.
-@param emitterType The type to set the emitter. Either 'POINT', 'LINE', 'BOX' or 'DISK', 'ELLIPSE' or 'TORUS'.
-An emitter-type of 'POINT' creates the particles at the position of the particle asset.
-An emitter-type of 'LINE' creates the particles along a line defined by the particle width.
-An emitter-type of 'BOX' creates the particles within the dimensions defined by the particle size.
-An emitter-type of 'DISK' creates the particles within a disk with radii defined by the particle size.
-An emitter-type of 'ELLIPSE' creates the particles on an ellipse with the radii defined by the particle size.
-An emitter-type of 'TORUS' creates the particles within a torus with a maximum and minimum radii defined by the particle width and height respectively.
-@return No return value.
+    @param emitterType The type to set the emitter.  Either 'POINT', 'LINE', 'BOX' or 'DISK', 'ELLIPSE' or 'TORUS'.
+    An emitter-type of 'POINT' creates the particles at the position of the particle asset.
+    An emitter-type of 'LINE' creates the particles along a line defined by the particle width.
+    An emitter-type of 'BOX' creates the particles within the dimensions defined by the particle size.
+    An emitter-type of 'DISK' creates the particles within a disk with radii defined by the particle size.
+    An emitter-type of 'ELLIPSE' creates the particles on an ellipse with the radii defined by the particle size.
+    An emitter-type of 'TORUS' creates the particles within a torus with a maximum and minimum radii defined by the particle width and height respectively.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setEmitterType, ConsoleVoid, 3, 3, (emitterType))
 {
@@ -78,7 +78,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, setEmitterType, ConsoleVoid, 3, 3, (
 //-----------------------------------------------------------------------------
 
 /*! Gets the type of the emitter.
-@return The type of the emitter.
+    @return The type of the emitter.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getEmitterType, ConsoleString, 2, 2, ())
 {
@@ -88,7 +88,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getEmitterType, ConsoleString, 2, 2,
 //-----------------------------------------------------------------------------
 
 /*! Offsets the position of the emitter relative to the effect or player position.
-@return No return value.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setEmitterOffset, ConsoleVoid, 3, 4, (float X / float Y))
 {
@@ -116,7 +116,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, setEmitterOffset, ConsoleVoid, 3, 4,
 //------------------------------------------------------------------------------
 
 /*! Gets the emitter offset position.
-@return (float x/float y) The offset of the emitter relative to the effect or player position.
+    @return (float x/float y) The offset of the emitter relative to the effect or player position.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getEmitterOffset, ConsoleString, 2, 2, ())
 {
@@ -126,9 +126,9 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getEmitterOffset, ConsoleString, 2, 
 //------------------------------------------------------------------------------
 
 /*! Sets the emitter size.
-@param width The width of the emitter.
-@param height The height of the emitter.
-@return No return value.
+    @param width The width of the emitter.
+    @param height The height of the emitter.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setEmitterSize, ConsoleVoid, 3, 4, (width / height))
 {
@@ -168,7 +168,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, setEmitterSize, ConsoleVoid, 3, 4, (
 //------------------------------------------------------------------------------
 
 /*! Gets the emitter size.
-@return (float width/float height) The width and height of the emitter.
+    @return (float width/float height) The width and height of the emitter.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getEmitterSize, ConsoleString, 2, 2, ())
 {
@@ -178,8 +178,8 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getEmitterSize, ConsoleString, 2, 2,
 //------------------------------------------------------------------------------
 
 /*! Sets the emitter angle.
-@param angle The angle of the emitter.
-@return No return value.
+    @param angle The angle of the emitter.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setEmitterAngle, ConsoleVoid, 3, 3, (angle))
 {
@@ -190,7 +190,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, setEmitterAngle, ConsoleVoid, 3, 3, 
 //-----------------------------------------------------------------------------
 
 /*! Gets the emitter angle.
-@return (float angle) The emitter's current angle.
+    @return (float angle) The emitter's current angle.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getEmitterAngle, ConsoleFloat, 2, 2, ())
 {
@@ -201,8 +201,8 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getEmitterAngle, ConsoleFloat, 2, 2,
 //-----------------------------------------------------------------------------
 
 /*! Sets the emitter to used a fixed-aspect for particles.
-@param fixedAspect Whether to use a fixed-aspect or not.
-@return No return value.
+    @param fixedAspect Whether to use a fixed-aspect or not.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setFixedAspect, ConsoleVoid, 3, 3, (fixedAspect))
 {
@@ -212,7 +212,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, setFixedAspect, ConsoleVoid, 3, 3, (
 //-----------------------------------------------------------------------------
 
 /*! Gets whether the emitter uses a fixed-aspect for particles or not.
-@return Whether the emitter uses a fixed-aspect for particles or not.
+    @return Whether the emitter uses a fixed-aspect for particles or not.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getFixedAspect, ConsoleBool, 2, 2, ())
 {
@@ -222,8 +222,8 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getFixedAspect, ConsoleBool, 2, 2, (
 //-----------------------------------------------------------------------------
 
 /*! Sets the emitter fixed-force angle for particles.
-@param fixedForceAngle The fixed-force angle for particles.
-@return No return value.
+    @param fixedForceAngle The fixed-force angle for particles.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setFixedForceAngle, ConsoleVoid, 3, 3, (fixedForceAngle))
 {
@@ -233,7 +233,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, setFixedForceAngle, ConsoleVoid, 3, 
 //-----------------------------------------------------------------------------
 
 /*! Gets the emitter fixed-force angle for particles.
-@return The fixed-force angle for particles.
+    @return The fixed-force angle for particles.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getFixedForceAngle, ConsoleFloat, 2, 2, ())
 {
@@ -243,11 +243,11 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getFixedForceAngle, ConsoleFloat, 2,
 //-----------------------------------------------------------------------------
 
 /*! Sets the orientation-type of the emitter.
-@param orientationType The orientation-type to set the emitter to. Either 'FIXED', 'ALIGNED' or 'RANDOM'.
-An orientation-type of 'FIXED' causes the particles to be orientation at a fixed angle.
-An orientation-type of 'ALIGNED' causes the particles to be orientation at the current emission angle.
-An orientation-type of 'RANDOM' causes the particles to be orientation at a fixed angle.
-@return No return value.
+    @param orientationType The orientation-type to set the emitter to.  Either 'FIXED', 'ALIGNED' or 'RANDOM'.
+    An orientation-type of 'FIXED' causes the particles to be orientation at a fixed angle.
+    An orientation-type of 'ALIGNED' causes the particles to be orientation at the current emission angle.
+    An orientation-type of 'RANDOM' causes the particles to be orientation at a fixed angle.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setOrientationType, ConsoleVoid, 3, 3, (orientationType))
 {
@@ -257,7 +257,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, setOrientationType, ConsoleVoid, 3, 
 //-----------------------------------------------------------------------------
 
 /*! Gets the orientation-type of the emitter.
-@return The orientation-type of the emitter.
+    @return The orientation-type of the emitter.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getOrientationType, ConsoleString, 2, 2, ())
 {
@@ -267,8 +267,8 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getOrientationType, ConsoleString, 2
 //------------------------------------------------------------------------------
 
 /*! Sets whether to keep emitted particles aligned or not.
-@keepAligned Whether to keep emitted particles aligned or not.
-@return No return value.
+    @keepAligned Whether to keep emitted particles aligned or not.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setKeepAligned, ConsoleVoid, 3, 3, (keepAligned))
 {
@@ -278,7 +278,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, setKeepAligned, ConsoleVoid, 3, 3, (
 //------------------------------------------------------------------------------
 
 /*! Gets whether to keep emitted particles aligned or not.
-@return Whether to keep emitted particles aligned or not.
+    @return Whether to keep emitted particles aligned or not.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getKeepAligned, ConsoleBool, 2, 2, ())
 {
@@ -288,8 +288,8 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getKeepAligned, ConsoleBool, 2, 2, (
 //------------------------------------------------------------------------------
 
 /*! Sets the aligned angle offset.
-@param alignAngleOffset The aligned angle offset.
-@return No return value.
+    @param alignAngleOffset The aligned angle offset.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setAlignedAngleOffset, ConsoleVoid, 3, 3, (alignAngleOffset))
 {
@@ -299,7 +299,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, setAlignedAngleOffset, ConsoleVoid, 
 //------------------------------------------------------------------------------
 
 /*! Gets the aligned angle offset.
-@return The aligned angle offset.
+    @return The aligned angle offset.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getAlignedAngleOffset, ConsoleFloat, 2, 2, ())
 {
@@ -490,8 +490,8 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getAttachRotationToEmitter, ConsoleB
 //------------------------------------------------------------------------------
 
 /*! Sets whether to render particles as oldest on front or not.
-@param oldestInFront Whether to render particles as oldest on front or not.
-@return No return value.
+    @param oldestInFront Whether to render particles as oldest on front or not.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setOldestInFront, ConsoleVoid, 3, 3, (oldestInFront))
 {
@@ -501,7 +501,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, setOldestInFront, ConsoleVoid, 3, 3,
 //------------------------------------------------------------------------------
 
 /*! Gets whether to render particles as oldest on front or not.
-@return Whether to render particles as oldest on front or not.
+    @return Whether to render particles as oldest on front or not.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getOldestInFront, ConsoleBool, 2, 2, ())
 {
@@ -511,9 +511,9 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getOldestInFront, ConsoleBool, 2, 2,
 //------------------------------------------------------------------------------
 
 /*! Sets the emitter to use the specified image asset Id and optional frame.
-@param imageAssetId The image asset Id to use.
-@param frame The frame of the image asset Id to use. Optional.
-@return Whether the operation was successful or not.
+    @param imageAssetId The image asset Id to use.
+    @param frame The frame of the image asset Id to use.  Optional.
+    @return Whether the operation was successful or not.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setImage, ConsoleBool, 3, 4, (imageAssetId, [frame]))
 {
@@ -544,7 +544,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, setImage, ConsoleBool, 3, 4, (imageA
 //------------------------------------------------------------------------------
 
 /*! Gets the asset Id of the image asset assigned to the emitter.
-@return The asset Id of the image asset assigned to the emitter or nothing if no image is assigned.
+    @return The asset Id of the image asset assigned to the emitter or nothing if no image is assigned.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getImage, ConsoleString, 2, 2, ())
 {
@@ -553,30 +553,62 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getImage, ConsoleString, 2, 2, ())
 
 //------------------------------------------------------------------------------
 
-/*! Sets the emitter to use the specified image frame.
-@param frame The frame of the image to use..
-@return Whether the operation was successful or not.
+/*! Sets the emitter to use the specified numerical image frame.
+    @param frame The frame index of the image to use..
+    @return Whether the operation was successful or not.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setImageFrame, ConsoleBool, 3, 3, (frame))
 {
+    // Are we in static mode?
+    if ( !object->isStaticFrameProvider() )
+    {
+        // No, so warn.
+        Con::warnf( "ParticleAssetEmitter::setImageFrame() - Method invalid, not in static mode." );
+        return false;
+    }
+
+    // Are we using named frames?
+    if ( object->isUsingNamedImageFrame() )
+    {
+        // Yes, so warn.
+        Con::warnf( "ParticleAssetEmitter::setImageFrame() - Method invalid, using named frames." );
+        return false;
+    }
+
     return object->setImageFrame( dAtoi(argv[2]) );
 }
 
 //------------------------------------------------------------------------------
 
-/*! Gets the asset Id of the image asset assigned to the emitter.
-@return The asset Id of the image asset assigned to the emitter or nothing if no image is assigned.
+/*! Gets the frame index of the image asset assigned to the emitter.
+    @return The frame index of the image asset assigned to the emitter or nothing if no image is assigned.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getImageFrame, ConsoleInt, 2, 2, ())
 {
+    // Are we in static mode?
+    if ( !object->isStaticFrameProvider() )
+    {
+        // No, so warn.
+        Con::warnf( "ParticleAssetEmitter::getImageFrame() - Method invalid, not in static mode." );
+        return -1;
+    }
+
+    // Are we using named frames?
+    if ( object->isUsingNamedImageFrame() )
+    {
+        // Yes, so warn.
+        Con::warnf( "ParticleAssetEmitter::getImageFrame() - Method invalid, using named frames." );
+        return -1;
+    }
+
     return object->getImageFrame();
 }
 
 //------------------------------------------------------------------------------
 
-/*! Disables the Frame field and uses a random frame from the specified ImageAsset.
-@param randomImageFrame Whether to use a random image frame or not.
-@return No return value.
+/*! Disables the Frame and NamedFrame fields and uses a random frame from the specified ImageAsset.
+    @param randomImageFrame Whether to use a random image frame or not.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setRandomImageFrame, ConsoleVoid, 3, 3, (randomImageFrame))
 {
@@ -586,7 +618,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, setRandomImageFrame, ConsoleVoid, 3,
 //------------------------------------------------------------------------------
 
 /*! Gets whether a random frame from the specified ImageAsset is being used or not.
-@return Whether to use a random image frame or not.
+    @return Whether to use a random image frame or not.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getRandomImageFrame, ConsoleBool, 2, 2, ())
 {
@@ -596,29 +628,71 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getRandomImageFrame, ConsoleBool, 2,
 //------------------------------------------------------------------------------
 
 /*! Sets the emitter to use the specified image frame by name.
-@param frame String containing the name of the frame in the image to use.
-@return Whether the operation was successful or not.
+    @param frame String containing the name of the frame in the image to use.
+    @return Whether the operation was successful or not.
 */
-ConsoleMethodWithDocs(ParticleAssetEmitter, setImageFrameName, ConsoleBool, 3, 3, (frame))
+ConsoleMethodWithDocs(ParticleAssetEmitter, setNamedImageFrame, ConsoleBool, 3, 3,  (frame))
 {
-    return object->setImageFrameName( argv[2] );
+    // Are we in static mode?
+    if ( !object->isStaticFrameProvider() )
+    {
+        // No, so warn.
+        Con::warnf( "ParticleAssetEmitter::setNamedImageFrame() - Method invalid, not in static mode." );
+        return false;
+    }
+
+    // Are we using named frames?
+    if ( !object->isUsingNamedImageFrame() )
+    {
+        // No, so warn.
+        Con::warnf( "ParticleAssetEmitter::setNamedImageFrame() - Method invalid, not using named frames." );
+        return false;
+    }
+
+    return object->setNamedImageFrame( argv[2] );
 }
 
 //------------------------------------------------------------------------------
 
 /*! Gets the asset Id of the image asset assigned to the emitter.
-@return The asset Id of the image asset assigned to the emitter or nothing if no image is assigned.
+    @return The asset Id of the image asset assigned to the emitter or nothing if no image is assigned.
 */
-ConsoleMethodWithDocs(ParticleAssetEmitter, getImageFrameName, ConsoleString, 2, 2, ())
+ConsoleMethodWithDocs(ParticleAssetEmitter, getNamedImageFrame, ConsoleString, 2, 2, ())
 {
-    return object->getImageFrameName();
+    // Are we in static mode?
+    if ( !object->isStaticFrameProvider() )
+    {
+        // No, so warn.
+        Con::warnf( "ParticleAssetEmitter::getNamedImageFrame() - Method invalid, not in static mode." );
+        return NULL;
+    }
+
+    // Are we using named frames?
+    if ( !object->isUsingNamedImageFrame() )
+    {
+        // No, so warn.
+        Con::warnf( "ParticleAssetEmitter::getNamedImageFrame() - Method invalid, not using named frames." );
+        return NULL;
+    }
+
+    return object->getNamedImageFrame();
+}
+
+//------------------------------------------------------------------------------
+
+/*! Gets whether the emitter is using a numerical or named image frame.
+    @return Returns true when using a named frame, false when using a numerical index.
+*/
+ConsoleMethodWithDocs(ParticleAssetEmitter, isUsingNamedImageFrame, ConsoleBool, 2, 2, ())
+{
+    return object->isUsingNamedImageFrame();
 }
 
 //------------------------------------------------------------------------------
 
 /*! Sets the emitter to use the specified animation asset Id.
-@param animationAssetId The animation asset Id to use.
-@return Whether the operation was successful or not.
+    @param animationAssetId The animation asset Id to use.
+    @return Whether the operation was successful or not.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setAnimation, ConsoleBool, 3, 3, (animationAssetId))
 {
@@ -628,7 +702,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, setAnimation, ConsoleBool, 3, 3, (an
 //------------------------------------------------------------------------------
 
 /*! Gets the asset Id of the animation asset assigned to the emitter.
-@return The asset Id of the animation asset assigned to the emitter or nothing if no animation is assigned.
+    @return The asset Id of the animation asset assigned to the emitter or nothing if no animation is assigned.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getAnimation, ConsoleString, 2, 2, ())
 {
@@ -638,8 +712,8 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getAnimation, ConsoleString, 2, 2, (
 //------------------------------------------------------------------------------
 
 /*! Sets whether to use render blending or not.
-@param blendMode Whether to use render blending or not.
-@return No return value.
+    @param blendMode Whether to use render blending or not.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setBlendMode, ConsoleVoid, 3, 3, (blendMode))
 {
@@ -649,7 +723,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, setBlendMode, ConsoleVoid, 3, 3, (bl
 //------------------------------------------------------------------------------
 
 /*! Gets whether to use render blending or not.
-@return Whether to use render blending or not.
+    @return Whether to use render blending or not.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getBlendMode, ConsoleBool, 2, 2, ())
 {
@@ -659,13 +733,13 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getBlendMode, ConsoleBool, 2, 2, ())
 //-----------------------------------------------------------------------------
 
 /*! Sets the source blend factory.
-@param srcBlend The source blend factor.
-@return No return Value.
+    @param srcBlend The source blend factor.
+    @return No return Value.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setSrcBlendFactor, ConsoleVoid, 3, 3, (srcBlend))
 {
     // Fetch source blend factor.
-    const GLenum blendFactor = SceneObject::getSrcBlendFactorEnum(argv[2]);
+    const  GLenum blendFactor = SceneObject::getSrcBlendFactorEnum(argv[2]);
 
     object->setSrcBlendFactor( blendFactor );
 }
@@ -673,7 +747,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, setSrcBlendFactor, ConsoleVoid, 3, 3
 //-----------------------------------------------------------------------------
 
 /*! Gets the source render blend factor.
-@return (srcBlend) The source render blend factor.
+    @return (srcBlend) The source render blend factor.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getSrcBlendFactor, ConsoleString, 2, 2, ())
 {
@@ -683,8 +757,8 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getSrcBlendFactor, ConsoleString, 2,
 //-----------------------------------------------------------------------------
 
 /*! Sets the destination render blend factor.
-@param dstBlend The destination render blend factor.
-@return No return Value.
+    @param dstBlend The destination render blend factor.
+    @return No return Value.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setDstBlendFactor, ConsoleVoid, 3, 3, (dstBlend))
 {
@@ -697,7 +771,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, setDstBlendFactor, ConsoleVoid, 3, 3
 //-----------------------------------------------------------------------------
 
 /*! Gets the destination render blend factor.
-@return (dstBlend) The destination render blend factor.
+    @return (dstBlend) The destination render blend factor.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getDstBlendFactor, ConsoleString, 2, 2, ())
 {
@@ -707,8 +781,8 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getDstBlendFactor, ConsoleString, 2,
 //-----------------------------------------------------------------------------
 
 /*! Set the render alpha test threshold.
-@param alpha The alpha test threshold in the range of 0.0 to 1.0. Less than zero to disable alpha testing.
-@return No return value.
+    @param alpha The alpha test threshold in the range of 0.0 to 1.0.  Less than zero to disable alpha testing.
+    @return No return value.
 
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setAlphaTest, ConsoleVoid, 3, 3, (float alpha))
@@ -719,7 +793,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, setAlphaTest, ConsoleVoid, 3, 3, (fl
 //-----------------------------------------------------------------------------
 
 /*! Gets the render alpha test threshold.
-@return The render alpha test threshold in the range of 0.0f to 1.0. Less than zero represents disabled alpha testing.
+    @return The render alpha test threshold in the range of 0.0f to 1.0.  Less than zero represents disabled alpha testing.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getAlphaTest, ConsoleFloat, 2, 2, ())
 {
@@ -732,7 +806,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getAlphaTest, ConsoleFloat, 2, 2, ()
 //-----------------------------------------------------------------------------
 
 /*! Gets the number of available selectable fields.
-@return The number of available selectable fields.
+    @return The number of available selectable fields.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getSelectableFieldCount, ConsoleInt, 2, 2, ())
 {
@@ -742,7 +816,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getSelectableFieldCount, ConsoleInt,
 //-----------------------------------------------------------------------------
 
 /*! Gets the selectable field at the specified index.
-@return The selectable field name at the specified index.
+    @return The selectable field name at the specified index.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getSelectableFieldName, ConsoleString, 3, 3, (fieldIndex))
 {
@@ -777,8 +851,8 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getSelectableFieldName, ConsoleStrin
 //-----------------------------------------------------------------------------
 
 /*! Select the specified field by its name.
-@param fieldName The field name to use for the selection. Use an empty name to deselect to stop accidental changes.
-@return Whether the field was successfully selected or not.
+    @param fieldName The field name to use for the selection.  Use an empty name to deselect to stop accidental changes.
+    @return Whether the field was successfully selected or not.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, selectField, ConsoleBool, 3, 3, (fieldName))
 {
@@ -787,8 +861,8 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, selectField, ConsoleBool, 3, 3, (fie
 
 //-----------------------------------------------------------------------------
 
-/*! Deselect any selected field. If no field is selected then nothing happens.
-@return No return value.
+/*! Deselect any selected field.  If no field is selected then nothing happens.
+    @return No return value.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, deselectField, ConsoleVoid, 2, 2, ())
 {
@@ -798,7 +872,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, deselectField, ConsoleVoid, 2, 2, ()
 //-----------------------------------------------------------------------------
 
 /*! Gets the selected field name or nothing if no field is selected.
-@return The selected field name or nothing if no fields is selected.
+    @return The selected field name or nothing if no fields is selected.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getSelectedField, ConsoleBool, 2, 2, ())
 {
@@ -810,9 +884,9 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getSelectedField, ConsoleBool, 2, 2,
 
 //-----------------------------------------------------------------------------
 
-/*! Sets a single data-key at time-zero with the specified value. All existing keys are cleared.
-@param value The value to set the key to.
-@return Returns the index of the new data-key (always zero) or -1 on failure.
+/*! Sets a single data-key at time-zero with the specified value.  All existing keys are cleared.
+    @param value The value to set the key to.
+    @return Returns the index of the new data-key (always zero) or -1 on failure.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setSingleDataKey, ConsoleInt, 3, 3, (value))
 {
@@ -822,9 +896,9 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, setSingleDataKey, ConsoleInt, 3, 3, 
 //-----------------------------------------------------------------------------
 
 /*! Add Data-Key to Graph.
-@param time The key time.
-@param value The value at specified time
-@return Returns the index of the new data-key or -1 on failure.
+    @param time The key time.
+    @param value The value at specified time
+    @return Returns the index of the new data-key or -1 on failure.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, addDataKey, ConsoleInt, 4, 4, (time, value))
 {
@@ -834,8 +908,8 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, addDataKey, ConsoleInt, 4, 4, (time,
 //-----------------------------------------------------------------------------
 
 /*! Remove the data-key from the field.
-@param keyIndex The index of the data-key you want to remove.
-@return Whether the operation was successful or not.
+    @param keyIndex The index of the data-key you want to remove.
+    @return Whether the operation was successful or not.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, removeDataKey, ConsoleBool, 3, 3, (keyIndex))
 {
@@ -845,7 +919,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, removeDataKey, ConsoleBool, 3, 3, (k
 //-----------------------------------------------------------------------------
 
 /*! Clears all data-key(s) from the field.
-@return Whether the operation was successful or not.
+    @return Whether the operation was successful or not.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, clearDataKeys, ConsoleBool, 2, 2, ())
 {
@@ -855,9 +929,9 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, clearDataKeys, ConsoleBool, 2, 2, ()
 //-----------------------------------------------------------------------------
 
 /*! Set data-key value for the field.
-@param keyIndex The index of the key to be modified.
-@param value The value to change the key to.
-@return Whether the operation was successful or not.
+    @param keyIndex The index of the key to be modified.
+    @param value The value to change the key to.
+    @return Whether the operation was successful or not.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setDataKeyValue, ConsoleBool, 4, 4, (keyIndex, value))
 {
@@ -868,7 +942,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, setDataKeyValue, ConsoleBool, 4, 4, 
 //-----------------------------------------------------------------------------
 
 /*! Gets the data-key count.
-@return The number of data-keys in the currently selected field or -1 if no field is selected.
+    @return The number of data-keys in the currently selected field or -1 if no field is selected.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getDataKeyCount, ConsoleInt, 2, 2, ())
 {
@@ -879,8 +953,8 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getDataKeyCount, ConsoleInt, 2, 2, (
 //-----------------------------------------------------------------------------
 
 /*! Gets the data-key at the specified index from the field.
-@param keyIndex The index of the data-key to be retrieved.
-@return The data-key comprising both the time and value or nothing if the key is invalid.
+    @param keyIndex The index of the data-key to be retrieved.
+    @return The data-key comprising both the time and value or nothing if the key is invalid.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getDataKey, ConsoleString, 3, 3, (keyIndex))
 {
@@ -907,7 +981,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getDataKey, ConsoleString, 3, 3, (ke
 //-----------------------------------------------------------------------------
 
 /*! Get the minimum value for the field.
-@return The minimum value for the field or always 0.0 if no field is selected.
+    @return The minimum value for the field or always 0.0 if no field is selected.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getMinValue, ConsoleFloat, 2, 2, ())
 {
@@ -917,7 +991,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getMinValue, ConsoleFloat, 2, 2, ())
 //-----------------------------------------------------------------------------
 
 /*! Get the maximum value for the field.
-@return The maximum value for the field or always 0.0 if no field is selected.
+    @return The maximum value for the field or always 0.0 if no field is selected.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getMaxValue, ConsoleFloat, 2, 2, ())
 {
@@ -927,7 +1001,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getMaxValue, ConsoleFloat, 2, 2, ())
 //-----------------------------------------------------------------------------
 
 /*! Get the minimum time for the field.
-@return The minimum time for the field or always 0.0 if no field is selected.
+    @return The minimum time for the field or always 0.0 if no field is selected.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getMinTime, ConsoleFloat, 2, 2, ())
 {
@@ -937,7 +1011,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getMinTime, ConsoleFloat, 2, 2, ())
 //-----------------------------------------------------------------------------
 
 /*! Get the maximum time for the field.
-@return The maximum time for the field or always 0.0 if no field is selected.
+    @return The maximum time for the field or always 0.0 if no field is selected.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getMaxTime, ConsoleFloat, 2, 2, ())
 {
@@ -947,8 +1021,8 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getMaxTime, ConsoleFloat, 2, 2, ())
 //-----------------------------------------------------------------------------
 
 /*! Get the fields' value at the specified time.
-@param time The time to sample the field value at.
-@return The fields' value at the specified time or always 0.0 if no field is selected.
+    @param time The time to sample the field value at.
+    @return The fields' value at the specified time or always 0.0 if no field is selected.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getFieldValue, ConsoleFloat, 3, 3, (time))
 {
@@ -958,7 +1032,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getFieldValue, ConsoleFloat, 3, 3, (
 //-----------------------------------------------------------------------------
 
 /*! Sets the time period to repeat (cycle) the fields' values at.
-@return Whether the operation was successful or not.
+    @return Whether the operation was successful or not.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setRepeatTime, ConsoleBool, 3, 3, (repeatTime))
 {
@@ -968,7 +1042,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, setRepeatTime, ConsoleBool, 3, 3, (r
 //-----------------------------------------------------------------------------
 
 /*! Gets the time period that the fields' value repeat (cycle) at.
-@return The time period that the fields' value repeat (cycle) at.
+    @return The time period that the fields' value repeat (cycle) at.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getRepeatTime, ConsoleFloat, 2, 2, ())
 {
@@ -977,9 +1051,9 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, getRepeatTime, ConsoleFloat, 2, 2, (
 
 //-----------------------------------------------------------------------------
 
-/*! Set the scaling of field values retrieved from the field. This does not alter the actual data-key values.
-@param valueScale The scale for field values retrieved from the field.
-@return Whether the operation was successful or not.
+/*! Set the scaling of field values retrieved from the field.  This does not alter the actual data-key values.
+    @param valueScale The scale for field values retrieved from the field.
+    @return Whether the operation was successful or not.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, setValueScale, ConsoleBool, 3, 3, (valueScale))
 {
@@ -989,7 +1063,7 @@ ConsoleMethodWithDocs(ParticleAssetEmitter, setValueScale, ConsoleBool, 3, 3, (v
 //-----------------------------------------------------------------------------
 
 /*! Gets the scaling of field values' retrieved from the field.
-@return The scaling of field values' retrieved from the field.
+    @return The scaling of field values' retrieved from the field.
 */
 ConsoleMethodWithDocs(ParticleAssetEmitter, getValueScale, ConsoleFloat, 2, 2, ())
 {

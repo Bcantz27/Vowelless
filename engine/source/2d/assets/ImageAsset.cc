@@ -107,22 +107,22 @@ ConsoleSetType( TypeImageAssetPtr )
 
 //------------------------------------------------------------------------------
 
-static StringTableEntry cellCustomNodeCellsName = StringTable->insert( "Cells" );
-static StringTableEntry cellNodeName = StringTable->insert( "Cell" );
-static StringTableEntry cellRegionName = StringTable->insert( "RegionName" );
-static StringTableEntry cellOffsetName = StringTable->insert( "Offset" );
-static StringTableEntry cellOffsetXName = StringTable->insert( "OffsetX" );
-static StringTableEntry cellOffsetYName = StringTable->insert( "OffsetY" );
-static StringTableEntry cellWidthName = StringTable->insert( "Width" );
-static StringTableEntry cellHeightName = StringTable->insert( "Height" );
-static StringTableEntry cellNameEntryName = StringTable->insert( "Name" );
+static StringTableEntry cellCustomNodeCellsName     = StringTable->insert( "Cells" );
+static StringTableEntry cellNodeName                = StringTable->insert( "Cell" );
+static StringTableEntry cellRegionName              = StringTable->insert( "RegionName" );
+static StringTableEntry cellOffsetName              = StringTable->insert( "Offset" );
+static StringTableEntry cellOffsetXName             = StringTable->insert( "OffsetX" );
+static StringTableEntry cellOffsetYName             = StringTable->insert( "OffsetY" );
+static StringTableEntry cellWidthName               = StringTable->insert( "Width" );
+static StringTableEntry cellHeightName              = StringTable->insert( "Height" );
+static StringTableEntry cellNameEntryName           = StringTable->insert( "Name" );
 
 //------------------------------------------------------------------------------
 
 static EnumTable::Enums textureFilterLookup[] =
                 {
-                { ImageAsset::FILTER_NEAREST, "NEAREST" },
-                { ImageAsset::FILTER_BILINEAR, "BILINEAR" },
+                { ImageAsset::FILTER_NEAREST,     "NEAREST"     },
+                { ImageAsset::FILTER_BILINEAR,    "BILINEAR"    },
                 };
 
 EnumTable textureFilterTable(sizeof(textureFilterLookup) / sizeof(EnumTable::Enums), &textureFilterLookup[0]);
@@ -159,7 +159,7 @@ const char* ImageAsset::getFilterModeDescription( ImageAsset::TextureFilterMode 
 
 //------------------------------------------------------------------------------
 
-ImageAsset::ImageAsset() : mImageFile(StringTable->EmptyString),
+ImageAsset::ImageAsset() :  mImageFile(StringTable->EmptyString),
                             mForce16Bit(false),
                             mLocalFilterMode(FILTER_INVALID),
                             mExplicitMode(false),
@@ -196,7 +196,7 @@ void ImageAsset::initPersistFields()
     // Fields.
     addProtectedField("ImageFile", TypeAssetLooseFilePath, Offset(mImageFile, ImageAsset), &setImageFile, &getImageFile, &defaultProtectedWriteFn, "");
     addProtectedField("Force16bit", TypeBool, Offset(mForce16Bit, ImageAsset), &setForce16Bit, &defaultProtectedGetFn, &writeForce16Bit, "");
-    addProtectedField("FilterMode", TypeEnum, Offset(mLocalFilterMode, ImageAsset), &setFilterMode, &defaultProtectedGetFn, &writeFilterMode, 1, &textureFilterTable);
+    addProtectedField("FilterMode", TypeEnum, Offset(mLocalFilterMode, ImageAsset), &setFilterMode, &defaultProtectedGetFn, &writeFilterMode, 1, &textureFilterTable);   
     addProtectedField("ExplicitMode", TypeBool, Offset(mExplicitMode, ImageAsset), &setExplicitMode, &defaultProtectedGetFn, &defaultProtectedNotWriteFn, "");
 
     addProtectedField("CellRowOrder", TypeBool, Offset(mCellRowOrder, ImageAsset), &setCellRowOrder, &defaultProtectedGetFn, &writeCellRowOrder, "");
@@ -352,7 +352,7 @@ void ImageAsset::setExplicitMode( const bool explicitMode )
 
     // Refresh the asset.
     refreshAsset();
-}
+}    
 
 //------------------------------------------------------------------------------
 
@@ -555,9 +555,25 @@ void ImageAsset::setCellHeight( const S32 cellheight )
 
 //------------------------------------------------------------------------------
 
+Vector2 ImageAsset::getExplicitCellOffset(const S32 cellIndex)
+{
+    if ( !getExplicitMode() )
+    {
+        // No, so warn.
+        Con::warnf( "ImageAsset() - Cannot perform explicit cell operation when not in explicit mode." );
+        return NULL;
+    }
+    
+    ImageAsset::FrameArea::PixelArea thisCell = mExplicitFrames.at(cellIndex);
+    return(thisCell.mPixelOffset);
+
+}
+
+//------------------------------------------------------------------------------
+
 S32 ImageAsset::getExplicitCellWidth(const S32 cellIndex)
 {
-if ( !getExplicitMode() )
+    if ( !getExplicitMode() )
     {
         // No, so warn.
         Con::warnf( "ImageAsset() - Cannot perform explicit cell operation when not in explicit mode." );
@@ -573,16 +589,70 @@ if ( !getExplicitMode() )
 
 S32 ImageAsset::getExplicitCellHeight(const S32 cellIndex)
 {
-if ( !getExplicitMode() )
+    if ( !getExplicitMode() )
     {
         // No, so warn.
         Con::warnf( "ImageAsset() - Cannot perform explicit cell operation when not in explicit mode." );
         return (0);
-}
-
+    }
+    
     ImageAsset::FrameArea::PixelArea thisCell = mExplicitFrames.at(cellIndex);
     return(thisCell.mPixelHeight);
 
+}
+
+//------------------------------------------------------------------------------
+
+StringTableEntry ImageAsset::getExplicitCellName(const S32 cellIndex)
+{
+    if ( !getExplicitMode() )
+    {
+        // No, so warn.
+        Con::warnf( "ImageAsset() - Cannot perform explicit cell operation when not in explicit mode." );
+        return NULL;
+    }
+    
+    ImageAsset::FrameArea::PixelArea thisCell = mExplicitFrames.at(cellIndex);
+    return(thisCell.mRegionName);
+
+}
+
+//------------------------------------------------------------------------------
+
+S32 ImageAsset::getExplicitCellIndex(const char* regionName)
+{
+    if ( !getExplicitMode() )
+    {
+        // No, so warn.
+        Con::warnf( "ImageAsset() - Cannot perform explicit cell operation when not in explicit mode." );
+        return NULL;
+    }
+    
+    // Set up a frame counter
+    S32 frameCounter = 0;
+    
+    // Interate through the vector
+    for( typeExplicitFrameAreaVector::iterator frameItr = mExplicitFrames.begin(); frameItr != mExplicitFrames.end(); ++frameItr )
+    {
+        // Grab the current pixelArea
+        const FrameArea::PixelArea& pixelArea = *frameItr;
+        
+        // Check to see if the name matches the argument
+        if (!dStrcmp(pixelArea.mRegionName, regionName))
+        {
+            // Found it, so return the frame
+            return frameCounter;
+        }
+        else
+        {
+            ++frameCounter;
+        }
+    }
+    
+    // Didn't find it, so warn
+    Con::warnf( "ImageAsset::getExplicitCellIndex() - Cannot find %s cell.", regionName );
+    return NULL;
+    
 }
 
 //------------------------------------------------------------------------------
@@ -910,7 +980,7 @@ bool ImageAsset::removeExplicitCell( const char* regionName )
         const FrameArea::PixelArea& pixelArea = *frameItr;
         
         // Check to see if the name matches the argument
-        if (pixelArea.mRegionName == regionName)
+        if (!dStrcmp(pixelArea.mRegionName, regionName))
         {
             // Found it, so erase it and return success
             mExplicitFrames.erase(frameItr);
@@ -935,14 +1005,13 @@ ImageAsset::FrameArea& ImageAsset::getCellByName( const char* cellName)
         return BadFrameArea;
     }
     
-    // Interate through the vector
     for( typeFrameAreaVector::iterator frameItr = mFrames.begin(); frameItr != mFrames.end(); ++frameItr )
     {
         // Grab the current pixelArea
         const FrameArea::PixelArea& pixelArea = frameItr->mPixelArea;
         
         // Check to see if the name matches the argument
-        if (pixelArea.mRegionName == cellName)
+        if (!dStrcmp(pixelArea.mRegionName, cellName))
         {
             // Found it, so erase it and return success
             return *frameItr;
@@ -1007,7 +1076,7 @@ void ImageAsset::initializeAsset( void )
 
 //------------------------------------------------------------------------------
 
-void ImageAsset::onAssetRefresh( void )
+void ImageAsset::onAssetRefresh( void ) 
 {
     // Ignore if not yet added to the sim.
     if ( !isProperlyAdded() )
@@ -1129,7 +1198,7 @@ void ImageAsset::calculateImplicitMode( void )
     FrameArea frameArea( 0, 0, imageWidth, imageHeight, texelWidthScale, texelHeightScale );
     mFrames.push_back( frameArea );
 
-    // Finish if no cell counts are specified. This is how we default to full-frame mode.
+    // Finish if no cell counts are specified.  This is how we default to full-frame mode.
     if ( mCellCountX < 1 || mCellCountY < 1 )
         return;
 
@@ -1389,7 +1458,7 @@ void ImageAsset::onTamlCustomRead( const TamlCustomNodes& customNodes )
             if ( nodeName != cellNodeName )
             {
                 // No, so warn.
-                Con::warnf( "ImageAsset::onTamlCustomRead() - Encountered an unknown custom name of '%s'. Only '%s' is valid.", nodeName, cellNodeName );
+                Con::warnf( "ImageAsset::onTamlCustomRead() - Encountered an unknown custom name of '%s'.  Only '%s' is valid.", nodeName, cellNodeName );
                 continue;
             }
             
@@ -1491,8 +1560,8 @@ void ImageAsset::onTamlCustomRead( const TamlCustomNodes& customNodes )
 static void WriteCustomTamlSchema( const AbstractClassRep* pClassRep, TiXmlElement* pParentElement )
 {
     // Sanity!
-    AssertFatal( pClassRep != NULL, "ImageAsset::WriteCustomTamlSchema() - ClassRep cannot be NULL." );
-    AssertFatal( pParentElement != NULL, "ImageAsset::WriteCustomTamlSchema() - Parent Element cannot be NULL." );
+    AssertFatal( pClassRep != NULL,  "ImageAsset::WriteCustomTamlSchema() - ClassRep cannot be NULL." );
+    AssertFatal( pParentElement != NULL,  "ImageAsset::WriteCustomTamlSchema() - Parent Element cannot be NULL." );
 
     char buffer[1024];
 

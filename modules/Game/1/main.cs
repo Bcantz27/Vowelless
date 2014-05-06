@@ -1,5 +1,9 @@
 function Game::create( %this )
 {
+	exec("./scripts/ClickVowel.cs");	
+	exec("./scripts/PracticeMode.cs");
+	exec("./scripts/RaceMode.cs");
+	exec("./scripts/TimeMode.cs");
 	exec("./scripts/BattleMode.cs");
 	exec("./scripts/Utils.cs");
 	
@@ -9,6 +13,10 @@ function Game::create( %this )
 	Game.ComboDelay = 5000;
 	Game.Time = -1;
 	Game.Round = -1;
+	Game.RaceTo = 3000;
+	Game.VowelSel = "";
+	Game.MissingVowels = 0;
+	Game.CorrectVowels = 0;
 
 	setupVowels();
 	readWordsFile();
@@ -27,6 +35,12 @@ function Game::setupGame(%this)
 		Game.Time = 30;
 		%this.displayBattleGame();
 		%this.startTimeGame();
+	}
+	else if(stricmp(Game.Mode,"Race") == 0)
+	{
+		Game.Time = 3;
+		%this.startTimeGame();
+		%this.displayRaceGame();
 	}
 	else if(stricmp(Game.Mode,"Time") == 0)
 	{
@@ -58,10 +72,14 @@ function Game::reset(%this)
 	Game.Mode = "";
 	Game.ComboDelay = 3000;
 	Game.Time = -1;
+	Game.VowelSel = "";
+	Game.MissingVowels = 0;
+	Game.CorrectVowels = 0;
 	Player.reset();
 	AI.reset();
 	$menuMusic = alxPlay("GameAssets:Menuloop");
 }
+
 function Game::checkAnswer(%this)
 {
 	%answer = Answer.getText();
@@ -69,12 +87,23 @@ function Game::checkAnswer(%this)
 	echo("Guess:" SPC %answer SPC "Answer:" SPC $GameWordList[Player.CurrentWord]);
 	if(stricmp(%answer,$GameWordList[Player.CurrentWord]) == 0)
 	{
-		%this.incrementScore(getWordValue(%answer));
+		Player.incrementScore(getWordValue(%answer));
 		Player.CurrentWord++;
 		Player.Streak++;
 		alxPlay("GameAssets:correctSound");
 		
-		Player.Damage = Player.Damage + getWordDamage($GameWordList[Player.CurrentWord]);
+		if(stricmp(Game.Mode,"Battle") == 0)
+		{
+			Player.Damage = Player.Damage + getWordDamage($GameWordList[Player.CurrentWord]);
+		}
+		else if(stricmp(Game.Mode,"Race") == 0)
+		{
+			if(Player.Score >= Game.RaceTo)
+			{
+				Game.endRace();
+				return;
+			}
+		}
 		
 		if(Player.Combo == 0 || ((getRealTime() - Player.LastCorrectTime) <= Game.ComboDelay))
 		{
@@ -102,17 +131,90 @@ function Game::checkAnswer(%this)
 		
 		if(stricmp(Game.Mode,"Battle") == 0)
 		{
-			%this.incrementScore(-5);
+			Player.incrementScore(-5);
 		}
 		else if(stricmp(Game.Mode,"Time") == 0)
 		{
-			%this.incrementScore(-5);
+			Player.incrementScore(-5);
 		}
 		else if(stricmp(Game.Mode,"Practice") == 0)
 		{
-			%this.incrementScore(-5);
+			Player.incrementScore(-5);
 		}
 	}
+}
+
+function Game::displayVowelButtons(%this)
+{
+	%obj = new Sprite()
+	{
+		class = ClickVowel;
+	};
+	%obj.Size = "10 10";
+	%obj.Vowel  = "a";
+	%obj.Position = "-30 -20";
+	%obj.SceneLayer = 3;
+	%obj.setBodyType("static");
+	%obj.Image = "GameAssets:Woodhouse";
+	%obj.Frame = getASCIIValue("a");
+	
+	MainScene.add(%obj);
+	
+	%obj = new Sprite()
+	{
+		class = ClickVowel;
+	};
+	%obj.Size = "10 10";
+	%obj.Vowel  = "e";
+	%obj.Position = "-15 -20";
+	%obj.SceneLayer = 3;
+	%obj.setBodyType("static");
+	%obj.Image = "GameAssets:Woodhouse";
+	%obj.Frame = getASCIIValue("e");
+	
+	MainScene.add(%obj);
+	
+	%obj = new Sprite()
+	{
+		class = ClickVowel;
+	};
+	%obj.Size = "10 10";
+	%obj.Vowel  = "i";
+	%obj.Position = "0 -20";
+	%obj.SceneLayer = 3;
+	%obj.setBodyType("static");
+	%obj.Image = "GameAssets:Woodhouse";
+	%obj.Frame = getASCIIValue("i");
+	
+	MainScene.add(%obj);
+	
+	%obj = new Sprite()
+	{
+		class = ClickVowel;
+	};
+	%obj.Size = "10 10";
+	%obj.Vowel  = "o";
+	%obj.Position = "15 -20";
+	%obj.SceneLayer = 3;
+	%obj.setBodyType("static");
+	%obj.Image = "GameAssets:Woodhouse";
+	%obj.Frame = getASCIIValue("o");
+	
+	MainScene.add(%obj);
+	
+	%obj = new Sprite()
+	{
+		class = ClickVowel;
+	};
+	%obj.Size = "10 10";
+	%obj.Vowel  = "u";
+	%obj.Position = "30 -20";
+	%obj.SceneLayer = 3;
+	%obj.setBodyType("static");
+	%obj.Image = "GameAssets:Woodhouse";
+	%obj.Frame = getASCIIValue("u");
+	
+	MainScene.add(%obj);
 }
 
 function Game::getDifficulty(%this)
@@ -153,6 +255,12 @@ function Game::incrementTime(%this)
 			AI.Attacking = false;
 			%this.startBattle();
 		}
+		else if(stricmp(Game.Mode,"Race") == 0)
+		{
+			%this.startRace();
+			if(isObject(Time))
+				Time.delete();
+		}
 		else if(stricmp(Game.Mode,"Time") == 0)
 		{
 			Canvas.popDialog(GameGui);
@@ -171,74 +279,10 @@ function Game::startTimeGame(%this)
 	}
 }
 
-function Game::incrementScore(%this,%amount)
-{
-	Player.score = Player.score + %amount;
-	%this.displayScore();
-}
-
 function Game::updateComboAndStreak(%this)
 {
 	%this.displayCombo();
 	%this.displayStreak();
-}
-
-function Game::displayHealthBar(%this,%health,%position)
-{
-	%leftBack = new Sprite();
-	%leftBack.Size = "1 2";
-	%leftBack.Position = %position;
-	%leftBack.SceneLayer = 30;
-	%leftBack.setBodyType("static");
-	%leftBack.Image = "GameAssets:barBackLeft";
-	
-	if(%health > 0)
-	{
-		%leftRed = new Sprite();
-		%leftRed.Size = "1 2";
-		%leftRed.Position = %position;
-		%leftRed.SceneLayer = 29;
-		%leftRed.setBodyType("static");
-		%leftRed.Image = "GameAssets:barRedLeft";
-		MainScene.add(%leftRed);
-	}
-	
-	%midBack = new Sprite();
-	%midBack.Size = "20 2";
-	%midBack.Position = VectorAdd(%position,"10.5 0");
-	%midBack.SceneLayer = 30;
-	%midBack.setBodyType("static");
-	%midBack.Image = "GameAssets:barBackMid";
-	
-	%midRed = new Sprite();
-	%midRed.Size = 20*(%health/100) SPC "2";
-	%midRed.Position = VectorAdd(%position, (((20*(%health/100))/2)+0.5) SPC "0");
-	%midRed.SceneLayer = 29;
-	%midRed.setBodyType("static");
-	%midRed.Image = "GameAssets:barRedMid";
-	
-	%rightBack = new Sprite();
-	%rightBack.Size = "1 2";
-	%rightBack.Position = VectorAdd(%position,"21 0");
-	%rightBack.SceneLayer = 30;
-	%rightBack.setBodyType("static");
-	%rightBack.Image = "GameAssets:barBackRight";
-	
-	if(%health == 100)
-	{
-		%rightRed = new Sprite();
-		%rightRed.Size = "1 2";
-		%rightRed.Position = VectorAdd(%position,"21 0");
-		%rightRed.SceneLayer = 29;
-		%rightRed.setBodyType("static");
-		%rightRed.Image = "GameAssets:barRedRight";
-		MainScene.add(%rightRed);
-	}
-	
-	MainScene.add(%midRed);
-	MainScene.add(%leftBack);
-	MainScene.add(%midBack);
-	MainScene.add(%rightBack);
 }
 
 function Game::displayBackPanel(%this, %image)
@@ -256,20 +300,38 @@ function Game::displayNewWord(%this)
 {
 	if(isObject(Word))
 		Word.delete();
-	
-	%obj = new ImageFont(Word)  
-	{   
-		Image = "GameAssets:font";
-		Position = "0 0";
-		FontSize = "12 12";
-		Layer = 2;
-		TextAlignment = "Center";
-		Text = $VowellessList[Player.CurrentWord];
-	};  
 		
-	echo("New Word Displayed:" SPC Player.CurrentWord SPC $VowellessList[Player.CurrentWord]);
+	%word = $VowellessList[Player.CurrentWord];
 	
-	MainScene.add(%obj);
+	%this.MissingVowels = getNumberOfVowels($GameWordList[Player.CurrentWord]);
+	
+	%this.Word = new CompositeSprite(Word)  ;
+	%this.Word.SetBatchLayout("off");
+	%this.Word.Layer = 2;
+	%startPoint = -(strlen(%word)*10/2);
+	
+	// Add some sprites.
+	for( %n = 0; %n < strlen(%word); %n++ )
+	{
+		%letter = getsubstr(%word, %n, 1);
+		
+        // Add a sprite with no logical position.
+        %this.Word.addSprite();
+        
+        // Set the sprites location position to a random location.
+        %this.Word.setSpriteLocalPosition( %n*10 + %startPoint, 0 );
+                
+        // Set size.
+        %this.Word.setSpriteSize( 12 );
+
+        // Set the sprite image with a random frame.
+        // We could also use an animation here. 
+        %this.Word.setSpriteImage( "GameAssets:Woodhouse", getASCIIValue(%letter) );                       
+	}  
+	
+	MainScene.add(%this.Word);
+	
+	echo("New Word Displayed:" SPC Player.CurrentWord SPC $VowellessList[Player.CurrentWord]);
 }
 
 function Game::displayCorrectWord(%this)
@@ -312,7 +374,7 @@ function Game::displayScore(%this)
 
 	%obj = new ImageFont(Score)  
 	{   
-		Image = "GameAssets:font";
+		Image = "GameAssets:ActionComic";
 		Position = "40 33";
 		FontSize = "5 5";
 		Layer = 2;
@@ -333,7 +395,7 @@ function Game::displayFinalScore(%this)
 
 	%obj = new ImageFont(FinalScore)  
 	{   
-		Image = "GameAssets:font";
+		Image = "GameAssets:ActionComic";
 		Position = "0 10";
 		FontSize = "7 7";
 		Layer = 2;
@@ -354,12 +416,12 @@ function Game::displayStreak(%this)
 	
 	%obj = new ImageFont(Streak)  
 	{   
-		Image = "GameAssets:font";
+		Image = "GameAssets:ActionComic";
 		Position = "40 25";
 		FontSize = "2 2";
 		Layer = 2;
 		TextAlignment = "Center";
-		Text = ("Steak:" SPC Player.Streak);
+		Text = (Player.Streak SPC "STREAK");
 	};  
 	
 	MainScene.add(%obj);
@@ -375,12 +437,12 @@ function Game::displayCombo(%this)
 	
 	%obj = new ImageFont(Combo)  
 	{   
-		Image = "GameAssets:font";
+		Image = "GameAssets:ActionComic";
 		Position = "40 20";
 		FontSize = "2 2";
 		Layer = 2;
 		TextAlignment = "Center";
-		Text = ("Combo:" SPC Player.Combo);
+		Text = (Player.Combo SPC "COMBO");
 	};  
 	
 	MainScene.add(%obj);

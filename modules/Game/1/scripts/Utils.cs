@@ -1,3 +1,12 @@
+function getASCIIValue(%letter)
+{
+	%testStr = "0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_'abcdefghijklmnopqrstuvwxyz";
+	if(strpos(%testStr, %letter) != -1)
+		%val = strpos(%testStr, %letter) + 17;
+		
+	return %val; 
+}
+
 function removeVowels(%word)
 {
 	%word = stripChars(%word,"A");
@@ -5,13 +14,13 @@ function removeVowels(%word)
 	%word = stripChars(%word,"I");
 	%word = stripChars(%word,"O");
 	%word = stripChars(%word,"U");
-	%word = stripChars(%word,"Y");
+	//%word = stripChars(%word,"Y");
 	%word = stripChars(%word,"a");
 	%word = stripChars(%word,"e");
 	%word = stripChars(%word,"i");
 	%word = stripChars(%word,"o");
 	%word = stripChars(%word,"u");
-	%word = stripChars(%word,"y");
+	//%word = stripChars(%word,"y");
 	//%word = stripTrailingSpaces(%word);
 	
 	//echo("Word:" SPC %word);
@@ -22,7 +31,7 @@ function removeVowels(%word)
 function removeVowelsAndPutUnderScore(%word)
 {
 	//echo("Removing Vowels from:" SPC %word);
-	for(%i = 0; %i < 12; %i++)
+	for(%i = 0; %i < 10; %i++)
 	{
 		%charIndex = strpos(%word,$Vowels[%i]);
 		if(%charIndex != -1)
@@ -54,7 +63,7 @@ function getNumberOfVowels(%word)
 {
 	%vowelCount = 0;
 
-	for(%i = 0; %i < 12; %i++)
+	for(%i = 0; %i < 10; %i++)
 	{
 		%charIndex = strpos(%word,$Vowels[%i]);
 		if(%charIndex != -1)
@@ -181,6 +190,21 @@ function setupVowellessWordList()
 	}
 }
 
+function isLetterAVowel(%letter)
+{
+	%flag = false;
+	
+	for(%i = 0; %i < 10; %i++)
+	{
+		if(stricmp(%letter,$Vowels[%i]) == 0)
+		{
+			%flag = true;
+		}
+	}
+	
+	return %flag;
+}
+
 function setupVowels()
 {
 	$Vowels[0] = "A";
@@ -193,8 +217,6 @@ function setupVowels()
 	$Vowels[7] = "o";
 	$Vowels[8] = "U";
 	$Vowels[9] = "u";
-	$Vowels[10] = "Y";
-	$Vowels[11] = "y";
 }
 
 function getNumberOfVisibleLetters(%word)

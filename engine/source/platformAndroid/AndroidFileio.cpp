@@ -130,6 +130,7 @@ File::~File()
 	handle = NULL;
 }
 
+
 //-----------------------------------------------------------------------------
 // Open a file in the mode specified by openMode (Read, Write, or ReadWrite).
 // Truncate the file if the mode is either Write or ReadWrite and truncate is
@@ -212,7 +213,6 @@ File::Status File::open(const char *filename, const AccessMode openMode)
    {
       case Read:
     	filePointer = 0;
-		
     	buffer = (U8*)_AndroidLoadFile(filename, &size);
 		if (buffer == NULL) {
 			currentStatus = UnknownError;

@@ -296,7 +296,7 @@ void UInputManager::activate()
    if (mEnabled && !isActive())
    {
       mActive = true;
-      SDL_ShowCursor(SDL_ENABLE);
+      SDL_ShowCursor(SDL_DISABLE);
       resetInputState();
       // hack; if the mouse or keyboard has been disabled, re-enable them.
       // prevents scripts like default.cs from breaking our input, although
@@ -959,7 +959,6 @@ bool UInputManager::processKeyEvent( InputEvent &event )
       }
    }
    else
-
    {
       // Maintain the keys structure:
       mKeyboardState[keyCode] = false;

@@ -215,6 +215,7 @@ function getWordValue(%word)
 function getWordDamage(%word)
 {
 	%baseDamage = 10;
-	%damage = -((%baseDamage*getNumberOfVowels(%word))/getNumberOfVisibleLetters(%word));
+	%damage = %baseDamage*(getNumberOfVowels(%word)/getNumberOfVisibleLetters(%word));
+	%damage = mFloatLength(%damage, 2);
 	return %damage;
 }

@@ -1,0 +1,7 @@
+<AudioAsset  
+    AssetName="menuLoop"  
+    VolumeChannel="2"  
+    AssetAutoUnload="0"  
+    Looping="1"  
+    Radius="5"  
+    AudioFile="Menuloop.wav" />  

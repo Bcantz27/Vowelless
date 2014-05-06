@@ -1,9 +1,0 @@
-<ImageAsset
-    AssetName="Woodhouse"
-    ImageFile="Woodhouse.png"
-	CellOffsetY="1"
-	CellOffsetX="1"
-    CellCountX="9"
-    CellCountY="5"
-    CellWidth="17"
-    CellHeight="22" />

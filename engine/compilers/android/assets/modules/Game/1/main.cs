@@ -1,39 +1,54 @@
 function Game::create( %this )
 {
+	exec("./scripts/PracticeMode.cs");
+	exec("./scripts/RaceMode.cs");
+	exec("./scripts/TimeMode.cs");
+	exec("./scripts/BattleMode.cs");
 	exec("./scripts/Utils.cs");
 	
 	Game.FullWordListSize = 0;
 	Game.GameWordListSize = 0;
 	Game.Mode = "";
-	Game.ComboDelay = 3000;
+	Game.ComboDelay = 5000;
 	Game.Time = -1;
+	Game.Round = -1;
+	Game.RaceTo = 1000;
 
 	setupVowels();
 	readWordsFile();
 
 	hideSplashScreen();
+	
+	$menuMusic = alxPlay("GameAssets:Menuloop");
 }
 
 function Game::setupGame(%this)
 {
+	alxStopAll();
 	if(stricmp(Game.Mode,"Battle") == 0)
 	{
-		%this.displayHealth();
+		Game.Round = 1;
+		Game.Time = 30;
+		%this.displayBattleGame();
+		%this.startTimeGame();
+	}
+	else if(stricmp(Game.Mode,"Race") == 0)
+	{
+		Game.Time = 3;
+		%this.startTimeGame();
+		%this.displayRaceGame();
 	}
 	else if(stricmp(Game.Mode,"Time") == 0)
 	{
 		Game.Time = 60;
-		%this.displayTime();
+		%this.displayTimeGame();
 		%this.startTimeGame();
 	}
 	else if(stricmp(Game.Mode,"Practice") == 0)
 	{
-	
+		SkipButton.Visible = 1;
+		%this.displayPracticeGame();
 	}
-	
-	%this.displayScore();
-	%this.displayDifficulty();
-	%this.displayNewWord();
 }
 
 function Game::destroy( %this )
@@ -54,6 +69,8 @@ function Game::reset(%this)
 	Game.ComboDelay = 3000;
 	Game.Time = -1;
 	Player.reset();
+	AI.reset();
+	$menuMusic = alxPlay("GameAssets:Menuloop");
 }
 function Game::checkAnswer(%this)
 {
@@ -62,13 +79,29 @@ function Game::checkAnswer(%this)
 	echo("Guess:" SPC %answer SPC "Answer:" SPC $GameWordList[Player.CurrentWord]);
 	if(stricmp(%answer,$GameWordList[Player.CurrentWord]) == 0)
 	{
-		%this.incrementScore(getWordValue(%answer));
+		Player.incrementScore(getWordValue(%answer));
 		Player.CurrentWord++;
 		Player.Streak++;
+		alxPlay("GameAssets:correctSound");
+		
+		if(stricmp(Game.Mode,"Battle") == 0)
+		{
+			Player.Damage = Player.Damage + getWordDamage($GameWordList[Player.CurrentWord]);
+		}
+		else if(stricmp(Game.Mode,"Race") == 0)
+		{
+			if(Player.Score >= Game.RaceTo)
+			{
+				Game.endRace();
+				return;
+			}
+		}
 		
 		if(Player.Combo == 0 || ((getRealTime() - Player.LastCorrectTime) <= Game.ComboDelay))
 		{
 			Player.Combo++;
+			Player.schedule(Game.ComboDelay,"checkCombo");
+			Player.endCombo = false;
 		}
 		else
 		{
@@ -86,18 +119,19 @@ function Game::checkAnswer(%this)
 		Player.Combo = 0;
 		Game.updateComboAndStreak();
 		
+		alxPlay("GameAssets:Wronganswer");
+		
 		if(stricmp(Game.Mode,"Battle") == 0)
 		{
-			%this.incrementScore(-5);
-			Player.changeHealth(getWordDamage($GameWordList[Player.CurrentWord]));
+			Player.incrementScore(-5);
 		}
 		else if(stricmp(Game.Mode,"Time") == 0)
 		{
-			%this.incrementScore(-5);
+			Player.incrementScore(-5);
 		}
 		else if(stricmp(Game.Mode,"Practice") == 0)
 		{
-			%this.incrementScore(-5);
+			Player.incrementScore(-5);
 		}
 	}
 }
@@ -122,7 +156,144 @@ function Game::getDifficulty(%this)
 	}
 }
 
+function Game::incrementTime(%this)
+{
+	if(Game.Time > 0)
+	{
+		Game.Time--;
+		%this.displayTime();
+		%this.schedule(1000,"incrementTime");
+	}
+	else
+	{
+		Game.Time = 0;
+		%this.displayTime();
+		
+		if(stricmp(Game.Mode,"Battle") == 0)
+		{
+			AI.Attacking = false;
+			%this.startBattle();
+		}
+		else if(stricmp(Game.Mode,"Race") == 0)
+		{
+			%this.startRace();
+			if(isObject(Time))
+				Time.delete();
+		}
+		else if(stricmp(Game.Mode,"Time") == 0)
+		{
+			Canvas.popDialog(GameGui);
+			%this.displayWinScreen();
+		}
+	}
+}
+
+function Game::startTimeGame(%this)
+{
+	%this.schedule(3000,"incrementTime");
+	
+	if(stricmp(Game.Mode,"Battle") == 0)
+	{
+		AI.schedule(3000,"readWord");
+	}
+}
+
+function Game::updateComboAndStreak(%this)
+{
+	%this.displayCombo();
+	%this.displayStreak();
+}
+
+function Game::displayHealthBar(%this,%health,%position)
+{
+	%leftBack = new Sprite();
+	%leftBack.Size = "1 2";
+	%leftBack.Position = %position;
+	%leftBack.SceneLayer = 30;
+	%leftBack.setBodyType("static");
+	%leftBack.Image = "GameAssets:barBackLeft";
+	
+	if(%health > 0)
+	{
+		%leftRed = new Sprite();
+		%leftRed.Size = "1 2";
+		%leftRed.Position = %position;
+		%leftRed.SceneLayer = 29;
+		%leftRed.setBodyType("static");
+		%leftRed.Image = "GameAssets:barRedLeft";
+		MainScene.add(%leftRed);
+	}
+	
+	%midBack = new Sprite();
+	%midBack.Size = "20 2";
+	%midBack.Position = VectorAdd(%position,"10.5 0");
+	%midBack.SceneLayer = 30;
+	%midBack.setBodyType("static");
+	%midBack.Image = "GameAssets:barBackMid";
+	
+	%midRed = new Sprite();
+	%midRed.Size = 20*(%health/100) SPC "2";
+	%midRed.Position = VectorAdd(%position, (((20*(%health/100))/2)+0.5) SPC "0");
+	%midRed.SceneLayer = 29;
+	%midRed.setBodyType("static");
+	%midRed.Image = "GameAssets:barRedMid";
+	
+	%rightBack = new Sprite();
+	%rightBack.Size = "1 2";
+	%rightBack.Position = VectorAdd(%position,"21 0");
+	%rightBack.SceneLayer = 30;
+	%rightBack.setBodyType("static");
+	%rightBack.Image = "GameAssets:barBackRight";
+	
+	if(%health == 100)
+	{
+		%rightRed = new Sprite();
+		%rightRed.Size = "1 2";
+		%rightRed.Position = VectorAdd(%position,"21 0");
+		%rightRed.SceneLayer = 29;
+		%rightRed.setBodyType("static");
+		%rightRed.Image = "GameAssets:barRedRight";
+		MainScene.add(%rightRed);
+	}
+	
+	MainScene.add(%midRed);
+	MainScene.add(%leftBack);
+	MainScene.add(%midBack);
+	MainScene.add(%rightBack);
+}
+
+function Game::displayBackPanel(%this, %image)
+{
+	%backPanel = new Sprite();
+	%backPanel.Size = "104 77";
+	%backPanel.Position = "0 0";
+	%backPanel.SceneLayer = 31;
+	%backPanel.setBodyType("static");
+	%backPanel.Image = %image;
+	MainScene.add(%backPanel);
+}
+
 function Game::displayNewWord(%this)
+{
+	if(isObject(Word))
+		Word.delete();
+	
+	%obj = new ImageFont(Word)  
+	{   
+		Image = "GameAssets:Woodhouse";
+		Position = "0 0";
+		FontSize = "12 12";
+		Layer = 2;
+		TextAlignment = "Center";
+		Text = $VowellessList[Player.CurrentWord];
+	};  
+		
+	echo("New Word Displayed:" SPC Player.CurrentWord SPC $VowellessList[Player.CurrentWord]);
+	
+	MainScene.add(%obj);
+}
+
+function Game::displayCorrectWord(%this)
 {
 	if(isObject(Word))
 		Word.delete();
@@ -134,11 +305,9 @@ function Game::displayNewWord(%this)
 		FontSize = "12 12";
 		Layer = 2;
 		TextAlignment = "Center";
-		Text = $VowellessList[Player.CurrentWord];
+		Text = $GameWordList[Player.CurrentWord];
 	};  
 		
-	echo("New Word Displayed:" SPC Player.CurrentWord SPC $VowellessList[Player.CurrentWord]);
-	
 	MainScene.add(%obj);
 }
 
@@ -157,39 +326,6 @@ function Game::displayDifficulty(%this)
 	MainScene.add(%obj);
 }
 
-function Game::incrementTime(%this)
-{
-	if(Game.Time > 0)
-	{
-		Game.Time--;
-		%this.displayTime();
-		%this.schedule(1000,"incrementTime");
-	}
-	else
-	{
-		Game.Time = 0;
-		%this.displayTime();
-		%this.endGame();
-	}
-}
-
-function Game::startTimeGame(%this)
-{
-	%this.schedule(3000,"incrementTime");
-}
-
-function Game::incrementScore(%this,%amount)
-{
-	Player.score = Player.score + %amount;
-	%this.displayScore();
-}
-
-function Game::updateComboAndStreak(%this)
-{
-	%this.displayCombo();
-	%this.displayStreak();
-}
-
 function Game::displayScore(%this)
 {
 	if(isObject(Score))
@@ -197,7 +333,7 @@ function Game::displayScore(%this)
 
 	%obj = new ImageFont(Score)  
 	{   
-		Image = "GameAssets:font";
+		Image = "GameAssets:ActionComic";
 		Position = "40 33";
 		FontSize = "5 5";
 		Layer = 2;
@@ -218,7 +354,7 @@ function Game::displayFinalScore(%this)
 
 	%obj = new ImageFont(FinalScore)  
 	{   
-		Image = "GameAssets:font";
+		Image = "GameAssets:ActionComic";
 		Position = "0 10";
 		FontSize = "7 7";
 		Layer = 2;
@@ -239,12 +375,12 @@ function Game::displayStreak(%this)
 	
 	%obj = new ImageFont(Streak)  
 	{   
-		Image = "GameAssets:font";
+		Image = "GameAssets:ActionComic";
 		Position = "40 25";
 		FontSize = "2 2";
 		Layer = 2;
 		TextAlignment = "Center";
-		Text = ("Steak:" SPC Player.Streak);
+		Text = (Player.Streak SPC "STREAK");
 	};  
 	
 	MainScene.add(%obj);
@@ -260,12 +396,12 @@ function Game::displayCombo(%this)
 	
 	%obj = new ImageFont(Combo)  
 	{   
-		Image = "GameAssets:font";
+		Image = "GameAssets:ActionComic";
 		Position = "40 20";
 		FontSize = "2 2";
 		Layer = 2;
 		TextAlignment = "Center";
-		Text = ("Combo:" SPC Player.Combo);
+		Text = (Player.Combo SPC "COMBO");
 	};  
 	
 	MainScene.add(%obj);
@@ -279,7 +415,7 @@ function Game::displayTime(%this)
 	%obj = new ImageFont(Time)  
 	{   
 		Image = "GameAssets:font";
-		Position = "0 33";
+		Position = "0 35";
 		FontSize = "2 2";
 		Layer = 2;
 		TextAlignment = "Center";
@@ -287,15 +423,6 @@ function Game::displayTime(%this)
 	};  
 	
 	MainScene.add(%obj);
-}
-
-function Game::endGame(%this)
-{
-	MainScene.clear();
-	Game.displayFinalScore();
-	Player.reset();
-	Canvas.popDialog(GameGui);
-	Canvas.pushDialog(LoseDialog);
 }
 
 function Game::displayHealth(%this)
@@ -314,4 +441,32 @@ function Game::displayHealth(%this)
 	};  
 	
 	MainScene.add(%obj);
+}
+
+function Game::displayWinScreen()
+{
+	MainScene.clear();
+	Game.displayFinalScore();
+	Player.reset();
+	AI.reset();
+	Canvas.pushDialog(LoseDialog);
+}
+
+function Game::displayLoseScreen()
+{
+	MainScene.clear();
+	Player.reset();
+	AI.reset();
+	Canvas.pushDialog(LoseDialog);
+}
+
+function Game::skipWord()
+{
+	echo("Skipping word");
+	Player.Streak = 0;
+	Player.Combo = 0;
+	Game.updateComboAndStreak();
+	Game.displayCorrectWord();
+	Player.CurrentWord++;
+	Game.schedule(1000,"displayNewWord");
 }

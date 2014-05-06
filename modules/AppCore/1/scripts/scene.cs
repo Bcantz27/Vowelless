@@ -48,7 +48,6 @@ function createWindow()
     MainWindow.setCameraSize( 100, 75 );
     MainWindow.setCameraZoom( 1 );
     MainWindow.setCameraAngle( 0 );
-	MainWindow.setUseObjectInputEvents(true);
 	
 	echo("Created Window.");
 }
@@ -83,8 +82,7 @@ function createScene()
         return;
     }
 	
-	//Turn on Gravity
-	MainScene.setDebugOn("collision", "position", "aabb");
+	//MainScene.setDebugOn("collision", "position", "aabb");
         
     // Set window to scene.
     setSceneToWindow();    

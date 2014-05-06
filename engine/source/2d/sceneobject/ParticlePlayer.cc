@@ -37,9 +37,9 @@ ParticleSystem::ParticleNode* ParticlePlayer::EmitterNode::createParticle( void 
     ParticleSystem::ParticleNode* pFreeParticleNode = ParticleSystem::Instance->createParticle();
 
     // Insert node into emitter chain.
-    pFreeParticleNode->mNextNode = mParticleNodeHead.mNextNode;
-    pFreeParticleNode->mPreviousNode = &mParticleNodeHead;
-    mParticleNodeHead.mNextNode = pFreeParticleNode;
+    pFreeParticleNode->mNextNode        = mParticleNodeHead.mNextNode;
+    pFreeParticleNode->mPreviousNode    = &mParticleNodeHead;
+    mParticleNodeHead.mNextNode         = pFreeParticleNode;
     pFreeParticleNode->mNextNode->mPreviousNode = pFreeParticleNode;
 
     // Configure the node.
@@ -98,9 +98,9 @@ ParticlePlayer::ParticlePlayer() :
 {
     // Fetch the particle player scales.
     mEmissionRateScale = Con::getFloatVariable( PARTICLE_PLAYER_EMISSION_RATE_SCALE, 1.0f );
-    mSizeScale = Con::getFloatVariable( PARTICLE_PLAYER_SIZE_SCALE, 1.0f );
-    mForceScale = Con::getFloatVariable( PARTICLE_PLAYER_FORCE_SCALE, 1.0f );
-    mTimeScale = Con::getFloatVariable( PARTICLE_PLAYER_TIME_SCALE, 1.0f );
+    mSizeScale         = Con::getFloatVariable( PARTICLE_PLAYER_SIZE_SCALE, 1.0f );
+    mForceScale        = Con::getFloatVariable( PARTICLE_PLAYER_FORCE_SCALE, 1.0f );
+    mTimeScale         = Con::getFloatVariable( PARTICLE_PLAYER_TIME_SCALE, 1.0f );
      
     // Register for refresh notifications.
     mParticleAsset.registerRefreshNotify( this );
@@ -266,7 +266,7 @@ void ParticlePlayer::integrateObject( const F32 totalTime, const F32 elapsedTime
     Parent::integrateObject( totalTime, elapsedTime, pDebugStats );
 
     // Finish if no need to integrate.
-    if ( !mPlaying ||
+    if (    !mPlaying ||
             mPaused ||
             mEmitters.size() == 0 )
         return;
@@ -312,15 +312,15 @@ void ParticlePlayer::integrateObject( const F32 totalTime, const F32 elapsedTime
                 pParticleNode->mParticleAge += scaledTime;
 
                 // Has the particle expired?
-                // NOTE:- If we're in single-particle mode then the particle lives as long as the particle player does.
-                if ( ( !pParticleAssetEmitter->getSingleParticle() && pParticleNode->mParticleAge > pParticleNode->mParticleLifetime ) ||
+                // NOTE:-   If we're in single-particle mode then the particle lives as long as the particle player does.
+                if (    ( !pParticleAssetEmitter->getSingleParticle() && pParticleNode->mParticleAge > pParticleNode->mParticleLifetime ) ||
                         ( mIsZero(pParticleNode->mParticleLifetime) ) )
                 {
                     // Yes, so fetch next particle before we kill it.
                     pParticleNode = pParticleNode->mNextNode;
 
                     // Kill the particle.
-                    // NOTE:- Because we move to the next particle the particle to kill is now the previous!
+                    // NOTE:-   Because we move to the next particle the particle to kill is now the previous!
                     pEmitterNode->freeParticle( pParticleNode->mPreviousNode );
                 }
                 else
@@ -354,8 +354,8 @@ void ParticlePlayer::integrateObject( const F32 totalTime, const F32 elapsedTime
             {
                 // Accumulate the last generation time as we need to handle very small time-integrations correctly.
                 //
-                // NOTE: We need to do this if there's an emission target but the time-integration is so small
-                // that rounding results in no emission. Downside to good FPS!
+                // NOTE:    We need to do this if there's an emission target but the time-integration is so small
+                //          that rounding results in no emission.  Downside to good FPS!
                 pEmitterNode->setTimeSinceLastGeneration( pEmitterNode->getTimeSinceLastGeneration() + scaledTime );
 
                 // Fetch the particle player age.
@@ -373,7 +373,7 @@ void ParticlePlayer::integrateObject( const F32 totalTime, const F32 elapsedTime
                 const F32 effectEmission = pParticleAsset->getQuantityScaleField().getFieldValue( particlePlayerAge ) * getEmissionRateScale();
 
                 // Calculate the local emission.
-                const F32 localEmission = mClampF( (baseEmission + CoreMath::mGetRandomF(-varEmission, varEmission)) * effectEmission,
+                const F32 localEmission = mClampF(  (baseEmission + CoreMath::mGetRandomF(-varEmission, varEmission)) * effectEmission,
                                                     quantityBaseField.getMinValue(),
                                                     quantityBaseField.getMaxValue() );
 
@@ -404,7 +404,7 @@ void ParticlePlayer::integrateObject( const F32 totalTime, const F32 elapsedTime
     // Are we waiting for particles and there are non left?
     if ( mWaitingForParticles )
     {
-// Yes, so are there any particles left?
+        // Yes, so are there any particles left?
         if ( activeParticleCount == 0 )
         {
             // No, so stop the player immediately.
@@ -414,7 +414,7 @@ void ParticlePlayer::integrateObject( const F32 totalTime, const F32 elapsedTime
         return;
     }
 
-// Finish if the particle player is in "infinite" mode.
+    // Finish if the particle player is in "infinite" mode.
     if ( lifeMode == ParticleAsset::INFINITE )
         return;
 
@@ -461,7 +461,7 @@ void ParticlePlayer::integrateObject( const F32 totalTime, const F32 elapsedTime
 //------------------------------------------------------------------------------
 
 void ParticlePlayer::interpolateObject( const F32 timeDelta )
-{
+{    
     // Call parent.
     Parent::interpolateObject( timeDelta );
 
@@ -547,7 +547,7 @@ void ParticlePlayer::sceneRender( const SceneRenderState* pSceneRenderState, con
 
         // Skip if there are no active particles.
         if ( !pEmitterNode->getActiveParticles() )
-            continue;
+            continue;       
 
         // Fetch both image and animation assets.
         const AssetPtr<ImageAsset>& imageAsset = pParticleAssetEmitter->getImageAsset();
@@ -793,7 +793,7 @@ bool ParticlePlayer::play( const bool resetParticles )
     {
         // Fetch the emitter node.
         EmitterNode* pEmitterNode = *emitterItr;
-pEmitterNode->setPaused(false);
+        pEmitterNode->setPaused(false);
         
         // Reset the time since last generation.
         pEmitterNode->setTimeSinceLastGeneration( 0.0f );
@@ -1085,7 +1085,7 @@ void ParticlePlayer::configureParticle( EmitterNode* pEmitterNode, ParticleSyste
     // **********************************************************************************************************************
 
     pParticleNode->mParticleAge = 0.0f;
-    pParticleNode->mParticleLifetime = ParticleAssetField::calculateFieldBVE( pParticleAssetEmitter->getParticleLifeBaseField(),
+    pParticleNode->mParticleLifetime = ParticleAssetField::calculateFieldBVE(   pParticleAssetEmitter->getParticleLifeBaseField(),
                                                                                 pParticleAssetEmitter->getParticleLifeVariationField(),
                                                                                 pParticleAsset->getParticleLifeScaleField(),
                                                                                 particlePlayerAge );
@@ -1131,29 +1131,29 @@ void ParticlePlayer::configureParticle( EmitterNode* pEmitterNode, ParticleSyste
     // Ignore if we're using a single-particle.
     if ( !pParticleAssetEmitter->getSingleParticle() )
     {
-        pParticleNode->mSpeed = ParticleAssetField::calculateFieldBVE( pParticleAssetEmitter->getSpeedBaseField(),
+        pParticleNode->mSpeed = ParticleAssetField::calculateFieldBVE(  pParticleAssetEmitter->getSpeedBaseField(),
                                                                         pParticleAssetEmitter->getSpeedVariationField(),
                                                                         pParticleAsset->getSpeedScaleField(),
                                                                         particlePlayerAge ) * getForceScale();
 
-        pParticleNode->mRandomMotion = ParticleAssetField::calculateFieldBVE( pParticleAssetEmitter->getRandomMotionBaseField(),
+        pParticleNode->mRandomMotion = ParticleAssetField::calculateFieldBVE(   pParticleAssetEmitter->getRandomMotionBaseField(),
                                                                                 pParticleAssetEmitter->getRandomMotionVariationField(),
                                                                                 pParticleAsset->getRandomMotionScaleField(),
                                                                                 particlePlayerAge ) * getForceScale();
 
 
-        // Calculate the emission force.
-        emissionForce = ParticleAssetField::calculateFieldBV( pParticleAssetEmitter->getEmissionForceForceBaseField(),
+        //  Calculate the emission force.
+        emissionForce = ParticleAssetField::calculateFieldBV(   pParticleAssetEmitter->getEmissionForceForceBaseField(),
                                                                 pParticleAssetEmitter->getEmissionForceVariationField(),
                                                                 particlePlayerAge) * getForceScale();
 
         // Calculate Emission Angle.
-        emissionAngle = ParticleAssetField::calculateFieldBV( pParticleAssetEmitter->getEmissionAngleBaseField(),
+        emissionAngle = ParticleAssetField::calculateFieldBV(   pParticleAssetEmitter->getEmissionAngleBaseField(),
                                                                 pParticleAssetEmitter->getEmissionAngleVariationField(),
                                                                 particlePlayerAge );
 
         // Calculate Emission Arc.
-        // NOTE:- We're actually interested in half the emission arc!
+        // NOTE:-   We're actually interested in half the emission arc!
         emissionArc = ParticleAssetField::calculateFieldBV( pParticleAssetEmitter->getEmissionArcBaseField(),
                                                             pParticleAssetEmitter->getEmissionArcVariationField(),
                                                             particlePlayerAge ) * 0.5f;
@@ -1178,7 +1178,7 @@ void ParticlePlayer::configureParticle( EmitterNode* pEmitterNode, ParticleSyste
     // Calculate Spin.
     // **********************************************************************************************************************
 
-    pParticleNode->mSpin = ParticleAssetField::calculateFieldBVE( pParticleAssetEmitter->getSpinBaseField(),
+    pParticleNode->mSpin = ParticleAssetField::calculateFieldBVE(   pParticleAssetEmitter->getSpinBaseField(),
                                                                     pParticleAssetEmitter->getSpinVariationField(),
                                                                     pParticleAsset->getSpinScaleField(),
                                                                     particlePlayerAge );
@@ -1242,7 +1242,7 @@ void ParticlePlayer::configureParticle( EmitterNode* pEmitterNode, ParticleSyste
     const ParticleAssetField& alphaChannelScale = pParticleAsset->getAlphaChannelScaleField();
 
     // Calculate the color.
-    pParticleNode->mColor.set( mClampF( redChannel.getFieldValue( 0.0f ), redChannel.getMinValue(), redChannel.getMaxValue() ),
+    pParticleNode->mColor.set(  mClampF( redChannel.getFieldValue( 0.0f ), redChannel.getMinValue(), redChannel.getMaxValue() ),
                                 mClampF( greenChannel.getFieldValue( 0.0f ),greenChannel.getMinValue(), greenChannel.getMaxValue() ),
                                 mClampF( blueChannel.getFieldValue( 0.0f ), blueChannel.getMinValue(),blueChannel.getMaxValue() ),
                                 mClampF( alphaChannel.getFieldValue( 0.0f ) * alphaChannelScale.getFieldValue( 0.0f ), alphaChannel.getMinValue(), alphaChannel.getMaxValue() ) );
@@ -1274,7 +1274,7 @@ void ParticlePlayer::configureParticle( EmitterNode* pEmitterNode, ParticleSyste
         {
             // No, so set the emitter image frame.
             if (pParticleAssetEmitter->isUsingNamedImageFrame())
-                frameProvider.setImageFrameByName( pParticleAssetEmitter->getImageFrameName() );
+                frameProvider.setNamedImageFrame( pParticleAssetEmitter->getNamedImageFrame() );
             else
                 frameProvider.setImageFrame( pParticleAssetEmitter->getImageFrame() );
         }
@@ -1345,7 +1345,7 @@ void ParticlePlayer::integrateParticle( EmitterNode* pEmitterNode, ParticleSyste
     // **********************************************************************************************************************
     // Scale Speed.
     // **********************************************************************************************************************
-    pParticleNode->mRenderSpeed = mClampF( pParticleNode->mSpeed * pParticleAssetEmitter->getSpeedLifeField().getFieldValue( particleAge ),
+    pParticleNode->mRenderSpeed = mClampF(  pParticleNode->mSpeed * pParticleAssetEmitter->getSpeedLifeField().getFieldValue( particleAge ),
                                             pParticleAssetEmitter->getSpeedBaseField().getMinValue(),
                                             pParticleAssetEmitter->getSpeedBaseField().getMaxValue() );
 
@@ -1361,7 +1361,7 @@ void ParticlePlayer::integrateParticle( EmitterNode* pEmitterNode, ParticleSyste
     // **********************************************************************************************************************
     // Scale Random-Motion.
     // **********************************************************************************************************************
-    pParticleNode->mRenderRandomMotion = mClampF( pParticleNode->mRandomMotion * pParticleAssetEmitter->getRandomMotionLifeField().getFieldValue( particleAge ),
+    pParticleNode->mRenderRandomMotion = mClampF(   pParticleNode->mRandomMotion * pParticleAssetEmitter->getRandomMotionLifeField().getFieldValue( particleAge ),
                                                     pParticleAssetEmitter->getRandomMotionBaseField().getMinValue(),
                                                     pParticleAssetEmitter->getRandomMotionBaseField().getMaxValue() );
 
@@ -1378,7 +1378,7 @@ void ParticlePlayer::integrateParticle( EmitterNode* pEmitterNode, ParticleSyste
     const ParticleAssetField& alphaChannelScale = pParticleAsset->getAlphaChannelScaleField();
 
     // Calculate the color.
-    pParticleNode->mColor.set( mClampF( redChannel.getFieldValue( particleAge ), redChannel.getMinValue(), redChannel.getMaxValue() ),
+    pParticleNode->mColor.set(  mClampF( redChannel.getFieldValue( particleAge ), redChannel.getMinValue(), redChannel.getMaxValue() ),
                                 mClampF( greenChannel.getFieldValue( particleAge ),greenChannel.getMinValue(), greenChannel.getMaxValue() ),
                                 mClampF( blueChannel.getFieldValue( particleAge ), blueChannel.getMinValue(),blueChannel.getMaxValue() ),
                                 mClampF( alphaChannel.getFieldValue( particleAge ) * alphaChannelScale.getFieldValue( 0.0f ), alphaChannel.getMinValue(), alphaChannel.getMaxValue() ) );
@@ -1498,7 +1498,7 @@ void ParticlePlayer::onTamlAddParent( SimObject* pParentObject )
     // Call parent.
     Parent::onTamlAddParent( pParentObject );
 
-    // Play automatically when added to a parent.
+    // Play  automatically when added to a parent.
     play( true );
 }
 

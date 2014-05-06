@@ -57,7 +57,7 @@ char* _readFile (const char* path, int* length) {
 	if (!file) return 0;
 
 	fseek(file, 0, SEEK_END);
-	*length = ftell(file);
+	*length = (int)ftell(file);
 	fseek(file, 0, SEEK_SET);
 
 	data = MALLOC(char, *length);
@@ -66,3 +66,13 @@ char* _readFile (const char* path, int* length) {
 
 	return data;
 }
+
+void _spAtlasPage_createTexture (spAtlasPage* self, const char* path) {
+}
+void _spAtlasPage_disposeTexture (spAtlasPage* self) {
+}
+
+char* _spUtil_readFile (const char* path, int* length) {
+    return _readFile(path, length);
+}
+

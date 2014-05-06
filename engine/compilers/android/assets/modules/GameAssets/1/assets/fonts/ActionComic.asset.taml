@@ -1,0 +1,7 @@
+<ImageAsset
+    AssetName="ActionComic"
+    ImageFile="ActionComic.png"
+    CellCountX="16"
+    CellCountY="6"
+    CellWidth="32"
+    CellHeight="32" />

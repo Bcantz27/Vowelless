@@ -161,7 +161,7 @@ bool Namespace::unlinkClass(Namespace *parent)
       return false;
    }
 
-   AssertFatal(mRefCountToParent >= 0, "Namespace::unlinkClass - reference count to parent is less than 0");
+   AssertFatal(mRefCountToParent > 0, "Namespace::unlinkClass - reference count to parent is less than 0");
    mRefCountToParent--;
 
    if(mRefCountToParent == 0)
@@ -296,7 +296,6 @@ Namespace::Entry *Namespace::lookup(StringTableEntry name)
    U32 index = HashPointer(name) % mHashSize;
    while(mHashTable[index] && mHashTable[index]->mFunctionName != name)
    {
-
       index++;
       if(index >= mHashSize)
          index = 0;

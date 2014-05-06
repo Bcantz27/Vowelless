@@ -138,7 +138,7 @@ static StringTableEntry jointMotorMaxTorqueName           = jointRevoluteMotorMa
 static StringTableEntry jointMotorCorrectionFactorName    = StringTable->insert( "CorrectionFactor" );
 
 // Controller custom node names.
-static StringTableEntry controllerCustomNodeName	      = StringTable->insert( "Controllers" );
+static StringTableEntry controllerCustomNodeName          = StringTable->insert( "Controllers" );
 
 // Asset preload custom node names.
 static StringTableEntry assetPreloadNodeName              = StringTable->insert( "AssetPreloads" );
@@ -576,37 +576,6 @@ void Scene::dispatchBeginContactCallbacks( void )
         if (    (pSceneObjectB->mCollisionGroupMask & pSceneObjectA->mSceneGroupMask) != 0 &&
                 (pSceneObjectB->mCollisionLayerMask & pSceneObjectA->mSceneLayerMask) != 0 )
         {
-
-            if ( pointCount == 2 )
-            {
-                dSprintf(miscInfoBuffer, sizeof(miscInfoBuffer),
-                    "%d %d %0.4f %0.4f %0.4f %0.4f %0.4f %0.4f %0.4f %0.4f %0.4f %0.4f",
-                    shapeIndexB, shapeIndexA,
-                    normal.x, normal.y,
-                    point1.x, point1.y,
-                    normalImpulse1,
-                    tangentImpulse1,
-                    point2.x, point2.y,
-                    normalImpulse2,
-                    tangentImpulse2 );
-            }
-            else if ( pointCount == 1 )
-            {
-                dSprintf(miscInfoBuffer, sizeof(miscInfoBuffer),
-                    "%d %d %0.4f %0.4f %0.4f %0.4f %0.4f %0.4f",
-                    shapeIndexB, shapeIndexA,
-                    normal.x, normal.y,
-                    point1.x, point1.y,
-                    normalImpulse1,
-                    tangentImpulse1 );
-            }
-            else
-            {
-                dSprintf(miscInfoBuffer, sizeof(miscInfoBuffer),
-                    "%d %d",
-                    shapeIndexB, shapeIndexA );
-            }
-
             // Yes, so does it handle the collision callback?
             if ( pSceneObjectB->isMethod("onCollision") )            
             {
@@ -719,9 +688,6 @@ void Scene::dispatchEndContactCallbacks( void )
         if (    (pSceneObjectB->mCollisionGroupMask & pSceneObjectA->mSceneGroupMask) != 0 &&
                 (pSceneObjectB->mCollisionLayerMask & pSceneObjectA->mSceneLayerMask) != 0 )
         {
-
-        	dSprintf(miscInfoBuffer, sizeof(miscInfoBuffer), "%d %d", shapeIndexB, shapeIndexA );
-
             // Yes, so does it handle the collision callback?
             if ( pSceneObjectB->isMethod("onEndCollision") )            
             {
@@ -1626,11 +1592,11 @@ S32 Scene::findJointId( b2Joint* pJoint )
     AssertFatal( pJoint != NULL, "Joint cannot be NULL." );
 
     // Find joint.
-    typeReverseJointHash::iterator itr = mReverseJoints.find( (U64)pJoint );
+    typeReverseJointHash::iterator itr = mReverseJoints.find( pJoint );
 
     if ( itr == mReverseJoints.end() )
     {
-        Con::warnf("The joint Id could not be found via a joint reference of %x", (U64)pJoint);
+        Con::warnf("The joint Id could not be found via a joint reference of %x", pJoint);
         return 0;
     }
 
@@ -1651,13 +1617,14 @@ S32 Scene::createJoint( b2JointDef* pJointDef )
     const S32 jointId = mJointMasterId++;
 
     // Insert joint.
-    typeJointHash::iterator itr = mJoints.insert( jointId, pJoint );
+    typeJointHash::iterator itr;
+    itr = mJoints.insert( jointId, pJoint );
 
     // Sanity!
     AssertFatal( itr != mJoints.end(), "Joint already in hash table." );
 
     // Insert reverse joint.
-    mReverseJoints.insert( (U64)pJoint, jointId );
+    mReverseJoints.insert( pJoint, jointId );
 
     return jointId;
 }
@@ -2217,7 +2184,7 @@ F32 Scene::getRevoluteJointAngle( const U32 jointId )
 
 //-----------------------------------------------------------------------------
 
-F32	Scene::getRevoluteJointSpeed( const U32 jointId )
+F32 Scene::getRevoluteJointSpeed( const U32 jointId )
 {
     // Fetch joint.
     b2Joint* pJoint = findJoint( jointId );
@@ -3809,7 +3776,7 @@ void Scene::SayGoodbye( b2Joint* pJoint )
 
     // Remove joint references.
     mJoints.erase( jointId );
-    mReverseJoints.erase( (U64)pJoint );
+    mReverseJoints.erase( pJoint );
 }
 
 //-----------------------------------------------------------------------------

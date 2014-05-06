@@ -31,7 +31,7 @@ setLogMode(2);
 setScriptExecEcho( false );
 
 // Controls whether all script execution is traced (echoed) to the console or not.
-trace( true );
+trace( false );
 
 // Sets whether to ignore compiled TorqueScript files (DSOs) or not.
 $Scripts::ignoreDSOs = true;
@@ -41,13 +41,13 @@ $Scripts::ignoreDSOs = true;
 // The name of the game. Used to form the path to save preferences. Defaults to C++ engine define TORQUE_GAME_NAME
 // if not specified.
 // Appending version string to avoid conflicts with existing versions and other versions.
-setCompanyAndProduct("PWNR Games", "Vowelless" );
+setCompanyAndProduct("GarageGames", "Torque 2D" );
 
 // Set module database information echo.
-ModuleDatabase.EchoInfo = true;
+ModuleDatabase.EchoInfo = false;
 
 // Set asset database information echo.
-AssetDatabase.EchoInfo = true;
+AssetDatabase.EchoInfo = false;
 
 // Set the asset manager to ignore any auto-unload assets.
 // This cases assets to stay in memory unless assets are purged.

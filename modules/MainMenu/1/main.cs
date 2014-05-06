@@ -10,11 +10,6 @@ function MainMenu::destroy( %this )
 
 }
 
-function Answer::onTouchDown(%this, %touchID, %worldPosition)
-{
-	Answer.setText("");
-}
-
 // Adding command for SinglePlayerButton.
 function SinglePlayerButton::onClick(%this)
 {
@@ -66,7 +61,14 @@ function BattleButton::onClick(%this)
 {
 	Game.Mode = "Battle";
 	Canvas.popDialog(GameModeDialog);
-	Canvas.pushDialog(GameGui);
+	Game.setupGame();
+}
+
+// Adding command for RaceButton.
+function RaceButton::onClick(%this)
+{
+	Game.Mode = "Race";
+	Canvas.popDialog(GameModeDialog);
 	Game.setupGame();
 }
 
@@ -75,7 +77,6 @@ function TimeButton::onClick(%this)
 {
 	Game.Mode = "Time";
 	Canvas.popDialog(GameModeDialog);
-	Canvas.pushDialog(GameGui);
 	Game.setupGame();
 }
 
@@ -84,7 +85,6 @@ function PracticeButton::onClick(%this)
 {
 	Game.Mode = "Practice";
 	Canvas.popDialog(GameModeDialog);
-	Canvas.pushDialog(GameGui);
 	Game.setupGame();
 }
 

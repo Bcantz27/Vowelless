@@ -20,11 +20,11 @@
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
-// Set module database information echo.
-ModuleDatabase.EchoInfo = true;
-
-// Set asset database information echo.
-AssetDatabase.EchoInfo = true;
+// Set module database information echo.  
+ModuleDatabase.EchoInfo = true;  
+  
+// Set asset database information echo.  
+AssetDatabase.EchoInfo = true;  
 
 // debug amounts of log output
 setLogMode(6);

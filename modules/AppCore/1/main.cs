@@ -1,5 +1,5 @@
 function AppCore::create( %this )
-{
+{	
     // Load system scripts
     exec("./scripts/constants.cs");
     exec("./scripts/defaultPreferences.cs");

@@ -3,11 +3,12 @@ function Game::displayBattleGame()
 	MainScene.clear();
 	Game.displayScore();
 	Game.displayNewWord();
-	Game.displayHealthBar(Player.Health,"-10 32");
+	Player.displayHealthBar(Player.Health,"-10 32");
 	Game.displayTime();
 	Game.displayRound();
+	Game.displayVowelButtons();
 	Game.displayBackPanel("GameAssets:panelbeige");
-	Canvas.pushDialog(GameGui);
+	//Canvas.pushDialog(GameGui);
 }
 
 function Game::startNewRound()
@@ -64,22 +65,61 @@ function Game::displayRound()
 {
 	%obj = new ImageFont()  
 	{   
-		Image = "GameAssets:font";
+		Image = "GameAssets:Woodhouse";
 		Position = "-38 33";
 		FontSize = "2 2";
 		Layer = 2;
 		TextAlignment = "Center";
-		Text = "Round:" SPC Game.Round @ "/3";
+		Text = "Round";
+	};  
+		
+	MainScene.add(%obj);
+	
+	%obj = new ImageFont()  
+	{   
+		Image = "GameAssets:Woodhouse";
+		Position = "-38 31";
+		FontSize = "2 2";
+		Layer = 2;
+		TextAlignment = "Center";
+		Text = Game.Round @ " of 3";
 	};  
 		
 	MainScene.add(%obj);
 }
 
+function Game::displayHitDamage(%this,%damage,%position)
+{
+	%damage = mFloatLength(%damage, 0);
+	%obj = new ImageFont()  
+	{   
+		Image = "GameAssets:Woodhouse";
+		Position = %position;
+		FontSize = "2 2";
+		Layer = 1;
+		TextAlignment = "Center";
+		Text = -%damage;
+	};  
+	
+	%obj.setBodyType("dynamic");
+	%obj.setLinearVelocityY(4);
+	%obj.schedule(1000,"safeDelete");
+	
+	MainScene.add(%obj);
+}
+
 function Game::displayBattleStats()
 {
-	MainScene.clear();
+	if(isObject(Score))
+		Score.delete();
 
-	%obj = new ImageFont()  
+	if(isObject(YouIcon))
+		YouIcon.delete();
+		
+	if(isObject(SelectedVowel))
+		SelectedVowel.delete();
+
+	%obj = new ImageFont(YouIcon)  
 	{   
 		Image = "GameAssets:font";
 		Position = "-30 30";
@@ -91,7 +131,10 @@ function Game::displayBattleStats()
 	
 	MainScene.add(%obj);
 	
-	%obj = new ImageFont()  
+	if(isObject(AIIcon))
+		AIIcon.delete();
+	
+	%obj = new ImageFont(AIIcon)  
 	{   
 		Image = "GameAssets:font";
 		Position = "30 30";
@@ -103,20 +146,8 @@ function Game::displayBattleStats()
 		
 	MainScene.add(%obj);
 	
-	Game.displayHealthBar(Player.Health,"-40 10");
-	Game.displayHealthBar(AI.Health,"20 10");
-	
-	%playerDamage = new ImageFont()  
-	{   
-		Image = "GameAssets:font";
-		Position = "-30 0";
-		FontSize = "2 2";
-		Layer = 2;
-		TextAlignment = "Center";
-		Text = "Damage:" SPC Player.Damage;
-	};  
-		
-	MainScene.add(%playerDamage);
+	Player.displayHealthBar(Player.Health,"-40 10");
+	AI.displayHealthBar(AI.Health,"20 10");
 }
 
 function Game::endBattleGame(%winner)
@@ -146,6 +177,12 @@ function Game::playImpactSound(%this)
 
 function Game::playHitSound(%this, %damage)
 {
+	if(%damage == 0)
+	{
+		echo("Not playing sound because there is no damage." SPC %damage);
+		return;
+	}
+
 	if(mAbs(%damage) <= 5)
 	{
 		alxPlay("GameAssets:Weakhit");
@@ -154,7 +191,7 @@ function Game::playHitSound(%this, %damage)
 	{
 		alxPlay("GameAssets:Mediumhit");
 	}
-	else if(mAbs(%damage) <= 15)
+	else
 	{
 		alxPlay("GameAssets:Stronghit");
 	}
@@ -163,6 +200,7 @@ function Game::playHitSound(%this, %damage)
 function Game::startBattle()
 {
 	Canvas.popDialog(GameGui);
+	MainScene.clear();
 	Game.displayBattleStats();
 	Player.schedule(1000,"attackAI",-Player.Damage/3);
 	Player.schedule(2000,"attackAI",-Player.Damage/3);

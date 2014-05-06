@@ -129,17 +129,17 @@ bool Thread::isAlive()
   return ( !mData->mDead );
 }
 
-ThreadIdent Thread::getId()
+U32 Thread::getId()
 {
-   return /*(U32)*/mData->mThreadID;
+   return (U32)mData->mThreadID;
 }
 
 ThreadIdent ThreadManager::getCurrentThreadId()
 {
-   return (U32)pthread_self();
+   return pthread_self();
 }
 
-bool ThreadManager::compare(ThreadIdent threadId_1, ThreadIdent threadId_2)
+bool ThreadManager::compare(U32 threadId_1, U32 threadId_2)
 {
    return pthread_equal((pthread_t)threadId_1, (pthread_t)threadId_2);
 }

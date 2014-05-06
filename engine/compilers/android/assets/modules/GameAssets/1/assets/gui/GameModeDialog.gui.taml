@@ -28,6 +28,25 @@
 		groupNum="-1"
 		useMouseEvents="1" />
 		
+	<!-- Race-->
+    <GuiButtonCtrl
+		Name="RaceButton"
+		Profile="RedButtonProfile"
+		Text="Race"
+		ButtonType="PushButton"
+		canSaveDynamicFields="0"
+		isContainer="0"
+		HorizSizing="relative"
+		VertSizing="relative"
+		Position="412 399"
+		Extent="200 30"
+		MinExtent="100 15"
+		canSave="1"
+		Visible="1"
+		Active="1"
+		groupNum="-1"
+		useMouseEvents="1" />
+		
 	<!-- Time-->
     <GuiButtonCtrl
 		Name="TimeButton"
@@ -38,7 +57,7 @@
 		isContainer="0"
 		HorizSizing="relative"
 		VertSizing="relative"
-		Position="412 399"
+		Position="412 429"
 		Extent="200 30"
 		MinExtent="100 15"
 		canSave="1"
@@ -57,7 +76,7 @@
 		isContainer="0"
 		HorizSizing="relative"
 		VertSizing="relative"
-		Position="412 429"
+		Position="412 459"
 		Extent="200 30"
 		MinExtent="100 15"
 		canSave="1"
@@ -76,7 +95,7 @@
 		isContainer="0"
 		HorizSizing="relative"
 		VertSizing="relative"
-		Position="412 459"
+		Position="412 489"
 		Extent="200 30"
 		MinExtent="100 15"
 		canSave="1"
