@@ -2,6 +2,7 @@ function Player::create( %this )
 {	
 	exec("./scripts/Controls.cs");
 
+	Player.Name = "Steve";
 	Player.MaxHealth = 100;
     Player.Health = Player.MaxHealth;
 	Player.MaxDefense = 50;

@@ -5,6 +5,16 @@ function initializeMasterServerClient(%ip, %port) {
    MSClient.connect(%ip @ ":" @ %port); //The public ip here
 }
 
+function getFirstWord(%word)
+{
+	%space = strpos(%word," ");
+	if(%space == -1)
+		%word = getSubStr(%word, 0, strlen(%word));
+	else
+		%word = getSubStr(%word, 0, %space);
+	return %word;
+}
+
 //Create a command and send the data
 function MSClient::sendCommand(%this, %command) {
    %command = trim(%command);
@@ -12,16 +22,17 @@ function MSClient::sendCommand(%this, %command) {
 }
 
 function MSClient::onLine(%this, %line) {
-   //   echo(%line);
+   echo(%line);
    if(%line $= "YESMASTER?") {
       echo("Connection established with MasterServer");
       //Now you can start sending commands
+	  
       return;
    }
 
-   %cmd = firstWord(%line);
+   %cmd = getFirstWord (%line);
    %line = restWords(%line);
-   %result = firstWord(%line);
+   %result = getFirstWord (%line);
    %params = restWords(%line);
    
    if(%cmd $= "SUCCESS") {
@@ -38,6 +49,8 @@ function MSClient::onLine(%this, %line) {
             echo(%line);   //you should call some other function to change the id and register again
          case "NOTFOUND":
             echo(%line);   //you should call another function to verify if this game id is the peoper one
+		 case "NOGAMEFOUND":
+			echo(%line);
       }
    }
    else if(%cmd $= "GAMELIST") {
@@ -53,7 +66,21 @@ function MSClient::onLine(%this, %line) {
       //Game listing ends
       echo(%line);   //The list is finished, go on with your business
    }
+   else if(%cmd $= "STARTGAME") {
+		echo("Starting Game");
+		echo("CMD: " @ %cmd @ " LINE: " @ %line @ " RESULT: " @ %result @ " PARAMS: " @ %params);
+		Game.Mode = %result;
+		Game.setupGame();
+   }
+   else
+   {
+		echo("CMD: " @ %cmd @ " LINE: " @ %line @ " RESULT: " @ %result @ " PARAMS: " @ %params);
+   }
    
+}
+
+function MSClient::searchForGame(%this, %mode, %name) {
+   %this.send("searchForGame" SPC %mode SPC %name @ "\n");
 }
 
 function MSClient::registerGame(%this, %uid, %ip, %port, %name) {

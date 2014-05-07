@@ -2,17 +2,24 @@ function Network::create( %this )
 {
 	
 	exec("./scripts/MasterServerClient.cs");
-
-	// Load the Network Gui's
-	TamlRead("./gui/NetworkMenu.gui.taml");
-	TamlRead("./gui/startServer.gui.taml");
-	TamlRead("./gui/joinServer.gui.taml");
-	TamlRead("./gui/chatGui.gui.taml");
-	TamlRead("./gui/waitingForServer.gui.taml");
-	TamlRead("./gui/messageBoxOk.gui.taml");
+	
 }
 
 function Network::startMultiplayer(%this)
 {
-	initializeMasterServerClient("127.0.0.1",9100);
+	initializeMasterServerClient("localhost",9100);
+}
+
+function Network::searchForGame(%this,%mode,%name)
+{
+	if(isObject(MSClient))
+	{
+		MSClient.searchForGame(%mode,%name);
+	}
+	else
+	{
+		echo("NO CLIENT");
+		initializeMasterServerClient("localhost",9100);
+		searchForGame(%mode,%name);
+	}
 }

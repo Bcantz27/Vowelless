@@ -23,7 +23,7 @@ function Game::create( %this )
 
 	hideSplashScreen();
 	
-	$menuMusic = alxPlay("GameAssets:Menuloop");
+	//$menuMusic = alxPlay("GameAssets:Menuloop");
 }
 
 function Game::setupGame(%this)

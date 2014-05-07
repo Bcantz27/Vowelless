@@ -49,7 +49,7 @@
 
     <!-- BackButton-->
     <GuiButtonCtrl
-		Name="GameModeBackButton"
+		Name="MultiplayerGameModeBackButton"
 		Profile="RedButtonProfile"
 		Text="Back"
 		ButtonType="PushButton"

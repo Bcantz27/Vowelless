@@ -21,7 +21,8 @@ function SinglePlayerButton::onClick(%this)
 function MutliPlayerButton::onClick(%this)
 {
 	Canvas.popDialog(MenuDialog);
-	Canvas.pushDialog(NetworkMenu);
+	Canvas.pushDialog(MultiplayerModeDialog);
+	Network.startMultiplayer();
 }
 
 // Adding command for OptionsButton.
@@ -48,6 +49,7 @@ function BackButton::onClick(%this)
 function GameModeBackButton::onClick(%this)
 {
 	Canvas.popDialog(GameModeDialog);
+	Canvas.popDialog(MultiplayerModeDialog);
 	Canvas.pushDialog(MenuDialog);
 }
 
@@ -118,11 +120,18 @@ function BackToMenuButton::onClick(%this)
 
 function MultiplayerBattleButton::onClick(%this)
 {
-	MSClient.registerGame("MYGAME:UNIQUEID1", "localhost", 1234, "Battle Game");  
+	Canvas.popDialog(MultiplayerModeDialog);
+	Network.searchForGame("Battle",Player.Name);
 }
 
 function MultiplayerRaceButton::onClick(%this)
 {
 
+}
+
+function MultiplayerGameModeBackButton::onClick(%this)
+{
+	Canvas.popDialog(MultiplayerModeDialog);
+	Canvas.pushDialog(MenuDialog);
 }
 

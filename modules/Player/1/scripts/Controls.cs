@@ -119,7 +119,6 @@ function InputHandler::onTouchUp(%this, %touchID, %worldPosition)
 					Player.LastCorrectTime = getRealTime();
 					Game.updateComboAndStreak();
 					Game.DisplayNewWord();
-					Answer.setText("");
 					Game.CorrectVowels = 0;
 				}
 				else

@@ -9,6 +9,7 @@ function Game::displayBattleGame()
 	Game.displayRound();
 	Game.displayVowelButtons();
 	Game.displayBackPanel("GameAssets:panelbeige");
+
 	//Canvas.pushDialog(GameGui);
 }
 
