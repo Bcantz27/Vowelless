@@ -2,7 +2,8 @@ function Player::create( %this )
 {	
 	exec("./scripts/Controls.cs");
 
-	Player.Name = "Steve";
+	setRandomSeed(getRealTime());
+	Player.Name = "Steve" @ getRandom(0,100);
 	Player.MaxHealth = 100;
     Player.Health = Player.MaxHealth;
 	Player.MaxDefense = 50;
@@ -17,6 +18,7 @@ function Player::create( %this )
 	Player.Combo = 0;
 	Player.endCombo = true;
 	Player.LastCorrectTime = 0;
+	Player.GameID = "";
 	
 	Player.InputController.initialize();
 }
@@ -61,6 +63,7 @@ function Player::reset(%this)
 
 function Player::changeHealth(%this,%amount)
 {
+	echo("Changing Health" SPC %amount);
 	if(%amount < 0)
 	{
 		MainWindow.startCameraShake(%amount, 1);

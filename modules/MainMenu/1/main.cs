@@ -112,6 +112,11 @@ function SkipButton::onClick(%this)
 // Adding command for BackToMenuButton.
 function BackToMenuButton::onClick(%this)
 {
+	if(Game.Multiplayer)
+	{
+		MSClient.disconnect();
+	}
+	
 	MainScene.clear();
 	Canvas.popDialog(LoseDialog);
 	Canvas.pushDialog(MenuDialog);

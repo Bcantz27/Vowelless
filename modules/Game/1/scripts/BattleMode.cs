@@ -19,24 +19,34 @@ function Game::startNewRound()
 	{
 		if(Player.Health <= 0)
 		{
-			//Canvas.popDialog(GameGui);
 			Game.displayLoseScreen();
 			return;
 		}
 		else if(AI.Health <= 0)
 		{
-			//Canvas.popDialog(GameGui);
-			Game.displayWinScreen();
+			if(Game.Multiplayer)
+			{
+				MSClient.setWinner(Player.GameID, Player.Name);
+			}
+			else
+			{
+				Game.displayWinScreen();
+			}
 			return;
 		}
 	
 		if(Game.Round == 3)	//Determine Winner
 		{
-			//Canvas.popDialog(GameGui);
-			
 			if(Player.Health > AI.Health)
 			{
-				Game.displayWinScreen();
+				if(Game.Multiplayer)
+				{
+					MSClient.setWinner(Player.GameID, Player.Name);
+				}
+				else
+				{
+					Game.displayWinScreen();
+				}
 			}
 			else if(Player.Health < AI.Health)
 			{
@@ -55,7 +65,6 @@ function Game::startNewRound()
 			AI.Damage = 0;
 			Player.CurrentWord++;
 			AI.CurrentWord++;
-			Answer.setText("");
 			Game.displayBattleGame();
 			Game.schedule(2000,"incrementTime");
 			AI.schedule(2000,"readWord");
@@ -196,16 +205,15 @@ function Game::playHitSound(%this, %damage)
 	}
 }
 
-function Game::startBattle()
+function Game::startBattle(%this, %damageToPlayer)
 {
-	Canvas.popDialog(GameGui);
 	MainScene.clear();
 	Game.displayBattleStats();
 	Player.schedule(1000,"attackAI",-Player.Damage/3);
 	Player.schedule(2000,"attackAI",-Player.Damage/3);
 	Player.schedule(3000,"attackAI",-Player.Damage/3);
-	AI.schedule(4000,"attackPlayer",-AI.Damage/3);
-	AI.schedule(5000,"attackPlayer",-AI.Damage/3);
-	AI.schedule(6000,"attackPlayer",-AI.Damage/3);
+	AI.schedule(4000,"attackPlayer",-%damageToPlayer/3);
+	AI.schedule(5000,"attackPlayer",-%damageToPlayer/3);
+	AI.schedule(6000,"attackPlayer",-%damageToPlayer/3);
 	Game.schedule(7000,"startNewRound");
 }

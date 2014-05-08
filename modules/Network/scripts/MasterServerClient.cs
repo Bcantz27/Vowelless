@@ -61,25 +61,52 @@ function MSClient::onLine(%this, %line) {
       //You receive many of this calls when you request the list
       echo(%line);   //Call a function to put your data into a list or refresh your interface
       
-   }
-   else if(%cmd $= "ENDGAMELIST") {
-      //Game listing ends
-      echo(%line);   //The list is finished, go on with your business
-   }
-   else if(%cmd $= "STARTGAME") {
-		echo("Starting Game");
-		echo("CMD: " @ %cmd @ " LINE: " @ %line @ " RESULT: " @ %result @ " PARAMS: " @ %params);
+	}
+	else if(%cmd $= "ENDGAMELIST") {
+		//Game listing ends
+		echo(%line);   //The list is finished, go on with your business
+	}
+	else if(%cmd $= "STARTGAME") {
 		Game.Mode = %result;
-		Game.setupGame();
-   }
-   else
-   {
+		Player.GameID = %params;
+		Game.setupMultiplayerGame();
+	}
+	else if(%cmd $= "DAMAGEPLAYER") {
+		Game.startBattle(%result);
+	}
+	else if(%cmd $= "SETOPPDEF") {
+		AI.Defense = %result;
+	}
+	else if(%cmd $= "ENDGAME") {
+		if(%result $= "WIN")
+		{
+			Game.displayWinScreen();
+		}
+		else if(%result $= "LOSE")
+		{
+			Game.displayLoseScreen();
+		}
+	}
+	else
+	{
 		echo("CMD: " @ %cmd @ " LINE: " @ %line @ " RESULT: " @ %result @ " PARAMS: " @ %params);
-   }
-   
+	}
+}
+
+function MSClient::setWinner(%this, %uid, %name) {
+   %this.send("setWinner" SPC %uid SPC %name @ "\n");
+}
+
+function MSClient::setPlayerDefense(%this, %uid, %name,%defense) {
+   %this.send("setPlayerDefense" SPC %uid SPC %name SPC %defense @ "\n");
+}
+
+function MSClient::setPlayerDamage(%this, %uid, %name, %damage) {
+   %this.send("setPlayerDamage" SPC %uid SPC %name SPC %damage @ "\n");
 }
 
 function MSClient::searchForGame(%this, %mode, %name) {
+	echo("Search for game");
    %this.send("searchForGame" SPC %mode SPC %name @ "\n");
 }
 

@@ -110,8 +110,8 @@ function getWordDifficulty(%word)
 
 function shuffleGameWordList()
 {
-	//setRandomSeed(getRealTime());	//Randomize Each Time
-	setRandomSeed(1);				//Same Sequence each time
+	setRandomSeed(getRealTime());	//Randomize Each Time
+	//setRandomSeed(1);				//Same Sequence each time
 	%size = Game.GameWordListSize;
 
 	if(%size > 1)

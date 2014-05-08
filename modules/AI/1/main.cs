@@ -23,6 +23,9 @@ function AI::destroy( %this )
 
 function AI::readWord(%this)
 {
+	if(Game.Multiplayer)
+		return;
+
 	echo("Starting Attack");
 	setRandomSeed(getRealTime());
 	%this.Attacking = true;

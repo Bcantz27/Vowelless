@@ -7,7 +7,7 @@ function Network::create( %this )
 
 function Network::startMultiplayer(%this)
 {
-	initializeMasterServerClient("localhost",9100);
+	initializeMasterServerClient("25.13.242.180",9100);
 }
 
 function Network::searchForGame(%this,%mode,%name)
@@ -19,7 +19,7 @@ function Network::searchForGame(%this,%mode,%name)
 	else
 	{
 		echo("NO CLIENT");
-		initializeMasterServerClient("localhost",9100);
+		initializeMasterServerClient("25.13.242.180",9100);
 		searchForGame(%mode,%name);
 	}
 }

@@ -17,6 +17,7 @@ function Game::create( %this )
 	Game.VowelSel = "";
 	Game.MissingVowels = 0;
 	Game.CorrectVowels = 0;
+	Game.Multiplayer = false;
 
 	setupVowels();
 	readWordsFile();
@@ -28,6 +29,36 @@ function Game::create( %this )
 
 function Game::setupGame(%this)
 {
+	alxStopAll();
+	if(stricmp(Game.Mode,"Battle") == 0)
+	{
+		Game.Round = 1;
+		Game.Time = 30;
+		%this.displayBattleGame();
+		%this.startTimeGame();
+	}
+	else if(stricmp(Game.Mode,"Race") == 0)
+	{
+		Game.Time = 3;
+		%this.startTimeGame();
+		%this.displayRaceGame();
+	}
+	else if(stricmp(Game.Mode,"Time") == 0)
+	{
+		Game.Time = 60;
+		%this.displayTimeGame();
+		%this.startTimeGame();
+	}
+	else if(stricmp(Game.Mode,"Practice") == 0)
+	{
+		SkipButton.Visible = 1;
+		%this.displayPracticeGame();
+	}
+}
+
+function Game::setupMultiplayerGame(%this)
+{
+	%this.Multiplayer = true;
 	alxStopAll();
 	if(stricmp(Game.Mode,"Battle") == 0)
 	{
@@ -75,6 +106,7 @@ function Game::reset(%this)
 	Game.VowelSel = "";
 	Game.MissingVowels = 0;
 	Game.CorrectVowels = 0;
+	Game.Multiplayer = false;
 	Player.reset();
 	AI.reset();
 	$menuMusic = alxPlay("GameAssets:Menuloop");
@@ -119,7 +151,6 @@ function Game::checkAnswer(%this)
 		Player.LastCorrectTime = getRealTime();
 		Game.updateComboAndStreak();
 		Game.DisplayNewWord();
-		Answer.setText("");
 	}
 	else
 	{
@@ -252,8 +283,19 @@ function Game::incrementTime(%this)
 		
 		if(stricmp(Game.Mode,"Battle") == 0)
 		{
-			AI.Attacking = false;
-			%this.startBattle();
+			if(Game.Multiplayer)
+			{
+				Player.Defense = mFloatLength(Player.Defense, 0);
+				Player.Damage = mFloatLength(Player.Damage, 0);
+				MSClient.setPlayerDefense(Player.GameID, Player.Name, Player.Defense);
+				MSClient.setPlayerDamage(Player.GameID, Player.Name, Player.Damage);
+				//TODO Dont allow player to continue answering.
+			}
+			else
+			{
+				AI.Attacking = false;
+				%this.startBattle(AI.Damage);
+			}
 		}
 		else if(stricmp(Game.Mode,"Race") == 0)
 		{
