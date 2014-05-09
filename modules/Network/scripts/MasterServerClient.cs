@@ -67,15 +67,27 @@ function MSClient::onLine(%this, %line) {
 		echo(%line);   //The list is finished, go on with your business
 	}
 	else if(%cmd $= "STARTGAME") {
+		Canvas.popDialog(QueueDialog);
 		Game.Mode = %result;
 		Player.GameID = %params;
-		Game.setupMultiplayerGame();
+		Game.setupGame(true);
+	}
+	else if(%cmd $= "REMATCH") {
+		MainScene.clear();
+		Game.setupGame(true);
+		Canvas.popDialog(LoseDialog);
 	}
 	else if(%cmd $= "DAMAGEPLAYER") {
 		Game.startBattle(%result);
 	}
 	else if(%cmd $= "SETOPPDEF") {
 		AI.Defense = %result;
+	}
+	else if(%cmd $= "SEED") {
+		Game.Seed = %result;
+	}
+	else if(%cmd $= "OPPNAME") {
+		AI.Name = %result;
 	}
 	else if(%cmd $= "ENDGAME") {
 		if(%result $= "WIN")
@@ -93,8 +105,20 @@ function MSClient::onLine(%this, %line) {
 	}
 }
 
+function MSClient::playerWantsRematch(%this, %uid, %name) {
+   %this.send("playerWantsRematch" SPC %uid SPC %name @ "\n");
+}
+
+function MSClient::playerDisconnect(%this, %name) {
+   %this.send("playerDisconnect" SPC %name @ "\n");
+}
+
 function MSClient::setWinner(%this, %uid, %name) {
    %this.send("setWinner" SPC %uid SPC %name @ "\n");
+}
+
+function MSClient::setPlayerHealth(%this, %uid, %name,%health) {
+   %this.send("setPlayerHealth" SPC %uid SPC %name SPC %health @ "\n");
 }
 
 function MSClient::setPlayerDefense(%this, %uid, %name,%defense) {

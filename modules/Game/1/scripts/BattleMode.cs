@@ -6,6 +6,7 @@ function Game::displayBattleGame()
 	Player.displayDefenseBar(Player.Defense,"-10 30");
 	Player.displayHealthBar(Player.Health,"-10 28");
 	Game.displayTime();
+	Game.displayCategory();
 	Game.displayRound();
 	Game.displayVowelButtons();
 	Game.displayBackPanel("GameAssets:panelbeige");
@@ -63,7 +64,8 @@ function Game::startNewRound()
 			Game.Time = 30;
 			Player.Damage = 0;
 			AI.Damage = 0;
-			Player.CurrentWord++;
+			Player.CurrentWord = 0;
+			Game.setupWordList();
 			AI.CurrentWord++;
 			Game.displayBattleGame();
 			Game.schedule(2000,"incrementTime");
@@ -134,10 +136,10 @@ function Game::displayBattleStats()
 	{   
 		Image = "GameAssets:font";
 		Position = "-30 30";
-		FontSize = "8 8";
+		FontSize = "4 4";
 		Layer = 2;
 		TextAlignment = "Center";
-		Text = "You";
+		Text = Player.Name;
 	};
 	
 	MainScene.add(%obj);
@@ -149,10 +151,10 @@ function Game::displayBattleStats()
 	{   
 		Image = "GameAssets:font";
 		Position = "30 30";
-		FontSize = "8 8";
+		FontSize = "4 4";
 		Layer = 2;
 		TextAlignment = "Center";
-		Text = "AI";
+		Text = AI.Name;
 	};  
 		
 	MainScene.add(%obj);

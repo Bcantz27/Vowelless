@@ -64,7 +64,7 @@ function BattleButton::onClick(%this)
 {
 	Game.Mode = "Battle";
 	Canvas.popDialog(GameModeDialog);
-	Game.setupGame();
+	Game.setupGame(false);
 }
 
 // Adding command for RaceButton.
@@ -72,7 +72,7 @@ function RaceButton::onClick(%this)
 {
 	Game.Mode = "Race";
 	Canvas.popDialog(GameModeDialog);
-	Game.setupGame();
+	Game.setupGame(false);
 }
 
 // Adding command for TimeButton.
@@ -80,7 +80,7 @@ function TimeButton::onClick(%this)
 {
 	Game.Mode = "Time";
 	Canvas.popDialog(GameModeDialog);
-	Game.setupGame();
+	Game.setupGame(false);
 }
 
 // Adding command for PracticeButton.
@@ -88,16 +88,22 @@ function PracticeButton::onClick(%this)
 {
 	Game.Mode = "Practice";
 	Canvas.popDialog(GameModeDialog);
-	Game.setupGame();
+	Game.setupGame(false);
 }
 
 // Adding command for PlayAgainButton.
 function PlayAgainButton::onClick(%this)
 {
-	MainScene.clear();
-	Game.shuffleWordList();
-	Game.setupGame();
-	Canvas.popDialog(LoseDialog);
+	if(Game.Multiplayer)
+	{
+		MSClient.playerWantsRematch(Player.GameID, Player.Name);
+	}
+	else
+	{
+		MainScene.clear();
+		Game.setupGame(false);
+		Canvas.popDialog(LoseDialog);
+	}
 }
 
 // Adding command for SkipButton.
@@ -126,6 +132,7 @@ function BackToMenuButton::onClick(%this)
 function MultiplayerBattleButton::onClick(%this)
 {
 	Canvas.popDialog(MultiplayerModeDialog);
+	Canvas.pushDialog(QueueDialog);
 	Network.searchForGame("Battle",Player.Name);
 }
 
@@ -137,6 +144,13 @@ function MultiplayerRaceButton::onClick(%this)
 function MultiplayerGameModeBackButton::onClick(%this)
 {
 	Canvas.popDialog(MultiplayerModeDialog);
+	Canvas.pushDialog(MenuDialog);
+}
+
+function LeaveQueueButton::onClick(%this)
+{
+	Canvas.popDialog(QueueDialog);
+	Network.playerDisconnect();
 	Canvas.pushDialog(MenuDialog);
 }
 

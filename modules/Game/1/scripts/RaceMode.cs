@@ -5,6 +5,7 @@ function Game::displayRaceGame()
 	Game.displayNewWord();
 	Game.displayBackPanel("GameAssets:panelbeige");
 	Game.displayVowelButtons();
+	Game.displayCategory();
 	Answer.Visible = 0;
 }
 

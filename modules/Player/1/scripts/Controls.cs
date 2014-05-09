@@ -20,7 +20,12 @@ function InputHandler::onTouchDown(%this, %touchID, %worldPosition)
 }
 
 function InputHandler::onTouchUp(%this, %touchID, %worldPosition)
-{    
+{
+	if(!isObject(Game.Word) || !isObject(SelectedVowel))
+	{
+		return;
+	}
+
 	echo("Touch Up");
     // Fetch the composite sprite.
     %compositeSprite = Game.Word;
@@ -67,7 +72,7 @@ function InputHandler::onTouchUp(%this, %touchID, %worldPosition)
 				%compositeSprite.setSpriteLocalPosition( (%spriteId - 1)*10 + %startPoint, 0 );
 						
 				// Set size.
-				%compositeSprite.setSpriteSize( 12 );
+				%compositeSprite.setSpriteSize( 8 );
 
 				// Set the sprite image with a random frame.
 				// We could also use an animation here. 
@@ -101,13 +106,16 @@ function InputHandler::onTouchUp(%this, %touchID, %worldPosition)
 					{
 						Player.Combo++;
 						
-						if((Player.Defense + Player.Combo) < Player.MaxDefense)
-							Player.Defense = Player.Defense + (Player.Combo/2);
-						else
-							Player.Defense = Player.MaxDefense;
-							
-						Player.displayDefenseBar(Player.Defense,"-10 30");
-							
+						if(Game.Mode $= "Battle")
+						{
+							if((Player.Defense + Player.Combo) < Player.MaxDefense)
+								Player.Defense = Player.Defense + Player.Combo;
+							else
+								Player.Defense = Player.MaxDefense;
+								
+							Player.displayDefenseBar(Player.Defense,"-10 30");
+						}
+						
 						Player.schedule(Game.ComboDelay,"checkCombo");
 						Player.endCombo = false;
 					}
@@ -175,7 +183,7 @@ function InputHandler::onTouchDragged(%this, %touchID, %worldPosition)
 		if(!isObject(SelectedVowel))
 		{
 			%obj = new Sprite(SelectedVowel);
-			%obj.Size = "10 10";
+			%obj.Size = "8 8";
 			%obj.Position = %worldPosition;
 			%obj.SceneLayer = 1;
 			%obj.setBodyType("dynamic");
@@ -186,7 +194,7 @@ function InputHandler::onTouchDragged(%this, %touchID, %worldPosition)
 		}
 		else
 		{
-			SelectedVowel.MoveTo(%worldPosition, 600, true, true);
+			SelectedVowel.MoveTo(%worldPosition, 1000, true, true);
 		}
 	}
 }

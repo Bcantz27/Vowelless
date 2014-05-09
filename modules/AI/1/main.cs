@@ -1,5 +1,6 @@
 function AI::create( %this )
-{	
+{
+	AI.Name = "AI";
 	AI.MaxHealth = 100;
     AI.Health = AI.MaxHealth;
 	AI.MaxDefense = 50;
@@ -106,6 +107,9 @@ function AI::displayHealthBar(%this,%health,%position)
 		
 	if(isObject(%this.RightRed))
 		%this.RightRed.delete();
+		
+	if(isObject(%this.HealthText))
+		%this.HealthText.delete();
 	
 	%this.leftBack = new Sprite();
 	%this.leftBack.Size = "1 2";
@@ -157,6 +161,18 @@ function AI::displayHealthBar(%this,%health,%position)
 		MainScene.add(%this.rightRed);
 	}
 	
+	%this.HealthText = new ImageFont()  
+	{   
+		Image = "GameAssets:font";
+		Position = VectorAdd(%position,"10.5 0");
+		FontSize = "1.5 1.5";
+		Layer = 2;
+		TextAlignment = "Center";
+		Text = %this.Health @ "/" @ %this.MaxHealth;
+	};  
+	
+	MainScene.add(%this.HealthText);
+	
 	MainScene.add(%this.midRed);
 	MainScene.add(%this.leftBack);
 	MainScene.add(%this.midBack);
@@ -182,6 +198,9 @@ function AI::displayDefenseBar(%this,%health,%position)
 		
 	if(isObject(%this.RightRedDefense))
 		%this.RightRedDefense.delete();
+		
+	if(isObject(%this.DefenseText))
+		%this.DefenseText.delete();
 	
 	%this.leftBackDefense = new Sprite();
 	%this.leftBackDefense.Size = "1 2";
@@ -232,6 +251,18 @@ function AI::displayDefenseBar(%this,%health,%position)
 		%this.rightRedDefense.Image = "GameAssets:barBlueRight";
 		MainScene.add(%this.rightRedDefense);
 	}
+	
+	%this.DefenseText = new ImageFont()  
+	{   
+		Image = "GameAssets:font";
+		Position = VectorAdd(%position,"10.5 0");
+		FontSize = "1.5 1.5";
+		Layer = 2;
+		TextAlignment = "Center";
+		Text = %this.Defense @ "/" @ %this.MaxDefense;
+	};  
+	
+	MainScene.add(%this.DefenseText);
 	
 	MainScene.add(%this.midRedDefense);
 	MainScene.add(%this.leftBackDefense);

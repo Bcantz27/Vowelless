@@ -18,48 +18,25 @@ function Game::create( %this )
 	Game.MissingVowels = 0;
 	Game.CorrectVowels = 0;
 	Game.Multiplayer = false;
+	Game.Category = "";
+	Game.NumberOfCategories = 15;
+	Game.Seed = 0;
 
 	setupVowels();
-	readWordsFile();
 
 	hideSplashScreen();
 	
 	//$menuMusic = alxPlay("GameAssets:Menuloop");
 }
 
-function Game::setupGame(%this)
+function Game::setupGame(%this, %multiplayer)
 {
+	Game.Multiplayer = %multiplayer;
+	
 	alxStopAll();
-	if(stricmp(Game.Mode,"Battle") == 0)
-	{
-		Game.Round = 1;
-		Game.Time = 30;
-		%this.displayBattleGame();
-		%this.startTimeGame();
-	}
-	else if(stricmp(Game.Mode,"Race") == 0)
-	{
-		Game.Time = 3;
-		%this.startTimeGame();
-		%this.displayRaceGame();
-	}
-	else if(stricmp(Game.Mode,"Time") == 0)
-	{
-		Game.Time = 60;
-		%this.displayTimeGame();
-		%this.startTimeGame();
-	}
-	else if(stricmp(Game.Mode,"Practice") == 0)
-	{
-		SkipButton.Visible = 1;
-		%this.displayPracticeGame();
-	}
-}
-
-function Game::setupMultiplayerGame(%this)
-{
-	%this.Multiplayer = true;
-	alxStopAll();
+	
+	Game.setupWordList();
+	
 	if(stricmp(Game.Mode,"Battle") == 0)
 	{
 		Game.Round = 1;
@@ -91,11 +68,6 @@ function Game::destroy( %this )
 	
 }
 
-function Game::shuffleWordList()
-{
-	setupGameWordList();
-}
-
 function Game::reset(%this)
 {
 	Game.FullWordListSize = 0;
@@ -112,76 +84,13 @@ function Game::reset(%this)
 	$menuMusic = alxPlay("GameAssets:Menuloop");
 }
 
-function Game::checkAnswer(%this)
-{
-	%answer = Answer.getText();
-	
-	echo("Guess:" SPC %answer SPC "Answer:" SPC $GameWordList[Player.CurrentWord]);
-	if(stricmp(%answer,$GameWordList[Player.CurrentWord]) == 0)
-	{
-		Player.incrementScore(getWordValue(%answer));
-		Player.CurrentWord++;
-		Player.Streak++;
-		alxPlay("GameAssets:correctSound");
-		
-		if(stricmp(Game.Mode,"Battle") == 0)
-		{
-			Player.Damage = Player.Damage + getWordDamage($GameWordList[Player.CurrentWord]);
-		}
-		else if(stricmp(Game.Mode,"Race") == 0)
-		{
-			if(Player.Score >= Game.RaceTo)
-			{
-				Game.endRace();
-				return;
-			}
-		}
-		
-		if(Player.Combo == 0 || ((getRealTime() - Player.LastCorrectTime) <= Game.ComboDelay))
-		{
-			Player.Combo++;
-			Player.schedule(Game.ComboDelay,"checkCombo");
-			Player.endCombo = false;
-		}
-		else
-		{
-			Player.Combo = 0;
-		}
-		
-		Player.LastCorrectTime = getRealTime();
-		Game.updateComboAndStreak();
-		Game.DisplayNewWord();
-	}
-	else
-	{
-		Player.Streak = 0;
-		Player.Combo = 0;
-		Game.updateComboAndStreak();
-		
-		alxPlay("GameAssets:Wronganswer");
-		
-		if(stricmp(Game.Mode,"Battle") == 0)
-		{
-			Player.incrementScore(-5);
-		}
-		else if(stricmp(Game.Mode,"Time") == 0)
-		{
-			Player.incrementScore(-5);
-		}
-		else if(stricmp(Game.Mode,"Practice") == 0)
-		{
-			Player.incrementScore(-5);
-		}
-	}
-}
-
 function Game::displayVowelButtons(%this)
 {
 	%obj = new Sprite()
 	{
 		class = ClickVowel;
 	};
-	%obj.Size = "10 10";
+	%obj.Size = "8 8";
 	%obj.Vowel  = "a";
 	%obj.Position = "-30 -20";
 	%obj.SceneLayer = 3;
@@ -195,7 +104,7 @@ function Game::displayVowelButtons(%this)
 	{
 		class = ClickVowel;
 	};
-	%obj.Size = "10 10";
+	%obj.Size = "8 8";
 	%obj.Vowel  = "e";
 	%obj.Position = "-15 -20";
 	%obj.SceneLayer = 3;
@@ -209,7 +118,7 @@ function Game::displayVowelButtons(%this)
 	{
 		class = ClickVowel;
 	};
-	%obj.Size = "10 10";
+	%obj.Size = "8 8";
 	%obj.Vowel  = "i";
 	%obj.Position = "0 -20";
 	%obj.SceneLayer = 3;
@@ -223,7 +132,7 @@ function Game::displayVowelButtons(%this)
 	{
 		class = ClickVowel;
 	};
-	%obj.Size = "10 10";
+	%obj.Size = "8 8";
 	%obj.Vowel  = "o";
 	%obj.Position = "15 -20";
 	%obj.SceneLayer = 3;
@@ -237,7 +146,7 @@ function Game::displayVowelButtons(%this)
 	{
 		class = ClickVowel;
 	};
-	%obj.Size = "10 10";
+	%obj.Size = "8 8";
 	%obj.Vowel  = "u";
 	%obj.Position = "30 -20";
 	%obj.SceneLayer = 3;
@@ -287,6 +196,7 @@ function Game::incrementTime(%this)
 			{
 				Player.Defense = mFloatLength(Player.Defense, 0);
 				Player.Damage = mFloatLength(Player.Damage, 0);
+				MSClient.setPlayerHealth(Player.GameID, Player.Name, Player.Health);
 				MSClient.setPlayerDefense(Player.GameID, Player.Name, Player.Defense);
 				MSClient.setPlayerDamage(Player.GameID, Player.Name, Player.Damage);
 				//TODO Dont allow player to continue answering.
@@ -345,6 +255,7 @@ function Game::displayNewWord(%this)
 		
 	%word = $VowellessList[Player.CurrentWord];
 	
+	%this.CorrectVowels = 0;
 	%this.MissingVowels = getNumberOfVowels($GameWordList[Player.CurrentWord]);
 	
 	%this.Word = new CompositeSprite(Word)  ;
@@ -364,7 +275,7 @@ function Game::displayNewWord(%this)
         %this.Word.setSpriteLocalPosition( %n*10 + %startPoint, 0 );
                 
         // Set size.
-        %this.Word.setSpriteSize( 12 );
+        %this.Word.setSpriteSize( 8 );
 
         // Set the sprite image with a random frame.
         // We could also use an animation here. 
@@ -383,9 +294,9 @@ function Game::displayCorrectWord(%this)
 	
 	%obj = new ImageFont(Word)  
 	{   
-		Image = "GameAssets:font";
+		Image = "GameAssets:Woodhouse";
 		Position = "0 0";
-		FontSize = "12 12";
+		FontSize = "8 8";
 		Layer = 2;
 		TextAlignment = "Center";
 		Text = $GameWordList[Player.CurrentWord];
@@ -394,16 +305,16 @@ function Game::displayCorrectWord(%this)
 	MainScene.add(%obj);
 }
 
-function Game::displayDifficulty(%this)
+function Game::displayCategory(%this)
 {
 	%obj = new ImageFont()  
 	{   
 		Image = "GameAssets:font";
-		Position = "40 30";
+		Position = "0 25";
 		FontSize = "2 2";
 		Layer = 2;
 		TextAlignment = "Center";
-		Text = %this.getDifficulty();
+		Text = %this.Category;
 	};  
 	
 	MainScene.add(%obj);

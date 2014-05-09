@@ -5,6 +5,12 @@ function Network::create( %this )
 	
 }
 
+function Network::playerDisconnect(%this)
+{
+	MSClient.playerDisconnect(Player.Name);
+	MSClient.disconnect();
+}
+
 function Network::startMultiplayer(%this)
 {
 	initializeMasterServerClient("25.13.242.180",9100);
@@ -20,6 +26,12 @@ function Network::searchForGame(%this,%mode,%name)
 	{
 		echo("NO CLIENT");
 		initializeMasterServerClient("25.13.242.180",9100);
-		searchForGame(%mode,%name);
+		MSClient.searchForGame(%mode,%name);
 	}
+}
+
+function Network::destroy(%this)
+{
+	if(Game.Multiplayer)
+		%this.playerDisconnect();
 }
