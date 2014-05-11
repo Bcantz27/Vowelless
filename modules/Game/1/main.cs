@@ -21,12 +21,32 @@ function Game::create( %this )
 	Game.Category = "";
 	Game.NumberOfCategories = 15;
 	Game.Seed = 0;
+	Game.WordPowerUp = -1;
+	Game.FreezeTime = false;
+	Game.FlipWords = false;
 
 	setupVowels();
 
 	hideSplashScreen();
 	
 	//$menuMusic = alxPlay("GameAssets:Menuloop");
+}
+
+function Game::flipWords(%this)
+{
+	%this.FlipWords = true;
+	%this.displayWord(false);
+}
+
+function Game::freezeTime(%this)
+{
+	%this.FreezeTime = true;
+	%this.schedule(5000,"unfreezeTime");
+}
+
+function Game::unfreezeTime(%this)
+{
+	%this.FreezeTime = false;
 }
 
 function Game::setupGame(%this, %multiplayer)
@@ -79,6 +99,7 @@ function Game::reset(%this)
 	Game.MissingVowels = 0;
 	Game.CorrectVowels = 0;
 	Game.Multiplayer = false;
+	Game.WordPowerUp = -1;
 	Player.reset();
 	AI.reset();
 	$menuMusic = alxPlay("GameAssets:Menuloop");
@@ -181,8 +202,11 @@ function Game::incrementTime(%this)
 {
 	if(Game.Time > 0)
 	{
-		Game.Time--;
-		%this.displayTime();
+		if(!%this.FreezeTime)
+		{
+			Game.Time--;
+			%this.displayTime();
+		}
 		%this.schedule(1000,"incrementTime");
 	}
 	else
@@ -192,6 +216,7 @@ function Game::incrementTime(%this)
 		
 		if(stricmp(Game.Mode,"Battle") == 0)
 		{
+			Player.Battling = true;
 			if(Game.Multiplayer)
 			{
 				Player.Defense = mFloatLength(Player.Defense, 0);
@@ -221,6 +246,207 @@ function Game::incrementTime(%this)
 	}
 }
 
+function Game::checkPowerUp(%this, %worldPosition)
+{
+	if(Player.Battling || !isObject(PowerupIcons))
+	{
+		return;
+	}
+	
+	%compositeSprite = PowerupIcons;
+    
+    // Pick sprites.
+    %sprites = %compositeSprite.pickPoint( %worldPosition );    
+
+    // Fetch sprite count.    
+    %spriteCount = %sprites.count;
+	
+    // Finish if no sprites picked.
+    if ( %spriteCount == 0 )
+	{
+		return; 
+	}
+        
+    // Iterate sprites.
+    for( %i = 0; %i < %spriteCount; %i++ )
+    {
+        // Fetch sprite Id.
+        %spriteId = getWord( %sprites, %i );
+		%powerupId = Player.PowerUps[%spriteId-1];
+		echo("Sprite ID:" SPC (%spriteId-1) SPC "PowerUp ID:" SPC %powerupId);
+		
+		%compositeSprite.selectSpriteId( %spriteId );
+		%compositeSprite.removeSprite();
+		Player.usePowerUp(%powerupId);
+    }
+}
+
+function Game::checkAnswer(%this, %worldPosition)
+{
+	if(Player.Battling || !isObject(Game.Word))
+	{
+		return;
+	}
+
+	// Fetch the composite sprite.
+    %compositeSprite = Game.Word;
+    
+    // Pick sprites.
+    %sprites = %compositeSprite.pickPoint( %worldPosition );    
+
+    // Fetch sprite count.    
+    %spriteCount = %sprites.count;
+	
+	%word = $VowellessList[Player.CurrentWord];
+	%correctWord = $GameWordList[Player.CurrentWord];
+	%startPoint = -((strlen(%word)-1)*8/2);
+    
+    // Finish if no sprites picked.
+    if ( %spriteCount == 0 )
+	{
+		echo("Removing Vowel");
+		SelectedVowel.safeDelete();
+		Game.VowelSel = "";
+		return; 
+	}
+        
+    // Iterate sprites.
+    for( %i = 0; %i < %spriteCount; %i++ )
+    {
+        // Fetch sprite Id.
+        %spriteId = getWord( %sprites, %i );
+		
+		//echo("Sprite ID:" SPC %spriteID SPC "Char:" SPC getSubStr($VowellessList[Player.CurrentWord],(%spriteId - 1), 1));
+        
+		if(strcmp(getSubStr(%word,%spriteId - 1, 1),"_") == 0)
+		{
+			if(strcmp(getSubStr(%correctWord,%spriteId - 1, 1),Game.VowelSel) == 0)
+			{
+				SelectedVowel.safeDelete();
+				%compositeSprite.selectSpriteId( %spriteId );
+				%compositeSprite.removeSprite();
+				
+				// Add a sprite with no logical position.
+				%compositeSprite.addSprite();
+				
+				// Set the sprites location position to a random location.
+				%compositeSprite.setSpriteLocalPosition( (%spriteId - 1)*8 + %startPoint, 0 );
+						
+				// Set size.
+				%compositeSprite.setSpriteSize( 8 );
+				
+				if(Game.FlipWords)
+					%this.Word.setSpriteAngle( 180 );
+
+				// Set the sprite image with a random frame.
+				// We could also use an animation here. 
+				%compositeSprite.setSpriteImage( "GameAssets:Woodhouse", getASCIIValue(Game.VowelSel) );   
+				
+				Game.VowelSel = "";
+				Game.CorrectVowels++;
+				
+				
+				if(Game.CorrectVowels == Game.MissingVowels)
+				{
+					Player.incrementScore(getWordValue($GameWordList[Player.CurrentWord]));
+					Player.CurrentWord++;
+					Player.Streak++;
+					alxPlay("GameAssets:correctSound");
+					%this.FlipWords = false;
+					
+					if(stricmp(Game.Mode,"Battle") == 0)
+					{
+						Player.Damage = Player.Damage + getWordDamage($GameWordList[Player.CurrentWord]);
+					}
+					else if(stricmp(Game.Mode,"Race") == 0)
+					{
+						if(Player.Score >= Game.RaceTo)
+						{
+							Game.endRace();
+							return;
+						}
+					}
+					
+					if(Player.Combo == 0 || ((getRealTime() - Player.LastCorrectTime) <= Game.ComboDelay))
+					{
+						Player.Combo++;
+						
+						if(Game.Mode $= "Battle")
+						{
+							if((Player.Defense + Player.Combo) < Player.MaxDefense)
+								Player.Defense = Player.Defense + Player.Combo;
+							else
+								Player.Defense = Player.MaxDefense;
+								
+							Player.displayDefenseBar(Player.Defense,"-10 30");
+						}
+						
+						Player.schedule(Game.ComboDelay,"checkCombo");
+						Player.endCombo = false;
+					}
+					else
+					{
+						Player.Combo = 0;
+					}
+					
+					if(Game.WordPowerUp >= 0)
+					{
+						Player.addPowerup(Game.WordPowerUp);
+						Game.WordPowerUp = -1;
+					}
+					
+					Player.LastCorrectTime = getRealTime();
+					Game.updateComboAndStreak();
+					Game.DisplayWord(true);
+					Game.CorrectVowels = 0;
+				}
+				else
+				{
+					//echo("CorrectVowels" SPC Game.CorrectVowels SPC "MissingVowels" SPC Game.MissingVowels);
+				}
+			}
+			else
+			{
+				echo("Guess" SPC Game.VowelSel SPC "Answer" SPC getSubStr(%correctWord,%spriteId - 1, 1));
+				SelectedVowel.safeDelete();
+				Game.VowelSel = "";
+				Player.Streak = 0;
+				Player.Combo = 0;
+				Game.WordPowerUp = -1;
+				Game.updateComboAndStreak();
+				
+				Player.Defense = Player.Defense - 2;
+				
+				if(Player.Defense < 0)
+					Player.Defense = 0;
+				
+				Player.displayDefenseBar(Player.Defense,"-10 30");
+				
+				alxPlay("GameAssets:Wronganswer");
+				
+				if(stricmp(Game.Mode,"Battle") == 0)
+				{
+					Player.incrementScore(-5);
+				}
+				else if(stricmp(Game.Mode,"Time") == 0)
+				{
+					Player.incrementScore(-5);
+				}
+				else if(stricmp(Game.Mode,"Practice") == 0)
+				{
+					Player.incrementScore(-5);
+				}
+			}	
+		}
+		else
+		{
+			SelectedVowel.safeDelete();
+			Game.VowelSel = "";
+			return;
+		}
+    }
+}
+
 function Game::startTimeGame(%this)
 {
 	%this.schedule(3000,"incrementTime");
@@ -248,20 +474,40 @@ function Game::displayBackPanel(%this, %image)
 	MainScene.add(%backPanel);
 }
 
-function Game::displayNewWord(%this)
+function Game::displayWord(%this, %newWord)
 {
 	if(isObject(Word))
 		Word.delete();
-		
+
 	%word = $VowellessList[Player.CurrentWord];
-	
-	%this.CorrectVowels = 0;
-	%this.MissingVowels = getNumberOfVowels($GameWordList[Player.CurrentWord]);
+		
+	if(%newWord)
+	{
+		%this.CorrectVowels = 0;
+		%this.WordPowerUp = -1;
+		%this.MissingVowels = getNumberOfVowels($GameWordList[Player.CurrentWord]);
+		
+		if(%this.MissingVowels >= Powerup.TriggerThreshold)
+		{
+			%this.WordPowerUp = getRandom(0,Powerup.TotalPowerUps-1);
+			echo("Adding word power up" SPC Game.WordPowerUp);
+		}
+		else if(%this.MissingVowels == Powerup.TriggerThreshold-1)
+		{
+			%random = getRandom(1,2);
+			if(%random == 1)
+			{
+				%this.WordPowerUp = getRandom(0,Powerup.TotalPowerUps-1);
+				echo("Adding word power up" SPC Game.WordPowerUp);
+			}
+		}
+		
+	}
 	
 	%this.Word = new CompositeSprite(Word)  ;
 	%this.Word.SetBatchLayout("off");
 	%this.Word.Layer = 2;
-	%startPoint = -(strlen(%word)*10/2);
+	%startPoint = -((strlen(%word)-1)*8/2);
 	
 	// Add some sprites.
 	for( %n = 0; %n < strlen(%word); %n++ )
@@ -272,10 +518,13 @@ function Game::displayNewWord(%this)
         %this.Word.addSprite();
         
         // Set the sprites location position to a random location.
-        %this.Word.setSpriteLocalPosition( %n*10 + %startPoint, 0 );
+        %this.Word.setSpriteLocalPosition( %n*8 + %startPoint, 0 );
                 
         // Set size.
         %this.Word.setSpriteSize( 8 );
+		
+		if(Game.FlipWords)
+			%this.Word.setSpriteAngle( 180 );
 
         // Set the sprite image with a random frame.
         // We could also use an animation here. 
@@ -284,7 +533,7 @@ function Game::displayNewWord(%this)
 	
 	MainScene.add(%this.Word);
 	
-	echo("New Word Displayed:" SPC Player.CurrentWord SPC $VowellessList[Player.CurrentWord]);
+	//echo("New Word Displayed:" SPC Player.CurrentWord SPC $VowellessList[Player.CurrentWord]);
 }
 
 function Game::displayCorrectWord(%this)
@@ -462,5 +711,5 @@ function Game::skipWord()
 	Game.updateComboAndStreak();
 	Game.displayCorrectWord();
 	Player.CurrentWord++;
-	Game.schedule(1000,"displayNewWord");
+	Game.schedule(1000,"displayWord", true);
 }

@@ -15,6 +15,7 @@ function AI::create( %this )
 	AI.LastCorrectTime = 0;
 	AI.Attacking = true;
 	AI.HitChance = 6;
+	AI.NumberOfPowerUps = 0;
 }
 
 function AI::destroy( %this )
@@ -86,6 +87,23 @@ function AI::reset(%this)
 	%this.Combo = 0;
 	%this.LastCorrectTime = 0;
 	%this.Damage = 0;
+	%this.NumberOfPowerUps = 0;
+}
+
+function AI::addPowerUp(%this, %id)
+{
+	%this.PowerUps[%this.NumberOfPowerUps] = %id;
+	%this.NumberOfPowerUps++;
+}
+
+function AI::clearPowerUps(%this)
+{
+	for(%i = 0; %i < %this.NumberOfPowerUps; %i++)
+	{
+		%this.PowerUps[%i] = -1;
+	}
+	
+	%this.NumberOfPowerUps = 0;
 }
 
 function AI::displayHealthBar(%this,%health,%position)

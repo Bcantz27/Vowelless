@@ -1,0 +1,7 @@
+<ImageAsset
+    AssetName="HealButton"
+    ImageFile="HealButton.png"
+    CellCountX="2"
+    CellCountY="1"
+    CellWidth="172"
+    CellHeight="128" />

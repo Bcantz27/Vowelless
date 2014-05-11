@@ -82,7 +82,6 @@ hacker
 hardware
 home page
 host
-html
 hyperlink
 hypertext
 icon
@@ -146,7 +145,6 @@ program
 programmer
 protocol
 queue
-QWERTY
 real-time
 reboot
 resolution

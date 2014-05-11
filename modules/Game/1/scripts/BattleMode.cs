@@ -2,9 +2,10 @@ function Game::displayBattleGame()
 {
 	MainScene.clear();
 	Game.displayScore();
-	Game.displayNewWord();
+	Game.displayWord(true);
 	Player.displayDefenseBar(Player.Defense,"-10 30");
 	Player.displayHealthBar(Player.Health,"-10 28");
+	Player.displayPowerUps();
 	Game.displayTime();
 	Game.displayCategory();
 	Game.displayRound();
@@ -64,10 +65,12 @@ function Game::startNewRound()
 			Game.Time = 30;
 			Player.Damage = 0;
 			AI.Damage = 0;
+			
 			Player.CurrentWord = 0;
 			Game.setupWordList();
 			AI.CurrentWord++;
 			Game.displayBattleGame();
+			Player.Battling = false;
 			Game.schedule(2000,"incrementTime");
 			AI.schedule(2000,"readWord");
 		}
@@ -117,6 +120,26 @@ function Game::displayHitDamage(%this,%damage,%position)
 	%obj.setBodyType("dynamic");
 	%obj.setLinearVelocityY(4);
 	%obj.schedule(1000,"safeDelete");
+	
+	MainScene.add(%obj);
+}
+
+function Game::displayPowerUpPickup(%this, %id, %position)
+{
+	%name = Powerup.getPowerUpName(%id);
+	%obj = new ImageFont()  
+	{   
+		Image = "GameAssets:font";
+		Position = %position;
+		FontSize = "2 2";
+		Layer = 1;
+		TextAlignment = "Center";
+		Text = "You obtained" SPC %name;
+	};  
+	
+	%obj.setBodyType("dynamic");
+	%obj.setLinearVelocityY(4);
+	%obj.schedule(2000,"safeDelete");
 	
 	MainScene.add(%obj);
 }
