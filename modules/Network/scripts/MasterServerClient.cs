@@ -83,11 +83,23 @@ function MSClient::onLine(%this, %line) {
 	else if(%cmd $= "SETOPPDEF") {
 		AI.Defense = %result;
 	}
+	else if(%cmd $= "SETOPPHEALTH") {
+		AI.Health = %result;
+	}
 	else if(%cmd $= "SEED") {
 		Game.Seed = %result;
 	}
 	else if(%cmd $= "OPPNAME") {
 		AI.Name = %result;
+	}
+	else if(%cmd $= "FLIP") {
+		Game.FlipWords();
+	}
+	else if(%cmd $= "RESETCOMBO") {
+		Player.resetCombo();
+	}
+	else if(%cmd $= "BLIND") {
+		Game.displayBlindPanel("GameAssets:panelbeige");
 	}
 	else if(%cmd $= "ENDGAME") {
 		if(%result $= "WIN")
@@ -103,6 +115,18 @@ function MSClient::onLine(%this, %line) {
 	{
 		echo("CMD: " @ %cmd @ " LINE: " @ %line @ " RESULT: " @ %result @ " PARAMS: " @ %params);
 	}
+}
+
+function MSClient::blindOpp(%this, %uid, %name) {
+   %this.send("blindOpp" SPC %uid SPC %name @ "\n");
+}
+
+function MSClient::resetOpp(%this, %uid, %name) {
+   %this.send("resetOpp" SPC %uid SPC %name @ "\n");
+}
+
+function MSClient::flipOppWord(%this, %uid, %name) {
+   %this.send("flipOppWord" SPC %uid SPC %name @ "\n");
 }
 
 function MSClient::playerWantsRematch(%this, %uid, %name) {

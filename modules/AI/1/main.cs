@@ -184,7 +184,7 @@ function AI::displayHealthBar(%this,%health,%position)
 		Image = "GameAssets:font";
 		Position = VectorAdd(%position,"10.5 0");
 		FontSize = "1.5 1.5";
-		Layer = 2;
+		Layer = 3;
 		TextAlignment = "Center";
 		Text = %this.Health @ "/" @ %this.MaxHealth;
 	};  
@@ -275,7 +275,7 @@ function AI::displayDefenseBar(%this,%health,%position)
 		Image = "GameAssets:font";
 		Position = VectorAdd(%position,"10.5 0");
 		FontSize = "1.5 1.5";
-		Layer = 2;
+		Layer = 3;
 		TextAlignment = "Center";
 		Text = %this.Defense @ "/" @ %this.MaxDefense;
 	};  

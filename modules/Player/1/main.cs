@@ -30,6 +30,13 @@ function Player::destroy( %this )
 
 }
 
+function Player::resetCombo(%this)
+{
+	Player.Streak = 0;
+	Player.Combo = 0;
+	Game.updateComboAndStreak();
+}
+
 function Player::incrementScore(%this,%amount)
 {
 	%this.score = %this.score + %amount;
@@ -56,7 +63,7 @@ function Player::displayPowerUps(%this)
 
 	%pwrups = new CompositeSprite(PowerupIcons)  ;
 	%pwrups.SetBatchLayout("off");
-	%pwrups.Layer = 2;
+	%pwrups.SceneLayer = 2;
 	%startPoint = -(%this.NumberOfPowerUps*5/2);
 	
 	// Add some sprites.
@@ -94,14 +101,14 @@ function Player::usePowerUp(%this, %id)
 	{
 		if(Game.Multiplayer)
 		{
-		
+			MSClient.resetOpp(Player.GameID, Player.Name);
 		}
 	}
 	else if(%id == 3)	//Blind
 	{
 		if(Game.Multiplayer)
 		{
-		
+			MSClient.blindOpp(Player.GameID, Player.Name);
 		}
 	}
 	else if(%id == 4)	//Heal
@@ -110,10 +117,9 @@ function Player::usePowerUp(%this, %id)
 	}
 	else if(%id == 5)	//Flip
 	{
-		Game.FlipWords();
 		if(Game.Multiplayer)
 		{
-		
+			MSClient.flipOppWord(Player.GameID, Player.Name);
 		}
 	}
 	else if(%id == 6)	//Freeze
@@ -316,7 +322,7 @@ function Player::displayHealthBar(%this,%health,%position)
 		Image = "GameAssets:font";
 		Position = VectorAdd(%position,"10.5 0");
 		FontSize = "1.5 1.5";
-		Layer = 2;
+		SceneLayer = 3;
 		TextAlignment = "Center";
 		Text = %this.Health @ "/" @ %this.MaxHealth;
 	};  
@@ -406,7 +412,7 @@ function Player::displayDefenseBar(%this,%health,%position)
 		Image = "GameAssets:font";
 		Position = VectorAdd(%position,"10.5 0");
 		FontSize = "1.5 1.5";
-		Layer = 2;
+		SceneLayer = 3;
 		TextAlignment = "Center";
 		Text = %this.Defense @ "/" @ %this.MaxDefense;
 	};  

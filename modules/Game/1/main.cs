@@ -114,7 +114,7 @@ function Game::displayVowelButtons(%this)
 	%obj.Size = "8 8";
 	%obj.Vowel  = "a";
 	%obj.Position = "-30 -20";
-	%obj.SceneLayer = 3;
+	%obj.setSceneLayer(3);
 	%obj.setBodyType("static");
 	%obj.Image = "GameAssets:Woodhouse";
 	%obj.Frame = getASCIIValue("a");
@@ -128,7 +128,7 @@ function Game::displayVowelButtons(%this)
 	%obj.Size = "8 8";
 	%obj.Vowel  = "e";
 	%obj.Position = "-15 -20";
-	%obj.SceneLayer = 3;
+	%obj.setSceneLayer(3);
 	%obj.setBodyType("static");
 	%obj.Image = "GameAssets:Woodhouse";
 	%obj.Frame = getASCIIValue("e");
@@ -142,7 +142,7 @@ function Game::displayVowelButtons(%this)
 	%obj.Size = "8 8";
 	%obj.Vowel  = "i";
 	%obj.Position = "0 -20";
-	%obj.SceneLayer = 3;
+	%obj.setSceneLayer(3);
 	%obj.setBodyType("static");
 	%obj.Image = "GameAssets:Woodhouse";
 	%obj.Frame = getASCIIValue("i");
@@ -156,7 +156,7 @@ function Game::displayVowelButtons(%this)
 	%obj.Size = "8 8";
 	%obj.Vowel  = "o";
 	%obj.Position = "15 -20";
-	%obj.SceneLayer = 3;
+	%obj.setSceneLayer(3);
 	%obj.setBodyType("static");
 	%obj.Image = "GameAssets:Woodhouse";
 	%obj.Frame = getASCIIValue("o");
@@ -170,7 +170,7 @@ function Game::displayVowelButtons(%this)
 	%obj.Size = "8 8";
 	%obj.Vowel  = "u";
 	%obj.Position = "30 -20";
-	%obj.SceneLayer = 3;
+	%obj.setSceneLayer(3);
 	%obj.setBodyType("static");
 	%obj.Image = "GameAssets:Woodhouse";
 	%obj.Frame = getASCIIValue("u");
@@ -254,6 +254,7 @@ function Game::checkPowerUp(%this, %worldPosition)
 	}
 	
 	%compositeSprite = PowerupIcons;
+	%compositeSprite.setSceneLayer(3);
     
     // Pick sprites.
     %sprites = %compositeSprite.pickPoint( %worldPosition );    
@@ -290,6 +291,7 @@ function Game::checkAnswer(%this, %worldPosition)
 
 	// Fetch the composite sprite.
     %compositeSprite = Game.Word;
+	%compositeSprite.setSceneLayer(3);
     
     // Pick sprites.
     %sprites = %compositeSprite.pickPoint( %worldPosition );    
@@ -410,10 +412,8 @@ function Game::checkAnswer(%this, %worldPosition)
 				echo("Guess" SPC Game.VowelSel SPC "Answer" SPC getSubStr(%correctWord,%spriteId - 1, 1));
 				SelectedVowel.safeDelete();
 				Game.VowelSel = "";
-				Player.Streak = 0;
-				Player.Combo = 0;
+				Player.resetCombo();
 				Game.WordPowerUp = -1;
-				Game.updateComboAndStreak();
 				
 				Player.Defense = Player.Defense - 2;
 				
@@ -468,10 +468,29 @@ function Game::displayBackPanel(%this, %image)
 	%backPanel = new Sprite();
 	%backPanel.Size = "104 77";
 	%backPanel.Position = "0 0";
-	%backPanel.SceneLayer = 31;
+	%backPanel.setSceneLayer(31);
 	%backPanel.setBodyType("static");
 	%backPanel.Image = %image;
 	MainScene.add(%backPanel);
+}
+
+function Game::displayBlindPanel(%this, %image)
+{
+	%backPanel = new Sprite(BlindPanel);
+	%backPanel.Size = "104 77";
+	%backPanel.Position = "0 0";
+	%backPanel.setSceneLayer(1);
+	%backPanel.setBodyType("static");
+	%backPanel.Image = %image;
+	MainScene.add(%backPanel);
+	
+	Game.schedule(5000,"removeBlindPanel");
+}
+
+function Game::removeBlindPanel(%this)
+{
+	if(isObject(BlindPanel))
+		BlindPanel.delete();
 }
 
 function Game::displayWord(%this, %newWord)
@@ -506,7 +525,7 @@ function Game::displayWord(%this, %newWord)
 	
 	%this.Word = new CompositeSprite(Word)  ;
 	%this.Word.SetBatchLayout("off");
-	%this.Word.Layer = 2;
+	%this.Word.setSceneLayer(3);
 	%startPoint = -((strlen(%word)-1)*8/2);
 	
 	// Add some sprites.
@@ -546,7 +565,7 @@ function Game::displayCorrectWord(%this)
 		Image = "GameAssets:Woodhouse";
 		Position = "0 0";
 		FontSize = "8 8";
-		Layer = 2;
+		SceneLayer = 3;
 		TextAlignment = "Center";
 		Text = $GameWordList[Player.CurrentWord];
 	};  
@@ -561,7 +580,7 @@ function Game::displayCategory(%this)
 		Image = "GameAssets:font";
 		Position = "0 25";
 		FontSize = "2 2";
-		Layer = 2;
+		SceneLayer = 3;
 		TextAlignment = "Center";
 		Text = %this.Category;
 	};  
@@ -579,7 +598,7 @@ function Game::displayScore(%this)
 		Image = "GameAssets:ActionComic";
 		Position = "40 33";
 		FontSize = "5 5";
-		Layer = 2;
+		SceneLayer = 3;
 		TextAlignment = "Center";
 		Text = Player.score;
 	}; 
@@ -600,7 +619,7 @@ function Game::displayFinalScore(%this)
 		Image = "GameAssets:ActionComic";
 		Position = "0 10";
 		FontSize = "7 7";
-		Layer = 2;
+		SceneLayer = 3;
 		TextAlignment = "Center";
 		Text = Player.score;
 	}; 
@@ -621,7 +640,7 @@ function Game::displayStreak(%this)
 		Image = "GameAssets:ActionComic";
 		Position = "40 25";
 		FontSize = "2 2";
-		Layer = 2;
+		SceneLayer = 3;
 		TextAlignment = "Center";
 		Text = (Player.Streak SPC "STREAK");
 	};  
@@ -642,7 +661,7 @@ function Game::displayCombo(%this)
 		Image = "GameAssets:ActionComic";
 		Position = "40 20";
 		FontSize = "2 2";
-		Layer = 2;
+		SceneLayer = 3;
 		TextAlignment = "Center";
 		Text = (Player.Combo SPC "COMBO");
 	};  
@@ -660,27 +679,9 @@ function Game::displayTime(%this)
 		Image = "GameAssets:font";
 		Position = "0 35";
 		FontSize = "2 2";
-		Layer = 2;
+		SceneLayer = 3;
 		TextAlignment = "Center";
 		Text = ("Time:" SPC Game.Time);
-	};  
-	
-	MainScene.add(%obj);
-}
-
-function Game::displayHealth(%this)
-{
-	if(isObject(Health))
-		Health.delete();
-
-	%obj = new ImageFont(Health)  
-	{   
-		Image = "GameAssets:font";
-		Position = "0 33";
-		FontSize = "2 2";
-		Layer = 2;
-		TextAlignment = "Center";
-		Text = ("Health:" SPC Player.Health);
 	};  
 	
 	MainScene.add(%obj);

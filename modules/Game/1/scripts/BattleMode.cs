@@ -65,7 +65,8 @@ function Game::startNewRound()
 			Game.Time = 30;
 			Player.Damage = 0;
 			AI.Damage = 0;
-			
+			Game.FreezeTime = false;
+			Game.FlipWords = false;
 			Player.CurrentWord = 0;
 			Game.setupWordList();
 			AI.CurrentWord++;
@@ -84,7 +85,7 @@ function Game::displayRound()
 		Image = "GameAssets:Woodhouse";
 		Position = "-38 33";
 		FontSize = "2 2";
-		Layer = 2;
+		SceneLayer = 2;
 		TextAlignment = "Center";
 		Text = "Round";
 	};  
@@ -96,7 +97,7 @@ function Game::displayRound()
 		Image = "GameAssets:Woodhouse";
 		Position = "-38 31";
 		FontSize = "2 2";
-		Layer = 2;
+		SceneLayer = 2;
 		TextAlignment = "Center";
 		Text = Game.Round @ " of 3";
 	};  
@@ -112,7 +113,7 @@ function Game::displayHitDamage(%this,%damage,%position)
 		Image = "GameAssets:Woodhouse";
 		Position = %position;
 		FontSize = "2 2";
-		Layer = 1;
+		SceneLayer = 2;
 		TextAlignment = "Center";
 		Text = -%damage;
 	};  
@@ -132,7 +133,7 @@ function Game::displayPowerUpPickup(%this, %id, %position)
 		Image = "GameAssets:font";
 		Position = %position;
 		FontSize = "2 2";
-		Layer = 1;
+		SceneLayer = 2;
 		TextAlignment = "Center";
 		Text = "You obtained" SPC %name;
 	};  
@@ -160,7 +161,7 @@ function Game::displayBattleStats()
 		Image = "GameAssets:font";
 		Position = "-30 30";
 		FontSize = "4 4";
-		Layer = 2;
+		SceneLayer = 2;
 		TextAlignment = "Center";
 		Text = Player.Name;
 	};
@@ -175,7 +176,7 @@ function Game::displayBattleStats()
 		Image = "GameAssets:font";
 		Position = "30 30";
 		FontSize = "4 4";
-		Layer = 2;
+		SceneLayer = 2;
 		TextAlignment = "Center";
 		Text = AI.Name;
 	};  

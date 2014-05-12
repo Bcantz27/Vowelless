@@ -120,7 +120,8 @@ function BackToMenuButton::onClick(%this)
 {
 	if(Game.Multiplayer)
 	{
-		MSClient.disconnect();
+		Network.playerDisconnect();
+		Game.Multiplayer = false;
 	}
 	
 	MainScene.clear();
