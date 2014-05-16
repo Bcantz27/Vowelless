@@ -1,8 +1,7 @@
 function Network::create( %this )
 {
-	
 	exec("./scripts/MasterServerClient.cs");
-	
+
 }
 
 function Network::playerDisconnect(%this)
@@ -14,6 +13,7 @@ function Network::playerDisconnect(%this)
 function Network::startMultiplayer(%this)
 {
 	initializeMasterServerClient("25.13.242.180",9100);
+	MSClient.registerUser(Player.Name);
 }
 
 function Network::searchForGame(%this,%mode,%name)

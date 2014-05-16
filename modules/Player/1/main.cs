@@ -21,6 +21,7 @@ function Player::create( %this )
 	Player.GameID = "";
 	Player.NumberOfPowerUps = 0;
 	Player.Battling = false;
+	Player.Elo = 0;
 	
 	Player.InputController.initialize();
 }
@@ -53,6 +54,48 @@ function Player::checkCombo(%this)
 	else
 	{
 		%this.endCombo = true;
+	}
+}
+
+function Player::displayElo(%this)
+{
+	if(isObject(PlayerElo))
+		PlayerElo.delete();
+	
+	%obj = new ImageFont(PlayerElo)  
+	{   
+		Image = "GameAssets:Woodhouse";
+		Position = "0 15";
+		FontSize = "2 2";
+		SceneLayer = 3;
+		TextAlignment = "Center";
+		Text = Player.Elo;
+	};  
+		
+	MainScene.add(%obj);
+}
+
+function Player::setHealth(%this,%amount)
+{
+	if(!Player.Battling)
+	{
+		Player.Health = %amount;
+	}
+	else
+	{
+		Player.schedule(500,"setHealth",%amount);
+	}
+}
+
+function Player::setDefense(%this,%amount)
+{
+	if(!Player.Battling)
+	{
+		Player.Defense = %amount;
+	}
+	else
+	{
+		Player.schedule(500,"setDefense",%amount);
 	}
 }
 

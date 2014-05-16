@@ -6,6 +6,7 @@ function Game::displayBattleGame()
 	Player.displayDefenseBar(Player.Defense,"-10 30");
 	Player.displayHealthBar(Player.Health,"-10 28");
 	Player.displayPowerUps();
+	Player.displayElo();
 	Game.displayTime();
 	Game.displayCategory();
 	Game.displayRound();

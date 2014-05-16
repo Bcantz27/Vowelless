@@ -178,26 +178,6 @@ function Game::displayVowelButtons(%this)
 	MainScene.add(%obj);
 }
 
-function Game::getDifficulty(%this)
-{
-	if(Player.difficulty == 1)
-	{
-		return "Easy";
-	}
-	else if(Player.difficulty == 2)
-	{
-		return "Medium";
-	}
-	else if(Player.difficulty == 3)
-	{
-		return "Hard";
-	}
-	else if(Player.difficulty == 4)
-	{
-		return "Insane";
-	}
-}
-
 function Game::incrementTime(%this)
 {
 	if(Game.Time > 0)
@@ -284,7 +264,7 @@ function Game::checkPowerUp(%this, %worldPosition)
 
 function Game::checkAnswer(%this, %worldPosition)
 {
-	if(Player.Battling || !isObject(Game.Word))
+	if(Player.Battling || !isObject(Game.Word) || !isObject(SelectedVowel))
 	{
 		return;
 	}

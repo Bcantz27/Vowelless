@@ -80,11 +80,13 @@ function MSClient::onLine(%this, %line) {
 	else if(%cmd $= "DAMAGEPLAYER") {
 		Game.startBattle(%result);
 	}
-	else if(%cmd $= "SETOPPDEF") {
-		AI.Defense = %result;
+	else if(%cmd $= "SETDEF") {
+		Player.setDefense(%result);
+		AI.setDefense(%params);
 	}
-	else if(%cmd $= "SETOPPHEALTH") {
-		AI.Health = %result;
+	else if(%cmd $= "SETHEALTH") {
+		Player.setHealth(%result);
+		AI.setHealth(%params);
 	}
 	else if(%cmd $= "SEED") {
 		Game.Seed = %result;
@@ -101,6 +103,9 @@ function MSClient::onLine(%this, %line) {
 	else if(%cmd $= "BLIND") {
 		Game.displayBlindPanel("GameAssets:panelbeige");
 	}
+	else if(%cmd $= "STATS") {
+		Player.Elo = %result;
+	}
 	else if(%cmd $= "ENDGAME") {
 		if(%result $= "WIN")
 		{
@@ -115,6 +120,10 @@ function MSClient::onLine(%this, %line) {
 	{
 		echo("CMD: " @ %cmd @ " LINE: " @ %line @ " RESULT: " @ %result @ " PARAMS: " @ %params);
 	}
+}
+
+function MSClient::registerUser(%this, %name) {
+   %this.send("registerUser" SPC %name @ "\n");
 }
 
 function MSClient::blindOpp(%this, %uid, %name) {

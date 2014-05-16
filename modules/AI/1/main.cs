@@ -34,6 +34,30 @@ function AI::readWord(%this)
 	%this.tryToAnswer();
 }
 
+function AI::setDefense(%this,%amount)
+{
+	if(!Player.Battling)
+	{
+		AI.Defense = %amount;
+	}
+	else
+	{
+		AI.schedule(500,"setDefense",%amount);
+	}
+}
+
+function AI::setHealth(%this,%amount)
+{
+	if(!Player.Battling)
+	{
+		AI.Health = %amount;
+	}
+	else
+	{
+		AI.schedule(500,"setHealth",%amount);
+	}
+}
+
 function AI::incrementScore(%this,%amount)
 {
 	%this.score = %this.score + %amount;
