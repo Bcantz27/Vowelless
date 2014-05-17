@@ -41,7 +41,7 @@ function Player::resetCombo(%this)
 function Player::incrementScore(%this,%amount)
 {
 	%this.score = %this.score + %amount;
-	Game.displayScore();
+	Game.displayScore("40 33");
 }
 
 function Player::checkCombo(%this)
@@ -57,22 +57,22 @@ function Player::checkCombo(%this)
 	}
 }
 
-function Player::displayElo(%this)
+function Player::displayElo(%this, %position)
 {
-	if(isObject(PlayerElo))
-		PlayerElo.delete();
+	if(isObject(%this.EloDisplay))
+		%this.EloDisplay.delete();
 	
-	%obj = new ImageFont(PlayerElo)  
+	%this.EloDisplay = new ImageFont()  
 	{   
 		Image = "GameAssets:Woodhouse";
-		Position = "0 15";
+		Position = %position;
 		FontSize = "2 2";
 		SceneLayer = 3;
 		TextAlignment = "Center";
-		Text = Player.Elo;
+		Text = "Rating" SPC %this.Elo;
 	};  
 		
-	MainScene.add(%obj);
+	MainScene.add(%this.EloDisplay);
 }
 
 function Player::setHealth(%this,%amount)
@@ -251,7 +251,7 @@ function Player::changeHealth(%this,%amount)
 	if(%amount < 0)
 	{
 		MainWindow.startCameraShake(%amount, 1);
-		Game.displayHitDamage(%amount,"-30 10");
+		Game.displayHitDamage(%amount,"-30 25");
 	}
 
 	if((Player.Health + %amount) > 0)

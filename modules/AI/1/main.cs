@@ -16,6 +16,7 @@ function AI::create( %this )
 	AI.Attacking = true;
 	AI.HitChance = 6;
 	AI.NumberOfPowerUps = 0;
+	AI.Elo = 0;
 }
 
 function AI::destroy( %this )
@@ -32,6 +33,24 @@ function AI::readWord(%this)
 	setRandomSeed(getRealTime());
 	%this.Attacking = true;
 	%this.tryToAnswer();
+}
+
+function AI::displayElo(%this, %position)
+{
+	if(isObject(%this.EloDisplay))
+		%this.EloDisplay.delete();
+	
+	%this.EloDisplay = new ImageFont()  
+	{   
+		Image = "GameAssets:Woodhouse";
+		Position = %position;
+		FontSize = "2 2";
+		SceneLayer = 3;
+		TextAlignment = "Center";
+		Text = "Rating" SPC %this.Elo;
+	};  
+		
+	MainScene.add(%this.EloDisplay);
 }
 
 function AI::setDefense(%this,%amount)
@@ -335,7 +354,7 @@ function AI::changeHealth(%this,%amount)
 		{
 			AI.Health = AI.Health + %amount;
 			AI.Health = mFloatLength(AI.Health, 0);
-			Game.displayHitDamage(%amount,"30 10");
+			Game.displayHitDamage(%amount,"30 25");
 		}
 	}
 	else

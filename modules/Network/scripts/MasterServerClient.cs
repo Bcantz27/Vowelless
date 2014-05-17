@@ -106,6 +106,9 @@ function MSClient::onLine(%this, %line) {
 	else if(%cmd $= "STATS") {
 		Player.Elo = %result;
 	}
+	else if(%cmd $= "OPPELO") {
+		AI.Elo = %result;
+	}
 	else if(%cmd $= "ENDGAME") {
 		if(%result $= "WIN")
 		{
