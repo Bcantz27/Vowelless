@@ -61,7 +61,6 @@ drift
 drifting snow
 drizzle
 drought
-dry
 dust devil
 duststorm
 earthlight
@@ -179,7 +178,6 @@ Santa Ana wind
 scattered
 sea breeze
 shower
-sky
 sleet
 slush
 smog

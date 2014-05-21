@@ -1,69 +1,84 @@
 <GuiSpriteCtrl
     Name="OptionsDialog"
-    Profile="GuiDefaultProfile"
+    Profile="GuiTransparentProfile"
     HorizSizing="relative"
     VertSizing="relative"
     Position="0 0"
-    Extent="1024 768"
-    MinExtent="320 320"
+    Extent="640 960"
+    MinExtent="640 960"
     Visible="1"
     Image="@asset=GameAssets:MMBackground">
 
-    <!-- Controls-->
-    <GuiButtonCtrl
-		Name="ControlsButton"
-		Profile="RedButtonProfile"
-		Text="Controls"
-		ButtonType="PushButton"
-		canSaveDynamicFields="0"
-		isContainer="0"
-		HorizSizing="relative"
-		VertSizing="relative"
-		Position="412 369"
-		Extent="200 30"
-		MinExtent="100 15"
-		canSave="1"
-		Visible="1"
-		Active="1"
-		groupNum="-1"
-		useMouseEvents="1" />
+	<!-- Sound Controls -->
+    <GuiBitmapButtonCtrl
+        Name="SoundButton"
+        bitmap="./assets/gui/images/SoundControlButton.png"
+        ButtonType="PushButton"
+        canSaveDynamicFields="0"
+        isContainer="0"
+        HorizSizing="relative"
+        VertSizing="relative"
+        Position="150 350"
+        Extent="300 90"
+        MinExtent="300 90"
+        canSave="1"
+        Visible="1"
+        Active="1"
+        groupNum="-1"
+        useMouseEvents="1" />
 		
-	<!-- Sound-->
-    <GuiButtonCtrl
-		Name="SoundButton"
-		Profile="RedButtonProfile"
-		Text="Sound"
-		ButtonType="PushButton"
-		canSaveDynamicFields="0"
-		isContainer="0"
-		HorizSizing="relative"
-		VertSizing="relative"
-		Position="412 399"
-		Extent="200 30"
-		MinExtent="100 15"
-		canSave="1"
-		Visible="1"
-		Active="1"
-		groupNum="-1"
-		useMouseEvents="1" />
-
-    <!-- Back-->
-    <GuiButtonCtrl
+	<!-- Back Button-->
+    <GuiBitmapButtonCtrl
 		Name="BackButton"
-		Profile="RedButtonProfile"
-		Text="Back"
+        bitmap="./assets/gui/images/BackButton.png"
 		ButtonType="PushButton"
 		canSaveDynamicFields="0"
 		isContainer="0"
 		HorizSizing="relative"
 		VertSizing="relative"
-		Position="412 429"
-		Extent="200 30"
-		MinExtent="100 15"
+        Position="180 440"
+        Extent="250 75"
+        MinExtent="250 75"
 		canSave="1"
 		Visible="1"
 		Active="1"
 		groupNum="-1"
 		useMouseEvents="1" />
 
+    <!-- Quit Game-->
+    <GuiBitmapButtonCtrl
+        Name="QuitButton"
+        bitmap="./assets/gui/images/Button-05-Close.png"
+        ButtonType="PushButton"
+        canSaveDynamicFields="0"
+        isContainer="0"
+        HorizSizing="relative"
+        VertSizing="relative"
+        Position="50 800"
+        Extent="100 100"
+        MinExtent="50 50"
+        canSave="1"
+        Visible="1"
+        Active="1"
+        groupNum="-1"
+        useMouseEvents="1" />    
+
+    <!-- Shop -->
+    <GuiBitmapButtonCtrl
+        Name="ShopButton"
+        bitmap="./assets/gui/images/Button-05-Store.png"
+        ButtonType="PushButton"
+        canSaveDynamicFields="0"
+        isContainer="0"
+        HorizSizing="relative"
+        VertSizing="relative"
+        Position="450 800"
+        Extent="100 100"
+        MinExtent="50 50"
+        canSave="1"
+        Visible="1"
+        Active="1"
+        groupNum="-1"
+        useMouseEvents="1" /> 	
+		
 </GuiSpriteCtrl>

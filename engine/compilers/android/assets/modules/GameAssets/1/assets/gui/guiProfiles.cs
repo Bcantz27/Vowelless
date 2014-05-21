@@ -20,8 +20,18 @@
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
-$platformFontType = ($platform $= "windows") ? "lucida console" : "monaco";
-$platformFontSize = ($platform $= "ios") ? 18 : 12;
+if ($platform $= "windows")
+	$platformFontType = "lucida console";
+else if ($platform $= "Android")
+	$platformFontType = "Droid";
+else
+	$platformFontType = "monaco";
+if ($platform $= "ios")
+	$platformFontSize = 18;
+else if ($platform $= "Android")
+	$platformFontSize = 14;
+else
+	$platformFontSize = 12;
 
 //-----------------------------------------------------------------------------
 
@@ -320,20 +330,6 @@ if(!isObject(GuiToolboxProfile)) new GuiControlProfile( GuiToolboxProfile : GuiS
     borderThickness = 0;
     borderColor = "0 0 0";
 };
-
-//-----------------------------------------------------------------------------
-
-if(!isObject(GuiWindowProfile)) new GuiControlProfile (GuiWindowProfile : GuiDefaultProfile)
-{
-    // fill color
-    opaque = false;
-    fillColor = "0 0 0 92";
-
-    // font
-    fontType = $platformFontType;
-    fontSize = $platformFontSize;
-    fontColor = "255 255 255 255";
-}; 
 
 //-----------------------------------------------------------------------------
 

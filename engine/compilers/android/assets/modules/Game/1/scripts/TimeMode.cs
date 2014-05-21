@@ -6,4 +6,5 @@ function Game::displayTimeGame()
 	Game.displayTime();
 	Game.displayBackPanel("GameAssets:panelbeige");
 	Game.displayVowelButtons();
+	Game.displayCategory();
 }

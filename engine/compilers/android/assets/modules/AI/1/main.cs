@@ -1,5 +1,6 @@
 function AI::create( %this )
-{	
+{
+	AI.Name = "AI";
 	AI.MaxHealth = 100;
     AI.Health = AI.MaxHealth;
 	AI.MaxDefense = 50;
@@ -14,6 +15,8 @@ function AI::create( %this )
 	AI.LastCorrectTime = 0;
 	AI.Attacking = true;
 	AI.HitChance = 6;
+	AI.NumberOfPowerUps = 0;
+	AI.Elo = 0;
 }
 
 function AI::destroy( %this )
@@ -23,10 +26,55 @@ function AI::destroy( %this )
 
 function AI::readWord(%this)
 {
+	if(Game.Multiplayer)
+		return;
+
 	echo("Starting Attack");
 	setRandomSeed(getRealTime());
 	%this.Attacking = true;
 	%this.tryToAnswer();
+}
+
+function AI::displayElo(%this, %position)
+{
+	if(isObject(%this.EloDisplay))
+		%this.EloDisplay.delete();
+	
+	%this.EloDisplay = new ImageFont()  
+	{   
+		Image = "GameAssets:Woodhouse";
+		Position = %position;
+		FontSize = "2 2";
+		SceneLayer = 3;
+		TextAlignment = "Center";
+		Text = "Rating" SPC %this.Elo;
+	};  
+		
+	MainScene.add(%this.EloDisplay);
+}
+
+function AI::setDefense(%this,%amount)
+{
+	if(!Player.Battling)
+	{
+		AI.Defense = %amount;
+	}
+	else
+	{
+		AI.schedule(500,"setDefense",%amount);
+	}
+}
+
+function AI::setHealth(%this,%amount)
+{
+	if(!Player.Battling)
+	{
+		AI.Health = %amount;
+	}
+	else
+	{
+		AI.schedule(500,"setHealth",%amount);
+	}
 }
 
 function AI::incrementScore(%this,%amount)
@@ -82,6 +130,23 @@ function AI::reset(%this)
 	%this.Combo = 0;
 	%this.LastCorrectTime = 0;
 	%this.Damage = 0;
+	%this.NumberOfPowerUps = 0;
+}
+
+function AI::addPowerUp(%this, %id)
+{
+	%this.PowerUps[%this.NumberOfPowerUps] = %id;
+	%this.NumberOfPowerUps++;
+}
+
+function AI::clearPowerUps(%this)
+{
+	for(%i = 0; %i < %this.NumberOfPowerUps; %i++)
+	{
+		%this.PowerUps[%i] = -1;
+	}
+	
+	%this.NumberOfPowerUps = 0;
 }
 
 function AI::displayHealthBar(%this,%health,%position)
@@ -103,6 +168,9 @@ function AI::displayHealthBar(%this,%health,%position)
 		
 	if(isObject(%this.RightRed))
 		%this.RightRed.delete();
+		
+	if(isObject(%this.HealthText))
+		%this.HealthText.delete();
 	
 	%this.leftBack = new Sprite();
 	%this.leftBack.Size = "1 2";
@@ -154,6 +222,18 @@ function AI::displayHealthBar(%this,%health,%position)
 		MainScene.add(%this.rightRed);
 	}
 	
+	%this.HealthText = new ImageFont()  
+	{   
+		Image = "GameAssets:font";
+		Position = VectorAdd(%position,"10.5 0");
+		FontSize = "1.5 1.5";
+		Layer = 3;
+		TextAlignment = "Center";
+		Text = %this.Health @ "/" @ %this.MaxHealth;
+	};  
+	
+	MainScene.add(%this.HealthText);
+	
 	MainScene.add(%this.midRed);
 	MainScene.add(%this.leftBack);
 	MainScene.add(%this.midBack);
@@ -179,6 +259,9 @@ function AI::displayDefenseBar(%this,%health,%position)
 		
 	if(isObject(%this.RightRedDefense))
 		%this.RightRedDefense.delete();
+		
+	if(isObject(%this.DefenseText))
+		%this.DefenseText.delete();
 	
 	%this.leftBackDefense = new Sprite();
 	%this.leftBackDefense.Size = "1 2";
@@ -230,6 +313,18 @@ function AI::displayDefenseBar(%this,%health,%position)
 		MainScene.add(%this.rightRedDefense);
 	}
 	
+	%this.DefenseText = new ImageFont()  
+	{   
+		Image = "GameAssets:font";
+		Position = VectorAdd(%position,"10.5 0");
+		FontSize = "1.5 1.5";
+		Layer = 3;
+		TextAlignment = "Center";
+		Text = %this.Defense @ "/" @ %this.MaxDefense;
+	};  
+	
+	MainScene.add(%this.DefenseText);
+	
 	MainScene.add(%this.midRedDefense);
 	MainScene.add(%this.leftBackDefense);
 	MainScene.add(%this.midBackDefense);
@@ -259,7 +354,7 @@ function AI::changeHealth(%this,%amount)
 		{
 			AI.Health = AI.Health + %amount;
 			AI.Health = mFloatLength(AI.Health, 0);
-			Game.displayHitDamage(%amount,"30 10");
+			Game.displayHitDamage(%amount,"30 25");
 		}
 	}
 	else

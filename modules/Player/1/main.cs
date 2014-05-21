@@ -66,10 +66,10 @@ function Player::displayElo(%this, %position)
 	{   
 		Image = "GameAssets:Woodhouse";
 		Position = %position;
-		FontSize = "2 2";
+		FontSize = "3 3";
 		SceneLayer = 3;
 		TextAlignment = "Center";
-		Text = "Rating" SPC %this.Elo;
+		Text = %this.Elo;
 	};  
 		
 	MainScene.add(%this.EloDisplay);
@@ -107,7 +107,7 @@ function Player::displayPowerUps(%this)
 	%pwrups = new CompositeSprite(PowerupIcons)  ;
 	%pwrups.SetBatchLayout("off");
 	%pwrups.SceneLayer = 2;
-	%startPoint = -(%this.NumberOfPowerUps*5/2);
+	%startPoint = -(%this.NumberOfPowerUps*8/2);
 	
 	// Add some sprites.
 	for( %n = 0; %n < %this.NumberOfPowerUps; %n++ )
@@ -116,10 +116,10 @@ function Player::displayPowerUps(%this)
         %pwrups.addSprite();
         
         // Set the sprites location position to a random location.
-        %pwrups.setSpriteLocalPosition( %n*5 + %startPoint, -30 );
+        %pwrups.setSpriteLocalPosition( %n*8 + %startPoint, -35 );
                 
         // Set size.
-        %pwrups.setSpriteSize( 4 );
+        %pwrups.setSpriteSize( 8 );
 
         %pwrups.setSpriteImage( Powerup.getPowerUpIcon(%this.PowerUps[%n]), 0 );                       
 	}  
@@ -138,7 +138,7 @@ function Player::usePowerUp(%this, %id)
 	else if(%id == 1)	//Fill Defense
 	{
 		Player.Defense = Player.MaxDefense;
-		Player.displayDefenseBar(Player.Defense,"-10 30");
+		Player.displayDefenseBar(Player.Defense,"-10 28");
 	}
 	else if(%id == 2)	//Reset
 	{
@@ -251,7 +251,7 @@ function Player::changeHealth(%this,%amount)
 	if(%amount < 0)
 	{
 		MainWindow.startCameraShake(%amount, 1);
-		Game.displayHitDamage(%amount,"-30 25");
+		Game.displayHitDamage(%amount,"-22 14");
 	}
 
 	if((Player.Health + %amount) > 0)
@@ -284,7 +284,8 @@ function Player::changeHealth(%this,%amount)
 		Player.Health = 0;
 		%this.onDeath();
 	}
-	Player.displayHealthBar(Player.Health,"-10 28");
+	if(!Player.Battling)
+		Player.displayHealthBar(Player.Health,"-10 22");
 }
 
 function Player::displayHealthBar(%this,%health,%position)

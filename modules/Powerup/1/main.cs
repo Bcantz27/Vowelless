@@ -51,7 +51,7 @@ function Powerup::getPowerUpIcon(%this,%id)
 {
 	if(%id == 0)
 	{
-		return "GameAssets:HealButton";
+		return "GameAssets:SkipButton";
 	}
 	else if(%id == 1)
 	{
@@ -59,11 +59,11 @@ function Powerup::getPowerUpIcon(%this,%id)
 	}
 	else if(%id == 2)
 	{
-		return "GameAssets:HealButton";
+		return "GameAssets:ResetButton";
 	}
 	else if(%id == 3)
 	{
-		return "GameAssets:HealButton";
+		return "GameAssets:BlindButton";
 	}
 	else if(%id == 4)
 	{
@@ -71,11 +71,11 @@ function Powerup::getPowerUpIcon(%this,%id)
 	}
 	else if(%id == 5)
 	{
-		return "GameAssets:HealButton";
+		return "GameAssets:FlipButton";
 	}	
 	else if(%id == 6)
 	{
-		return "GameAssets:HealButton";
+		return "GameAssets:FreezeButton";
 	}
 	else
 	{

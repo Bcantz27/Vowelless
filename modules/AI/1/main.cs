@@ -44,10 +44,10 @@ function AI::displayElo(%this, %position)
 	{   
 		Image = "GameAssets:Woodhouse";
 		Position = %position;
-		FontSize = "2 2";
+		FontSize = "3 3";
 		SceneLayer = 3;
 		TextAlignment = "Center";
-		Text = "Rating" SPC %this.Elo;
+		Text = %this.Elo;
 	};  
 		
 	MainScene.add(%this.EloDisplay);
@@ -348,13 +348,13 @@ function AI::changeHealth(%this,%amount)
 				AI.Defense = 0;
 			}
 			
-			Game.displayHitDamage(%amount,"30 12");
+			Game.displayHitDamage(%amount,"8 20");
 		}
 		else
 		{
 			AI.Health = AI.Health + %amount;
 			AI.Health = mFloatLength(AI.Health, 0);
-			Game.displayHitDamage(%amount,"30 25");
+			Game.displayHitDamage(%amount,"8 14");
 		}
 	}
 	else

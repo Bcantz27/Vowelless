@@ -1,107 +1,120 @@
 <GuiSpriteCtrl
     Name="GameModeDialog"
-    Profile="GuiDefaultProfile"
+    Profile="GuiTransparentProfile"
     HorizSizing="relative"
     VertSizing="relative"
     Position="0 0"
-    Extent="1024 768"
-    MinExtent="320 320"
+    Extent="640 960"
+    MinExtent="640 960"
     Visible="1"
 	Image="@asset=GameAssets:MMBackground">
 
-    <!-- Battle-->
-    <GuiButtonCtrl
-		Name="BattleButton"
-		Profile="RedButtonProfile"
-		Text="Battle"
-		ButtonType="PushButton"
-		canSaveDynamicFields="0"
-		isContainer="0"
-		HorizSizing="relative"
-		VertSizing="relative"
-		Position="412 369"
-		Extent="200 30"
-		MinExtent="100 15"
-		canSave="1"
-		Visible="1"
-		Active="1"
-		groupNum="-1"
-		useMouseEvents="1" />
+	<!-- Battle Mode-->
+    <GuiBitmapButtonCtrl
+        Name="BattleButton"
+        bitmap="./assets/gui/images/BattleModeButton.png"
+        ButtonType="PushButton"
+        canSaveDynamicFields="0"
+        isContainer="0"
+        HorizSizing="relative"
+        VertSizing="relative"
+        Position="150 350"
+        Extent="300 90"
+        MinExtent="300 90"
+        canSave="1"
+        Visible="1"
+        Active="1"
+        groupNum="-1"
+        useMouseEvents="1" />
 		
-	<!-- Race-->
-    <GuiButtonCtrl
-		Name="RaceButton"
-		Profile="RedButtonProfile"
-		Text="Race"
-		ButtonType="PushButton"
-		canSaveDynamicFields="0"
-		isContainer="0"
-		HorizSizing="relative"
-		VertSizing="relative"
-		Position="412 399"
-		Extent="200 30"
-		MinExtent="100 15"
-		canSave="1"
-		Visible="1"
-		Active="1"
-		groupNum="-1"
-		useMouseEvents="1" />
-		
-	<!-- Time-->
-    <GuiButtonCtrl
-		Name="TimeButton"
-		Profile="RedButtonProfile"
-		Text="Time Trial"
-		ButtonType="PushButton"
-		canSaveDynamicFields="0"
-		isContainer="0"
-		HorizSizing="relative"
-		VertSizing="relative"
-		Position="412 429"
-		Extent="200 30"
-		MinExtent="100 15"
-		canSave="1"
-		Visible="1"
-		Active="1"
-		groupNum="-1"
-		useMouseEvents="1" />
-		
-	<!-- PracticeButton -->
-    <GuiButtonCtrl
-		Name="PracticeButton"
-		Profile="RedButtonProfile"
-		Text="Practice"
-		ButtonType="PushButton"
-		canSaveDynamicFields="0"
-		isContainer="0"
-		HorizSizing="relative"
-		VertSizing="relative"
-		Position="412 459"
-		Extent="200 30"
-		MinExtent="100 15"
-		canSave="1"
-		Visible="1"
-		Active="1"
-		groupNum="-1"
-		useMouseEvents="1" />
+	<!-- Time Trial Button-->
+    <GuiBitmapButtonCtrl
+        Name="TimeButton"
+        bitmap="./assets/gui/images/TimeTrialModeButton.png"
+        ButtonType="PushButton"
+        canSaveDynamicFields="0"
+        isContainer="0"
+        HorizSizing="relative"
+        VertSizing="relative"
+        Position="150 440"
+        Extent="300 90"
+        MinExtent="300 90"
+        canSave="1"
+        Visible="1"
+        Active="1"
+        groupNum="-1"
+        useMouseEvents="1" />
 
-    <!-- BackButton-->
-    <GuiButtonCtrl
-		Name="GameModeBackButton"
-		Profile="RedButtonProfile"
-		Text="Back"
+	<!-- Practice mode-->
+    <GuiBitmapButtonCtrl
+		Name="PracticeButton"
+        bitmap="./assets/gui/images/PracticeModeButton.png"
 		ButtonType="PushButton"
 		canSaveDynamicFields="0"
 		isContainer="0"
 		HorizSizing="relative"
 		VertSizing="relative"
-		Position="412 489"
-		Extent="200 30"
-		MinExtent="100 15"
+        Position="150 530"
+        Extent="300 90"
+        MinExtent="300 90"
 		canSave="1"
 		Visible="1"
 		Active="1"
 		groupNum="-1"
 		useMouseEvents="1" />
+		
+	<!-- Back Button-->
+    <GuiBitmapButtonCtrl
+		Name="GameModeBackButton"
+        bitmap="./assets/gui/images/BackButton.png"
+		ButtonType="PushButton"
+		canSaveDynamicFields="0"
+		isContainer="0"
+		HorizSizing="relative"
+		VertSizing="relative"
+        Position="180 620"
+        Extent="250 75"
+        MinExtent="250 75"
+		canSave="1"
+		Visible="1"
+		Active="1"
+		groupNum="-1"
+		useMouseEvents="1" />
+		
+	<!-- Quit Game-->
+    <GuiBitmapButtonCtrl
+        Name="QuitButton"
+        bitmap="./assets/gui/images/Button-05-Close.png"
+        ButtonType="PushButton"
+        canSaveDynamicFields="0"
+        isContainer="0"
+        HorizSizing="relative"
+        VertSizing="relative"
+        Position="50 800"
+        Extent="100 100"
+        MinExtent="50 50"
+        canSave="1"
+        Visible="1"
+        Active="1"
+        groupNum="-1"
+        useMouseEvents="1" />    
+
+    <!-- Shop -->
+    <GuiBitmapButtonCtrl
+        Name="ShopButton"
+        bitmap="./assets/gui/images/Button-05-Store.png"
+        ButtonType="PushButton"
+        canSaveDynamicFields="0"
+        isContainer="0"
+        HorizSizing="relative"
+        VertSizing="relative"
+        Position="450 800"
+        Extent="100 100"
+        MinExtent="50 50"
+        canSave="1"
+        Visible="1"
+        Active="1"
+        groupNum="-1"
+        useMouseEvents="1" /> 	
 
 </GuiSpriteCtrl>

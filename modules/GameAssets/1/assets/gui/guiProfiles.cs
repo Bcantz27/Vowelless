@@ -20,8 +20,18 @@
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
-$platformFontType = ($platform $= "windows") ? "lucida console" : "monaco";
-$platformFontSize = ($platform $= "ios") ? 18 : 12;
+if ($platform $= "windows")
+	$platformFontType = "lucida console";
+else if ($platform $= "Android")
+	$platformFontType = "Droid";
+else
+	$platformFontType = "monaco";
+if ($platform $= "ios")
+	$platformFontSize = 18;
+else if ($platform $= "Android")
+	$platformFontSize = 14;
+else
+	$platformFontSize = 12;
 
 //-----------------------------------------------------------------------------
 
@@ -89,6 +99,17 @@ if (!isObject(GuiTransparentProfile)) new GuiControlProfile (GuiTransparentProfi
 {
     opaque = false;
     border = false;
+	
+	// fill color
+    fillColor = "255 255 255";
+    fillColorHL = "255 255 255";
+    fillColorNA = "255 255 255";
+
+    // border color
+    border = 0;
+    borderColor   = "100 100 100 255";
+    borderColorHL = "128 128 128";
+    borderColorNA = "64 64 64";
 };
 
 // ----------------------------------------------------------------------------
@@ -323,20 +344,6 @@ if(!isObject(GuiToolboxProfile)) new GuiControlProfile( GuiToolboxProfile : GuiS
 
 //-----------------------------------------------------------------------------
 
-if(!isObject(GuiWindowProfile)) new GuiControlProfile (GuiWindowProfile : GuiDefaultProfile)
-{
-    // fill color
-    opaque = false;
-    fillColor = "0 0 0 92";
-
-    // font
-    fontType = $platformFontType;
-    fontSize = $platformFontSize;
-    fontColor = "255 255 255 255";
-}; 
-
-//-----------------------------------------------------------------------------
-
 if(!isObject(SandboxWindowProfile)) new GuiControlProfile (SandboxWindowProfile : GuiDefaultProfile)
 {
     // fill color
@@ -365,6 +372,14 @@ if (!isObject(GuiButtonProfile)) new GuiControlProfile (GuiButtonProfile)
 };
 
 //-----------------------------------------------------------------------------
+
+if (!isObject(SinglePlayerButtonProfile)) new GuiControlProfile (SinglePlayerButtonProfile : GuiButtonProfile)
+{
+    fontSize = $platformFontSize;
+    fontColor = "255 255 255 255";
+    fontColorHL = "255 255 255 255";
+    bitmap = "./images/SingleplayerButton.png";
+};
 
 if (!isObject(BlueButtonProfile)) new GuiControlProfile (BlueButtonProfile : GuiButtonProfile)
 {

@@ -5,7 +5,7 @@
     VertSizing="relative"
     Position="0 0"
     Extent="1024 768"
-    MinExtent="320 320"
+    MinExtent="640 480"
     Visible="1"
     Image="@asset=GameAssets:MMBackground">
 

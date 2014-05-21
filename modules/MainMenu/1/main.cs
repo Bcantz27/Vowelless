@@ -1,6 +1,7 @@
 function MainMenu::create( %this )
 {
 	Canvas.pushDialog(MenuDialog);
+	//SinglePlayerButton.setText("Singleplayer");
 }
 
 //-----------------------------------------------------------------------------
@@ -102,7 +103,7 @@ function PlayAgainButton::onClick(%this)
 	{
 		MainScene.clear();
 		Game.setupGame(false);
-		Canvas.popDialog(LoseDialog);
+		Canvas.popDialog(EndGameDialog);
 	}
 }
 
@@ -125,7 +126,7 @@ function BackToMenuButton::onClick(%this)
 	}
 	
 	MainScene.clear();
-	Canvas.popDialog(LoseDialog);
+	Canvas.popDialog(EndGameDialog);
 	Canvas.pushDialog(MenuDialog);
 	Game.reset();
 }

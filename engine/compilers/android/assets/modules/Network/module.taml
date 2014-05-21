@@ -5,10 +5,5 @@
 	Group="gameBase"
 	ScriptFile="main.cs"
 	CreateFunction="create"
-	DestroyFunction="destroy">
-	
-	<DeclaredAssets
-			Path="assets"
-			Extension="asset.taml"
-			Recurse="true"/>			
+	DestroyFunction="destroy">		
 </ModuleDefinition>

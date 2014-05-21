@@ -1,47 +1,47 @@
 <GuiSpriteCtrl
-    Name="LoseDialog"
-    Profile="GuiDefaultProfile"
+    Name="EndGameDialog"
+    Profile="GuiTransparentProfile"
     HorizSizing="relative"
     VertSizing="relative"
     Position="0 0"
-    Extent="1024 768"
-    MinExtent="320 320"
+    Extent="640 960"
+    MinExtent="640 960"
     Visible="1">
 	
-    <!-- PlayAgainButton -->
-    <GuiButtonCtrl
+	 <!-- PlayAgainButton -->
+    <GuiBitmapButtonCtrl
         Name="PlayAgainButton"
-        Profile="RedButtonProfile"
-        Text="Play Again"
+        bitmap="./assets/gui/images/PlayAgainButton.png"
         ButtonType="PushButton"
         canSaveDynamicFields="0"
         isContainer="0"
         HorizSizing="relative"
         VertSizing="relative"
-        Position="361 369"
-        Extent="300 50"
-        MinExtent="100 15"
+        Position="50 800"
+        Extent="300 90"
+        MinExtent="300 90"
         canSave="1"
         Visible="1"
         Active="1"
         groupNum="-1"
         useMouseEvents="1" />
 		
-	<GuiButtonCtrl
+    <!-- Home -->
+    <GuiBitmapButtonCtrl
         Name="BackToMenuButton"
-        Profile="RedButtonProfile"
-        Text="Back to Menu"
+        bitmap="./assets/gui/images/Button-12-MainMenu.png"
         ButtonType="PushButton"
         canSaveDynamicFields="0"
         isContainer="0"
         HorizSizing="relative"
         VertSizing="relative"
-        Position="412 420"
-        Extent="200 30"
-        MinExtent="100 15"
+        Position="450 800"
+        Extent="100 100"
+        MinExtent="50 50"
         canSave="1"
         Visible="1"
         Active="1"
         groupNum="-1"
-        useMouseEvents="1" />
+        useMouseEvents="1" /> 	
+		
 </GuiSpriteCtrl>

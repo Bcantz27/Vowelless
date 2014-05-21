@@ -30,6 +30,10 @@ function Game::create( %this )
 
 	hideSplashScreen();
 	
+	//populateFontCacheRange("Showcard Gothic", 14, 0, 65535);
+	//writeFontCache ();
+	dumpFontCacheStatus();
+	
 	//$menuMusic = alxPlay("GameAssets:Menuloop");
 }
 
@@ -209,7 +213,14 @@ function Game::checkAnswer(%this, %worldPosition)
 	
 	%word = $VowellessList[Player.CurrentWord];
 	%correctWord = $GameWordList[Player.CurrentWord];
-	%startPoint = -((strlen(%word)-1)*8/2);
+	$letterOffset = 8;
+	%startPoint = -((strlen(%word)-1)*$letterOffset/2);
+	
+	while(%startPoint < -25)
+	{
+		$letterOffset--;
+		%startPoint = -((strlen(%word)-1)*$letterOffset/2);
+	}
     
     // Finish if no sprites picked.
     if ( %spriteCount == 0 )
@@ -240,7 +251,7 @@ function Game::checkAnswer(%this, %worldPosition)
 				%compositeSprite.addSprite();
 				
 				// Set the sprites location position to a random location.
-				%compositeSprite.setSpriteLocalPosition( (%spriteId - 1)*8 + %startPoint, 0 );
+				%compositeSprite.setSpriteLocalPosition( (%spriteId - 1)*$letterOffset + %startPoint, 0 );
 						
 				// Set size.
 				%compositeSprite.setSpriteSize( 8 );
@@ -267,6 +278,7 @@ function Game::checkAnswer(%this, %worldPosition)
 					if(stricmp(Game.Mode,"Battle") == 0)
 					{
 						Player.Damage = Player.Damage + getWordDamage($GameWordList[Player.CurrentWord]);
+						Game.displayPlayerDamage("0 34");
 					}
 					else if(stricmp(Game.Mode,"Race") == 0)
 					{
@@ -288,7 +300,7 @@ function Game::checkAnswer(%this, %worldPosition)
 							else
 								Player.Defense = Player.MaxDefense;
 								
-							Player.displayDefenseBar(Player.Defense,"-10 30");
+							Player.displayDefenseBar(Player.Defense,"-10 28");
 						}
 						
 						Player.schedule(Game.ComboDelay,"checkCombo");
@@ -328,7 +340,7 @@ function Game::checkAnswer(%this, %worldPosition)
 				if(Player.Defense < 0)
 					Player.Defense = 0;
 				
-				Player.displayDefenseBar(Player.Defense,"-10 30");
+				Player.displayDefenseBar(Player.Defense,"-10 28");
 				
 				alxPlay("GameAssets:Wronganswer");
 				

@@ -43,7 +43,6 @@ glossary
 glue
 gluestick
 grades
-gym
 highlighter
 history
 hole punch

@@ -1,0 +1,10 @@
+<ModuleDefinition
+	ModuleId="Powerup"
+	VersionId="1"
+	Description="Powerup Module"
+	Dependencies="AppCore=1,GameAssets=1"
+	Group="gameBase"
+	ScriptFile="main.cs"
+	CreateFunction="create"
+	DestroyFunction="destroy">
+</ModuleDefinition>
