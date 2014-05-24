@@ -3,7 +3,9 @@ function getASCIIValue(%letter)
 	%testStr = "0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_'abcdefghijklmnopqrstuvwxyz";
 	if(strpos(%testStr, %letter) != -1)
 		%val = strpos(%testStr, %letter) + 17;
-		
+	
+	echo(%letter SPC %val);
+	
 	return %val; 
 }
 

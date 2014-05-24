@@ -1,5 +1,4 @@
 afford
-ATM
 auction
 bailout
 balance
@@ -47,7 +46,7 @@ economics
 economist
 equity
 estate
-Euro
+euro
 exchange
 expense
 expensive

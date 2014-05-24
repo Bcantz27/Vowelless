@@ -14,7 +14,7 @@ function AI::create( %this )
 	AI.Combo = 0;
 	AI.LastCorrectTime = 0;
 	AI.Attacking = true;
-	AI.HitChance = 6;
+	AI.HitChance = 8;
 	AI.NumberOfPowerUps = 0;
 	AI.Elo = 0;
 }
@@ -348,13 +348,13 @@ function AI::changeHealth(%this,%amount)
 				AI.Defense = 0;
 			}
 			
-			Game.displayHitDamage(%amount,"8 20");
+			Game.displayHitDamage(%amount,"14 20");
 		}
 		else
 		{
 			AI.Health = AI.Health + %amount;
 			AI.Health = mFloatLength(AI.Health, 0);
-			Game.displayHitDamage(%amount,"8 14");
+			Game.displayHitDamage(%amount,"14 14");
 		}
 	}
 	else

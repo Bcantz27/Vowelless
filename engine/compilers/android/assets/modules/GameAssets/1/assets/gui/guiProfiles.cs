@@ -99,6 +99,17 @@ if (!isObject(GuiTransparentProfile)) new GuiControlProfile (GuiTransparentProfi
 {
     opaque = false;
     border = false;
+	
+	// fill color
+    fillColor = "255 255 255";
+    fillColorHL = "255 255 255";
+    fillColorNA = "255 255 255";
+
+    // border color
+    border = 0;
+    borderColor   = "100 100 100 255";
+    borderColorHL = "128 128 128";
+    borderColorNA = "64 64 64";
 };
 
 // ----------------------------------------------------------------------------
@@ -361,6 +372,14 @@ if (!isObject(GuiButtonProfile)) new GuiControlProfile (GuiButtonProfile)
 };
 
 //-----------------------------------------------------------------------------
+
+if (!isObject(SinglePlayerButtonProfile)) new GuiControlProfile (SinglePlayerButtonProfile : GuiButtonProfile)
+{
+    fontSize = $platformFontSize;
+    fontColor = "255 255 255 255";
+    fontColorHL = "255 255 255 255";
+    bitmap = "./images/SingleplayerButton.png";
+};
 
 if (!isObject(BlueButtonProfile)) new GuiControlProfile (BlueButtonProfile : GuiButtonProfile)
 {

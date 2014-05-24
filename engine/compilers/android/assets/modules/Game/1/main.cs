@@ -13,7 +13,7 @@ function Game::create( %this )
 	Game.Mode = "";
 	Game.ComboDelay = 5000;
 	Game.Time = -1;
-	Game.Round = -1;
+	Game.Round = 0;
 	Game.RaceTo = 3000;
 	Game.VowelSel = "";
 	Game.MissingVowels = 0;
@@ -29,6 +29,10 @@ function Game::create( %this )
 	setupVowels();
 
 	hideSplashScreen();
+	
+	//populateFontCacheRange("Showcard Gothic", 14, 0, 65535);
+	//writeFontCache ();
+	dumpFontCacheStatus();
 	
 	//$menuMusic = alxPlay("GameAssets:Menuloop");
 }
@@ -60,10 +64,7 @@ function Game::setupGame(%this, %multiplayer)
 	
 	if(stricmp(Game.Mode,"Battle") == 0)
 	{
-		Game.Round = 1;
-		Game.Time = 30;
-		%this.displayBattleGame();
-		%this.startTimeGame();
+		Game.displayPreGame();
 	}
 	else if(stricmp(Game.Mode,"Race") == 0)
 	{
@@ -209,7 +210,14 @@ function Game::checkAnswer(%this, %worldPosition)
 	
 	%word = $VowellessList[Player.CurrentWord];
 	%correctWord = $GameWordList[Player.CurrentWord];
-	%startPoint = -((strlen(%word)-1)*8/2);
+	$letterOffset = 8;
+	%startPoint = -((strlen(%word)-1)*$letterOffset/2);
+	
+	while(%startPoint < -25)
+	{
+		$letterOffset -= 0.5;
+		%startPoint = -((strlen(%word)-1)*$letterOffset/2);
+	}
     
     // Finish if no sprites picked.
     if ( %spriteCount == 0 )
@@ -240,7 +248,7 @@ function Game::checkAnswer(%this, %worldPosition)
 				%compositeSprite.addSprite();
 				
 				// Set the sprites location position to a random location.
-				%compositeSprite.setSpriteLocalPosition( (%spriteId - 1)*8 + %startPoint, 0 );
+				%compositeSprite.setSpriteLocalPosition( (%spriteId - 1)*$letterOffset + %startPoint, 0 );
 						
 				// Set size.
 				%compositeSprite.setSpriteSize( 8 );
@@ -250,7 +258,7 @@ function Game::checkAnswer(%this, %worldPosition)
 
 				// Set the sprite image with a random frame.
 				// We could also use an animation here. 
-				%compositeSprite.setSpriteImage( "GameAssets:Woodhouse", getASCIIValue(Game.VowelSel) );   
+				%compositeSprite.setSpriteImage( "GameAssets:Cloudy", getASCIIValue(Game.VowelSel) );   
 				
 				Game.VowelSel = "";
 				Game.CorrectVowels++;
@@ -258,7 +266,6 @@ function Game::checkAnswer(%this, %worldPosition)
 				
 				if(Game.CorrectVowels == Game.MissingVowels)
 				{
-					Player.incrementScore(getWordValue($GameWordList[Player.CurrentWord]));
 					Player.CurrentWord++;
 					Player.Streak++;
 					alxPlay("GameAssets:correctSound");
@@ -267,9 +274,11 @@ function Game::checkAnswer(%this, %worldPosition)
 					if(stricmp(Game.Mode,"Battle") == 0)
 					{
 						Player.Damage = Player.Damage + getWordDamage($GameWordList[Player.CurrentWord]);
+						Game.displayPlayerDamage("0 34");
 					}
 					else if(stricmp(Game.Mode,"Race") == 0)
 					{
+						Player.incrementScore(getWordValue($GameWordList[Player.CurrentWord]));
 						if(Player.Score >= Game.RaceTo)
 						{
 							Game.endRace();
@@ -288,7 +297,7 @@ function Game::checkAnswer(%this, %worldPosition)
 							else
 								Player.Defense = Player.MaxDefense;
 								
-							Player.displayDefenseBar(Player.Defense,"-10 30");
+							Player.displayDefenseBar(Player.Defense,"-10 28");
 						}
 						
 						Player.schedule(Game.ComboDelay,"checkCombo");
@@ -328,13 +337,13 @@ function Game::checkAnswer(%this, %worldPosition)
 				if(Player.Defense < 0)
 					Player.Defense = 0;
 				
-				Player.displayDefenseBar(Player.Defense,"-10 30");
+				Player.displayDefenseBar(Player.Defense,"-10 28");
 				
 				alxPlay("GameAssets:Wronganswer");
 				
 				if(stricmp(Game.Mode,"Battle") == 0)
 				{
-					Player.incrementScore(-5);
+					
 				}
 				else if(stricmp(Game.Mode,"Time") == 0)
 				{

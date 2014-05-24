@@ -22,6 +22,7 @@ function Player::create( %this )
 	Player.NumberOfPowerUps = 0;
 	Player.Battling = false;
 	Player.Elo = 0;
+	Player.WordsPerRound = 0;
 	
 	Player.InputController.initialize();
 }
@@ -243,6 +244,7 @@ function Player::reset(%this)
 	Player.Damage = 0;
 	Player.NumberOfPowerUps = 0;
 	Player.Battling = false;
+	Player.WordsPerRound = 0;
 }
 
 function Player::changeHealth(%this,%amount)
@@ -251,7 +253,6 @@ function Player::changeHealth(%this,%amount)
 	if(%amount < 0)
 	{
 		MainWindow.startCameraShake(%amount, 1);
-		Game.displayHitDamage(%amount,"-22 14");
 	}
 
 	if((Player.Health + %amount) > 0)
@@ -260,7 +261,7 @@ function Player::changeHealth(%this,%amount)
 		{
 			Player.Defense = Player.Defense + %amount;
 			Player.Defense = mFloatLength(Player.Defense, 0);
-			
+			Game.displayHitDamage(%amount,"-14 20");
 			if(Player.Defense < 0)
 			{
 				Player.Health = Player.Health + Player.Defense;
@@ -272,6 +273,7 @@ function Player::changeHealth(%this,%amount)
 		{
 			Player.Health = Player.Health + %amount;
 			Player.Health = mFloatLength(Player.Health, 0);
+			Game.displayHitDamage(%amount,"-14 14");
 			
 			if(Player.Health > Player.MaxHealth)
 			{

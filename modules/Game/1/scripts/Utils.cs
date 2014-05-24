@@ -2,8 +2,13 @@ function getASCIIValue(%letter)
 {
 	%testStr = "0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_'abcdefghijklmnopqrstuvwxyz";
 	if(strpos(%testStr, %letter) != -1)
-		%val = strpos(%testStr, %letter) + 17;
-		
+	{
+		%index = strpos(%testStr, %letter);
+		%val = %index + 17;
+	}
+	
+	echo(%letter SPC %val);
+	
 	return %val; 
 }
 
@@ -318,11 +323,8 @@ function setupGameWordList()
 {
 	for(%i = 0; %i < Game.FullWordListSize; %i++)
 	{
-		if(getWordDifficulty($FullWordList[%i]) == Player.Difficulty)
-		{
-			$GameWordList[Game.GameWordListSize] = $FullWordList[%i];
-			Game.GameWordListSize++;
-		}
+		$GameWordList[Game.GameWordListSize] = $FullWordList[%i];
+		Game.GameWordListSize++;
 	}
 	
 	shuffleGameWordList();
@@ -393,8 +395,11 @@ function getWordValue(%word)
 
 function getWordDamage(%word)
 {
-	%baseDamage = 10;
-	%damage = %baseDamage*(getNumberOfVowels(%word)/getNumberOfVisibleLetters(%word));
+	%baseDamage = 8;
+	%damage = (%baseDamage/getNumberOfVisibleLetters(%word))*getNumberOfVowels(%word);
 	%damage = mFloatLength(%damage, 2);
+	
+	echo(%word SPC %damage);
+	
 	return %damage;
 }

@@ -137,6 +137,14 @@ function MSClient::resetOpp(%this, %uid, %name) {
    %this.send("resetOpp" SPC %uid SPC %name @ "\n");
 }
 
+function MSClient::updateMostDamage(%this, %name, %dam) {
+   %this.send("updateMostDamage" SPC %name SPC %dam @ "\n");
+}
+
+function MSClient::updateWPR(%this, %name, %amount) {
+   %this.send("updateWPR" SPC %name SPC %amount @ "\n");
+}
+
 function MSClient::flipOppWord(%this, %uid, %name) {
    %this.send("flipOppWord" SPC %uid SPC %name @ "\n");
 }

@@ -10,9 +10,9 @@ function Game::displayStreak(%this)
 	
 	%obj = new ImageFont(Streak)  
 	{   
-		Image = "GameAssets:ActionComic";
-		Position = "40 25";
-		FontSize = "2 2";
+		Image = "GameAssets:ShowcardGothic";
+		Position = "-15 10";
+		FontSize = "3 3";
 		SceneLayer = 3;
 		TextAlignment = "Center";
 		Text = (Player.Streak SPC "STREAK");
@@ -31,9 +31,9 @@ function Game::displayCombo(%this)
 	
 	%obj = new ImageFont(Combo)  
 	{   
-		Image = "GameAssets:ActionComic";
-		Position = "40 20";
-		FontSize = "2 2";
+		Image = "GameAssets:ShowcardGothic";
+		Position = "15 10";
+		FontSize = "3 3";
 		SceneLayer = 3;
 		TextAlignment = "Center";
 		Text = (Player.Combo SPC "COMBO");
@@ -49,12 +49,12 @@ function Game::displayTime(%this)
 
 	%obj = new ImageFont(Time)  
 	{   
-		Image = "GameAssets:font";
-		Position = "0 35";
+		Image = "GameAssets:ShowcardGothic";
+		Position = "19 46";
 		FontSize = "2 2";
 		SceneLayer = 3;
 		TextAlignment = "Center";
-		Text = ("Time:" SPC Game.Time);
+		Text = ("Time:" @ Game.Time);
 	};  
 	
 	MainScene.add(%obj);
@@ -63,10 +63,79 @@ function Game::displayTime(%this)
 function Game::displayWinScreen()
 {
 	MainScene.clear();
-	Game.displayScore("0 10");
 	Player.reset();
 	AI.reset();
-	Canvas.pushDialog(LoseDialog);
+	
+	Game.displayBackPanel("GameAssets:ToonBackground_light");
+	
+	%obj = new ImageFont(YouIcon)  
+	{   
+		Image = "GameAssets:ShowcardGothic";
+		Position = "-15 45";
+		FontSize = "4 4";
+		SceneLayer = 2;
+		TextAlignment = "Center";
+		Text = Player.Name;
+	};
+	
+	MainScene.add(%obj);
+	
+	if(isObject(AIIcon))
+		AIIcon.delete();
+	
+	%obj = new ImageFont(AIIcon)  
+	{   
+		Image = "GameAssets:ShowcardGothic";
+		Position = "15 45";
+		FontSize = "4 4";
+		SceneLayer = 2;
+		TextAlignment = "Center";
+		Text = AI.Name;
+	};  
+		
+	MainScene.add(%obj);
+	
+	%playerrating = new Sprite();
+	%playerrating.Size = "25 10";
+	%playerrating.Position = "-15 20";
+	%playerrating.setSceneLayer(6);
+	%playerrating.setBodyType("static");
+	%playerrating.Image = "GameAssets:PlayerRating";
+	MainScene.add(%playerrating);
+	
+	%playerhighscore = new Sprite();
+	%playerhighscore.Size = "25 10";
+	%playerhighscore.Position = "-15 10";
+	%playerhighscore.setSceneLayer(6);
+	%playerhighscore.setBodyType("static");
+	%playerhighscore.Image = "GameAssets:PlayerHighscore";
+	MainScene.add(%playerhighscore);
+	
+	%enemyrating = new Sprite();
+	%enemyrating.Size = "25 10";
+	%enemyrating.Position = "15 20";
+	%enemyrating.setSceneLayer(6);
+	%enemyrating.setBodyType("static");
+	%enemyrating.Image = "GameAssets:EnemyRating";
+	MainScene.add(%enemyrating);
+	
+	%enemyhighscore = new Sprite();
+	%enemyhighscore.Size = "25 10";
+	%enemyhighscore.Position = "15 10";
+	%enemyhighscore.setSceneLayer(6);
+	%enemyhighscore.setBodyType("static");
+	%enemyhighscore.Image = "GameAssets:EnemyHighscore";
+	MainScene.add(%enemyhighscore);
+	
+	%winner = new Sprite();
+	%winner.Size = "40 15";
+	%winner.Position = "0 -20";
+	%winner.setSceneLayer(6);
+	%winner.setBodyType("static");
+	%winner.Image = "GameAssets:Winner";
+	MainScene.add(%winner);
+	
+	Canvas.pushDialog(EndGameDialog);
 }
 
 function Game::displayLoseScreen()
@@ -74,7 +143,81 @@ function Game::displayLoseScreen()
 	MainScene.clear();
 	Player.reset();
 	AI.reset();
-	Canvas.pushDialog(LoseDialog);
+	
+	Game.displayBackPanel("GameAssets:ToonBackground_light");
+	
+	%obj = new ImageFont(YouIcon)  
+	{   
+		Image = "GameAssets:ShowcardGothic";
+		Position = "-15 45";
+		FontSize = "4 4";
+		SceneLayer = 2;
+		TextAlignment = "Center";
+		Text = Player.Name;
+	};
+	
+	MainScene.add(%obj);
+	
+	if(isObject(AIIcon))
+		AIIcon.delete();
+	
+	%obj = new ImageFont(AIIcon)  
+	{   
+		Image = "GameAssets:ShowcardGothic";
+		Position = "15 45";
+		FontSize = "4 4";
+		SceneLayer = 2;
+		TextAlignment = "Center";
+		Text = AI.Name;
+	};  
+		
+	MainScene.add(%obj);
+	
+	%playerrating = new Sprite();
+	%playerrating.Size = "25 10";
+	%playerrating.Position = "-15 20";
+	%playerrating.setSceneLayer(6);
+	%playerrating.setBodyType("static");
+	%playerrating.Image = "GameAssets:PlayerRating";
+	MainScene.add(%playerrating);
+	
+	Player.displayElo("20 20");
+	
+	%playerhighscore = new Sprite();
+	%playerhighscore.Size = "25 10";
+	%playerhighscore.Position = "-15 10";
+	%playerhighscore.setSceneLayer(6);
+	%playerhighscore.setBodyType("static");
+	%playerhighscore.Image = "GameAssets:PlayerHighscore";
+	MainScene.add(%playerhighscore);
+	
+	%enemyrating = new Sprite();
+	%enemyrating.Size = "25 10";
+	%enemyrating.Position = "15 20";
+	%enemyrating.setSceneLayer(6);
+	%enemyrating.setBodyType("static");
+	%enemyrating.Image = "GameAssets:EnemyRating";
+	MainScene.add(%enemyrating);
+	
+	AI.displayElo("20 20");
+	
+	%enemyhighscore = new Sprite();
+	%enemyhighscore.Size = "25 10";
+	%enemyhighscore.Position = "15 10";
+	%enemyhighscore.setSceneLayer(6);
+	%enemyhighscore.setBodyType("static");
+	%enemyhighscore.Image = "GameAssets:EnemyHighscore";
+	MainScene.add(%enemyhighscore);
+	
+	%loser = new Sprite();
+	%loser.Size = "40 15";
+	%loser.Position = "0 -20";
+	%loser.setSceneLayer(6);
+	%loser.setBodyType("static");
+	%loser.Image = "GameAssets:Loser";
+	MainScene.add(%loser);
+	
+	Canvas.pushDialog(EndGameDialog);
 }
 
 function Game::displayCorrectWord(%this)
@@ -84,7 +227,7 @@ function Game::displayCorrectWord(%this)
 	
 	%obj = new ImageFont(Word)  
 	{   
-		Image = "GameAssets:Woodhouse";
+		Image = "GameAssets:Cloudy";
 		Position = "0 0";
 		FontSize = "8 8";
 		SceneLayer = 3;
@@ -99,12 +242,12 @@ function Game::displayCategory(%this, %position)
 {
 	%obj = new ImageFont()  
 	{   
-		Image = "GameAssets:font";
+		Image = "GameAssets:ShowcardGothic";
 		Position = %position;
 		FontSize = "2 2";
 		SceneLayer = 3;
 		TextAlignment = "Center";
-		Text = %this.Category;
+		Text = "Category:" SPC %this.Category;
 	};  
 	
 	MainScene.add(%obj);
@@ -117,9 +260,9 @@ function Game::displayScore(%this, %position)
 
 	%obj = new ImageFont(Score)  
 	{   
-		Image = "GameAssets:ActionComic";
+		Image = "GameAssets:ShowcardGothic";
 		Position = %position;
-		FontSize = "5 5";
+		FontSize = "4 4";
 		SceneLayer = 3;
 		TextAlignment = "Center";
 		Text = Player.score;
@@ -148,7 +291,7 @@ function Game::displayWord(%this, %newWord)
 		}
 		else if(%this.MissingVowels == Powerup.TriggerThreshold-1)
 		{
-			%random = getRandom(1,2);
+			%random = getRandom(1,6);
 			if(%random == 1)
 			{
 				%this.WordPowerUp = getRandom(0,Powerup.TotalPowerUps-1);
@@ -161,7 +304,14 @@ function Game::displayWord(%this, %newWord)
 	%this.Word = new CompositeSprite(Word)  ;
 	%this.Word.SetBatchLayout("off");
 	%this.Word.setSceneLayer(3);
-	%startPoint = -((strlen(%word)-1)*8/2);
+	$letterOffset = 8;
+	%startPoint = -((strlen(%word)-1)*$letterOffset/2);
+	
+	while(%startPoint < -25)
+	{
+		$letterOffset -= 0.5;
+		%startPoint = -((strlen(%word)-1)*$letterOffset/2);
+	}
 	
 	// Add some sprites.
 	for( %n = 0; %n < strlen(%word); %n++ )
@@ -172,7 +322,7 @@ function Game::displayWord(%this, %newWord)
         %this.Word.addSprite();
         
         // Set the sprites location position to a random location.
-        %this.Word.setSpriteLocalPosition( %n*8 + %startPoint, 0 );
+        %this.Word.setSpriteLocalPosition( %n*$letterOffset + %startPoint, 0 );
                 
         // Set size.
         %this.Word.setSpriteSize( 8 );
@@ -182,7 +332,7 @@ function Game::displayWord(%this, %newWord)
 
         // Set the sprite image with a random frame.
         // We could also use an animation here. 
-        %this.Word.setSpriteImage( "GameAssets:Woodhouse", getASCIIValue(%letter) );                       
+        %this.Word.setSpriteImage( "GameAssets:Cloudy", getASCIIValue(%letter) );                       
 	}  
 	
 	MainScene.add(%this.Word);
@@ -192,19 +342,35 @@ function Game::displayWord(%this, %newWord)
 
 function Game::displayVowelButtons(%this, %position)
 {
+	%letterback = new Sprite();
+	%letterback.Size = "10 10";
+	%letterback.Position = VectorAdd(%position,"-20 0");
+	%letterback.setSceneLayer(6);
+	%letterback.setBodyType("static");
+	%letterback.Image = "GameAssets:Background-03-Square";
+	MainScene.add(%letterback);
+
 	%obj = new Sprite()
 	{
 		class = ClickVowel;
 	};
 	%obj.Size = "8 8";
 	%obj.Vowel  = "a";
-	%obj.Position = VectorAdd(%position,"-30 0");
+	%obj.Position = VectorAdd(%position,"-20 0");
 	%obj.setSceneLayer(3);
 	%obj.setBodyType("static");
-	%obj.Image = "GameAssets:Woodhouse";
+	%obj.Image = "GameAssets:Cloudy";
 	%obj.Frame = getASCIIValue("a");
 	
 	MainScene.add(%obj);
+	
+	%letterback = new Sprite();
+	%letterback.Size = "10 10";
+	%letterback.Position = VectorAdd(%position,"-10 0");
+	%letterback.setSceneLayer(6);
+	%letterback.setBodyType("static");
+	%letterback.Image = "GameAssets:Background-03-Square";
+	MainScene.add(%letterback);
 	
 	%obj = new Sprite()
 	{
@@ -212,13 +378,21 @@ function Game::displayVowelButtons(%this, %position)
 	};
 	%obj.Size = "8 8";
 	%obj.Vowel  = "e";
-	%obj.Position = VectorAdd(%position,"-15 0");
+	%obj.Position = VectorAdd(%position,"-10 0");
 	%obj.setSceneLayer(3);
 	%obj.setBodyType("static");
-	%obj.Image = "GameAssets:Woodhouse";
+	%obj.Image = "GameAssets:Cloudy";
 	%obj.Frame = getASCIIValue("e");
 	
 	MainScene.add(%obj);
+	
+	%letterback = new Sprite();
+	%letterback.Size ="10 10";
+	%letterback.Position = VectorAdd(%position,"0 0");
+	%letterback.setSceneLayer(6);
+	%letterback.setBodyType("static");
+	%letterback.Image = "GameAssets:Background-03-Square";
+	MainScene.add(%letterback);
 	
 	%obj = new Sprite()
 	{
@@ -229,10 +403,18 @@ function Game::displayVowelButtons(%this, %position)
 	%obj.Position = %position;
 	%obj.setSceneLayer(3);
 	%obj.setBodyType("static");
-	%obj.Image = "GameAssets:Woodhouse";
+	%obj.Image = "GameAssets:Cloudy";
 	%obj.Frame = getASCIIValue("i");
 	
 	MainScene.add(%obj);
+	
+	%letterback = new Sprite();
+	%letterback.Size = "10 10";
+	%letterback.Position = VectorAdd(%position,"10 0");
+	%letterback.setSceneLayer(6);
+	%letterback.setBodyType("static");
+	%letterback.Image = "GameAssets:Background-03-Square";
+	MainScene.add(%letterback);
 	
 	%obj = new Sprite()
 	{
@@ -240,13 +422,21 @@ function Game::displayVowelButtons(%this, %position)
 	};
 	%obj.Size = "8 8";
 	%obj.Vowel  = "o";
-	%obj.Position = VectorAdd(%position,"15 0");
+	%obj.Position = VectorAdd(%position,"10 0");
 	%obj.setSceneLayer(3);
 	%obj.setBodyType("static");
-	%obj.Image = "GameAssets:Woodhouse";
+	%obj.Image = "GameAssets:Cloudy";
 	%obj.Frame = getASCIIValue("o");
 	
 	MainScene.add(%obj);
+	
+	%letterback = new Sprite();
+	%letterback.Size = "10 10";
+	%letterback.Position = VectorAdd(%position,"20 0");
+	%letterback.setSceneLayer(6);
+	%letterback.setBodyType("static");
+	%letterback.Image = "GameAssets:Background-03-Square";
+	MainScene.add(%letterback);
 	
 	%obj = new Sprite()
 	{
@@ -254,10 +444,10 @@ function Game::displayVowelButtons(%this, %position)
 	};
 	%obj.Size = "8 8";
 	%obj.Vowel  = "u";
-	%obj.Position = VectorAdd(%position,"30 0");
+	%obj.Position = VectorAdd(%position,"20 0");
 	%obj.setSceneLayer(3);
 	%obj.setBodyType("static");
-	%obj.Image = "GameAssets:Woodhouse";
+	%obj.Image = "GameAssets:Cloudy";
 	%obj.Frame = getASCIIValue("u");
 	
 	MainScene.add(%obj);
@@ -266,7 +456,7 @@ function Game::displayVowelButtons(%this, %position)
 function Game::displayBackPanel(%this, %image)
 {
 	%backPanel = new Sprite();
-	%backPanel.Size = "104 77";
+	%backPanel.Size = "64 104";
 	%backPanel.Position = "0 0";
 	%backPanel.setSceneLayer(31);
 	%backPanel.setBodyType("static");
@@ -279,40 +469,107 @@ function Game::displayBackPanel(%this, %image)
 function Game::displayBattleGame()
 {
 	MainScene.clear();
-	Game.displayScore("40 33");
+	
+	%wordback = new Sprite();
+	%wordback.Size = "65 15";
+	%wordback.Position = "0 0";
+	%wordback.setSceneLayer(28);
+	%wordback.setBodyType("static");
+	%wordback.Image = "GameAssets:Background-03-Rectangle";
+	MainScene.add(%wordback);
+	
+	%powerupback = new Sprite();
+	%powerupback.Size = "60 15";
+	%powerupback.Position = "0 -35";
+	%powerupback.setSceneLayer(28);
+	%powerupback.setBodyType("static");
+	%powerupback.Image = "GameAssets:PowerUpsBackground";
+	MainScene.add(%powerupback);
+	
+	//Game.displayScore("40 33");
 	Game.displayWord(true);
-	Player.displayDefenseBar(Player.Defense,"-10 30");
-	Player.displayHealthBar(Player.Health,"-10 28");
+	Player.displayDefenseBar(Player.Defense,"-10 28");
+	Player.displayHealthBar(Player.Health,"-10 22");
 	Player.displayPowerUps();
 	Game.displayTime();
-	Game.displayCategory("0 25");
-	Game.displayRound("-38 33");
+	Game.displayPlayerDamage("0 34");
+	Game.displayCategory("0 40");
+	Game.displayRound("-14 46");
 	Game.displayVowelButtons("0 -20");
+	Game.displayVitals("-15 28");
 	Game.displayBackPanel("GameAssets:panelbeige");
 }
 
-function Game::displayRound(%this,%position)
+function Game::displayPlayerDamage(%this,%position)
 {
-	%obj = new ImageFont()  
+	if(isObject(PlayerDamage))
+		PlayerDamage.delete();
+
+	Player.Damage = mFloatLength(Player.Damage, 0);
+		
+	%obj = new ImageFont(PlayerDamage)  
 	{   
-		Image = "GameAssets:Woodhouse";
+		Image = "GameAssets:ShowcardGothic";
 		Position = %position;
 		FontSize = "2 2";
 		SceneLayer = 2;
 		TextAlignment = "Center";
-		Text = "Round";
+		Text = Player.Damage;
 	};  
 		
 	MainScene.add(%obj);
-	
-	%obj = new ImageFont()  
+}
+
+function Game::displayAIDamage(%this,%position)
+{
+	if(isObject(AIDamage))
+		AIDamage.delete();
+
+	AI.Damage = mFloatLength(AI.Damage, 0);
+		
+	%obj = new ImageFont(AIDamage)  
 	{   
-		Image = "GameAssets:Woodhouse";
-		Position = VectorAdd(%position, "0 -2");
+		Image = "GameAssets:ShowcardGothic";
+		Position = %position;
 		FontSize = "2 2";
 		SceneLayer = 2;
 		TextAlignment = "Center";
-		Text = Game.Round @ " of 3";
+		Text = AI.Damage;
+	};  
+		
+	MainScene.add(%obj);
+}
+
+function Game::displayVitals(%this,%position)
+{
+	%vitals = new Sprite();
+	%vitals.Size = "6 18";
+	%vitals.Position = %position;
+	%vitals.setSceneLayer(3);
+	%vitals.setBodyType("static");
+	%vitals.Image = "GameAssets:Vitals";
+	MainScene.add(%vitals);
+}
+
+function Game::displayRound(%this,%position)
+{
+	
+	%backbox = new Sprite();
+	%backbox.Size = "63 7";
+	%backbox.Position = "0 46";
+	%backbox.setSceneLayer(5);
+	%backbox.setBodyType("static");
+	%backbox.Image = "GameAssets:Background-11-Rectangle";
+	MainScene.add(%backbox);
+	
+	%obj = new ImageFont()  
+	{   
+		Image = "GameAssets:ShowcardGothic";
+		Position = %position;
+		FontSize = "2 2";
+		SceneLayer = 2;
+		TextAlignment = "Center";
+		Text = "Round" SPC Game.Round @ " of 3";
 	};  
 		
 	MainScene.add(%obj);
@@ -323,7 +580,7 @@ function Game::displayHitDamage(%this,%damage,%position)
 	%damage = mFloatLength(%damage, 0);
 	%obj = new ImageFont()  
 	{   
-		Image = "GameAssets:Woodhouse";
+		Image = "GameAssets:ShowcardGothic";
 		Position = %position;
 		FontSize = "2 2";
 		SceneLayer = 2;
@@ -343,7 +600,7 @@ function Game::displayPowerUpPickup(%this, %id, %position)
 	%name = Powerup.getPowerUpName(%id);
 	%obj = new ImageFont()  
 	{   
-		Image = "GameAssets:font";
+		Image = "GameAssets:ShowcardGothic";
 		Position = %position;
 		FontSize = "2 2";
 		SceneLayer = 2;
@@ -373,8 +630,8 @@ function Game::displayBattleStats(%this)
 	
 	%obj = new ImageFont(YouIcon)  
 	{   
-		Image = "GameAssets:font";
-		Position = "-30 30";
+		Image = "GameAssets:ShowcardGothic";
+		Position = "-15 45";
 		FontSize = "4 4";
 		SceneLayer = 2;
 		TextAlignment = "Center";
@@ -388,8 +645,8 @@ function Game::displayBattleStats(%this)
 	
 	%obj = new ImageFont(AIIcon)  
 	{   
-		Image = "GameAssets:font";
-		Position = "30 30";
+		Image = "GameAssets:ShowcardGothic";
+		Position = "15 45";
 		FontSize = "4 4";
 		SceneLayer = 2;
 		TextAlignment = "Center";
@@ -398,15 +655,84 @@ function Game::displayBattleStats(%this)
 		
 	MainScene.add(%obj);
 	
-	Player.displayDefenseBar(Player.Defense,"-40 22");
-	Player.displayHealthBar(Player.Health,"-40 20");
-	AI.displayDefenseBar(AI.Defense,"20 22");
-	AI.displayHealthBar(AI.Health,"20 20");
-	if(Game.Multiplayer)
+	Game.displayVitals("-27 20");
+	Game.displayVitals("4 20");
+	
+	Game.displayPlayerDamage("-12 26");
+	Game.displayAIDamage("18 26");
+	
+	Player.displayDefenseBar(Player.Defense,"-22 20");
+	Player.displayHealthBar(Player.Health,"-22 14");
+	AI.displayDefenseBar(AI.Defense,"8 20");
+	AI.displayHealthBar(AI.Health,"8 14");
+}
+
+function Game::displayPreGame(%this)
+{
+	MainScene.clear();
+	Game.setupWordList();
+	Game.displayCategory("0 -20");
+	Game.displayBackPanel("GameAssets:panelbeige");
+	
+	%obj = new ImageFont(AIIcon)  
+	{   
+		Image = "GameAssets:ShowcardGothic";
+		Position = "0 20";
+		FontSize = "4 4";
+		SceneLayer = 2;
+		TextAlignment = "Center";
+		Text = "Round" SPC (Game.Round+1);
+	};  
+		
+	MainScene.add(%obj);
+	
+		%obj = new ImageFont(AIIcon)  
+	{   
+		Image = "GameAssets:ShowcardGothic";
+		Position = "0 16";
+		FontSize = "4 4";
+		SceneLayer = 2;
+		TextAlignment = "Center";
+		Text = "Starting in...";
+	};  
+		
+	MainScene.add(%obj);
+
+	%this.schedule(2000,"displayCountDown",3);
+	%this.schedule(3000,"displayCountDown",2);
+	%this.schedule(4000,"displayCountDown",1);
+	%this.schedule(5000,"displayCountDown",0);
+	
+	if((Game.Round + 1) > 1)
 	{
-		AI.displayElo("30 18");
-		Player.displayElo("-30 18");
+		%this.schedule(5500,"startNewRound");
 	}
+	else
+	{
+		%this.schedule(5500,"startBattleGame");
+	}
+}
+
+function Game::displayCountDown(%this, %amount)
+{
+	if(%amount == 0)
+		%amount = "Start!";
+
+	%obj = new ImageFont()  
+	{   
+		Image = "GameAssets:ShowcardGothic";
+		Position = "0 0";
+		FontSize = "5 5";
+		SceneLayer = 2;
+		TextAlignment = "Center";
+		Text = %amount;
+	};  
+	
+	%obj.setBodyType("dynamic");
+	%obj.setLinearVelocityY(6);
+	%obj.schedule(1500,"safeDelete");
+	
+	MainScene.add(%obj);
 }
 
 // ------------------------- END BATTLE MODE --------------------------- //

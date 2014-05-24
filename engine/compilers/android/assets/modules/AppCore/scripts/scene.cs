@@ -45,7 +45,7 @@ function createWindow()
     MainWindow.setObjectInputEventLayerFilter( %allBits );
     MainWindow.setLockMouse( true );
     MainWindow.setCameraPosition( 0, 0 );
-    MainWindow.setCameraSize( 100, 75 );
+    MainWindow.setCameraSize( 60, 100 );
     MainWindow.setCameraZoom( 1 );
     MainWindow.setCameraAngle( 0 );
 	
@@ -126,7 +126,7 @@ function setSceneToWindow()
     MainWindow.setObjectInputEventLayerFilter( %allBits );
     MainWindow.setLockMouse( true );
     MainWindow.setCameraPosition( 0, 0 );
-    MainWindow.setCameraSize( 100, 75 );
+    MainWindow.setCameraSize( 60, 100 );
     MainWindow.setCameraZoom( 1 );
     MainWindow.setCameraAngle( 0 );
 }

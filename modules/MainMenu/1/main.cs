@@ -36,6 +36,7 @@ function OptionsButton::onClick(%this)
 // Adding command for QuitButton.
 function QuitButton::onClick(%this)
 {
+	echo("Quitting");
     quit();
 }
 
@@ -65,6 +66,7 @@ function BattleButton::onClick(%this)
 {
 	Game.Mode = "Battle";
 	Canvas.popDialog(GameModeDialog);
+	//Canvas.pushDialog(GameGui);
 	Game.setupGame(false);
 }
 
@@ -81,6 +83,7 @@ function TimeButton::onClick(%this)
 {
 	Game.Mode = "Time";
 	Canvas.popDialog(GameModeDialog);
+	//Canvas.pushDialog(GameGui);
 	Game.setupGame(false);
 }
 
@@ -89,6 +92,7 @@ function PracticeButton::onClick(%this)
 {
 	Game.Mode = "Practice";
 	Canvas.popDialog(GameModeDialog);
+	//Canvas.pushDialog(GameGui);
 	Game.setupGame(false);
 }
 
@@ -127,6 +131,7 @@ function BackToMenuButton::onClick(%this)
 	
 	MainScene.clear();
 	Canvas.popDialog(EndGameDialog);
+	Canvas.popDialog(GameGui);
 	Canvas.pushDialog(MenuDialog);
 	Game.reset();
 }

@@ -40,7 +40,7 @@ function InputHandler::onTouchDragged(%this, %touchID, %worldPosition)
 			%obj.Position = %worldPosition;
 			%obj.SceneLayer = 1;
 			%obj.setBodyType("dynamic");
-			%obj.Image = "GameAssets:Woodhouse";
+			%obj.Image = "GameAssets:Cloudy";
 			%obj.Frame = getASCIIValue(Game.VowelSel);
 			
 			MainScene.add(%obj);

@@ -1,3 +1,11 @@
+function Game::startBattleGame(%this)
+{
+	Game.Round = 1;
+	Game.Time = 30;
+	%this.displayBattleGame();
+	%this.startTimeGame();
+}
+
 function Game::startNewRound()
 {
 	if(stricmp(Game.Mode,"Battle") == 0)
@@ -51,7 +59,7 @@ function Game::startNewRound()
 			Game.FreezeTime = false;
 			Game.FlipWords = false;
 			Player.CurrentWord = 0;
-			Game.setupWordList();
+			//Game.setupWordList();
 			AI.CurrentWord++;
 			Game.displayBattleGame();
 			Player.Battling = false;
@@ -113,5 +121,5 @@ function Game::startBattle(%this, %damageToPlayer)
 	AI.schedule(4000,"attackPlayer",-%damageToPlayer/3);
 	AI.schedule(5000,"attackPlayer",-%damageToPlayer/3);
 	AI.schedule(6000,"attackPlayer",-%damageToPlayer/3);
-	Game.schedule(7000,"startNewRound");
+	Game.schedule(7000,"displayPreGame");
 }

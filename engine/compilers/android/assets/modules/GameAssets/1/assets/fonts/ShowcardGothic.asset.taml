@@ -1,0 +1,7 @@
+<ImageAsset
+    AssetName="ShowcardGothic"
+    ImageFile="ShowcardGothic.png"
+    CellCountX="16"
+    CellCountY="6"
+    CellWidth="32"
+    CellHeight="32" />

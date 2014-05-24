@@ -1,13 +1,34 @@
+function Game::startBattleGame(%this)
+{
+	Game.Round = 1;
+	Game.Time = 30;
+	%this.displayBattleGame();
+	%this.startTimeGame();
+}
+
 function Game::startNewRound()
 {
-	if(stricmp(Game.Mode,"Battle") == 0)
+	if(Player.Health <= 0)
 	{
-		if(Player.Health <= 0)
+		Game.displayLoseScreen();
+		return;
+	}
+	else if(AI.Health <= 0)
+	{
+		if(Game.Multiplayer)
 		{
-			Game.displayLoseScreen();
-			return;
+			MSClient.setWinner(Player.GameID, Player.Name);
 		}
-		else if(AI.Health <= 0)
+		else
+		{
+			Game.displayWinScreen();
+		}
+		return;
+	}
+
+	if(Game.Round == 3)	//Determine Winner
+	{
+		if(Player.Health > AI.Health)
 		{
 			if(Game.Multiplayer)
 			{
@@ -17,47 +38,43 @@ function Game::startNewRound()
 			{
 				Game.displayWinScreen();
 			}
-			return;
 		}
-	
-		if(Game.Round == 3)	//Determine Winner
+		else if(Player.Health < AI.Health)
 		{
-			if(Player.Health > AI.Health)
-			{
-				if(Game.Multiplayer)
-				{
-					MSClient.setWinner(Player.GameID, Player.Name);
-				}
-				else
-				{
-					Game.displayWinScreen();
-				}
-			}
-			else if(Player.Health < AI.Health)
-			{
-				Game.displayLoseScreen();
-			}
-			else
-			{
-				Game.displayLoseScreen();
-			}
+			Game.displayLoseScreen();
 		}
 		else
 		{
-			Game.Round++;
-			Game.Time = 30;
-			Player.Damage = 0;
-			AI.Damage = 0;
-			Game.FreezeTime = false;
-			Game.FlipWords = false;
-			Player.CurrentWord = 0;
-			Game.setupWordList();
-			AI.CurrentWord++;
-			Game.displayBattleGame();
-			Player.Battling = false;
-			Game.schedule(2000,"incrementTime");
-			AI.schedule(2000,"readWord");
+			Game.displayLoseScreen();
 		}
+		
+		Game.Round = 0;
+		Game.Time = 30;
+		Player.Damage = 0;
+		AI.Damage = 0;
+		Game.FreezeTime = false;
+		Game.FlipWords = false;
+		Player.CurrentWord = 0;
+		AI.CurrentWord = 0;
+		Player.Battling = false;
+		Player.WordsPerRound = 0;
+	}
+	else
+	{
+		Game.Round++;
+		Game.Time = 30;
+		Player.Damage = 0;
+		AI.Damage = 0;
+		Game.FreezeTime = false;
+		Game.FlipWords = false;
+		Player.CurrentWord = 0;
+		//Game.setupWordList();
+		AI.CurrentWord++;
+		Game.displayBattleGame();
+		Player.Battling = false;
+		Player.WordsPerRound = 0;
+		Game.schedule(2000,"incrementTime");
+		AI.schedule(2000,"readWord");
 	}
 }
 
@@ -113,5 +130,9 @@ function Game::startBattle(%this, %damageToPlayer)
 	AI.schedule(4000,"attackPlayer",-%damageToPlayer/3);
 	AI.schedule(5000,"attackPlayer",-%damageToPlayer/3);
 	AI.schedule(6000,"attackPlayer",-%damageToPlayer/3);
-	Game.schedule(7000,"startNewRound");
+	if(Game.Round == 3 || Player.Health == 0 || AI.Health == 0)
+		Game.schedule(8000,"startNewRound");
+	else
+		Game.schedule(8000,"displayPreGame");
+		
 }

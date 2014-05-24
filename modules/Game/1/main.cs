@@ -13,7 +13,7 @@ function Game::create( %this )
 	Game.Mode = "";
 	Game.ComboDelay = 5000;
 	Game.Time = -1;
-	Game.Round = -1;
+	Game.Round = 0;
 	Game.RaceTo = 3000;
 	Game.VowelSel = "";
 	Game.MissingVowels = 0;
@@ -64,10 +64,7 @@ function Game::setupGame(%this, %multiplayer)
 	
 	if(stricmp(Game.Mode,"Battle") == 0)
 	{
-		Game.Round = 1;
-		Game.Time = 30;
-		%this.displayBattleGame();
-		%this.startTimeGame();
+		Game.displayPreGame();
 	}
 	else if(stricmp(Game.Mode,"Race") == 0)
 	{
@@ -125,6 +122,8 @@ function Game::incrementTime(%this)
 	{
 		Game.Time = 0;
 		%this.displayTime();
+		MSClient.updateWPR(Player.Name, Player.WordsPerRound);
+		MSClient.updateMostDamage(Player.Name, Player.Damage);
 		
 		if(stricmp(Game.Mode,"Battle") == 0)
 		{
@@ -213,15 +212,8 @@ function Game::checkAnswer(%this, %worldPosition)
 	
 	%word = $VowellessList[Player.CurrentWord];
 	%correctWord = $GameWordList[Player.CurrentWord];
-	$letterOffset = 8;
 	%startPoint = -((strlen(%word)-1)*$letterOffset/2);
 	
-	while(%startPoint < -25)
-	{
-		$letterOffset--;
-		%startPoint = -((strlen(%word)-1)*$letterOffset/2);
-	}
-    
     // Finish if no sprites picked.
     if ( %spriteCount == 0 )
 	{
@@ -254,14 +246,14 @@ function Game::checkAnswer(%this, %worldPosition)
 				%compositeSprite.setSpriteLocalPosition( (%spriteId - 1)*$letterOffset + %startPoint, 0 );
 						
 				// Set size.
-				%compositeSprite.setSpriteSize( 8 );
+				%compositeSprite.setSpriteSize( $wordFontSize );
 				
 				if(Game.FlipWords)
 					%this.Word.setSpriteAngle( 180 );
 
 				// Set the sprite image with a random frame.
 				// We could also use an animation here. 
-				%compositeSprite.setSpriteImage( "GameAssets:Woodhouse", getASCIIValue(Game.VowelSel) );   
+				%compositeSprite.setSpriteImage( "GameAssets:Cloudy", getASCIIValue(Game.VowelSel) );   
 				
 				Game.VowelSel = "";
 				Game.CorrectVowels++;
@@ -269,9 +261,9 @@ function Game::checkAnswer(%this, %worldPosition)
 				
 				if(Game.CorrectVowels == Game.MissingVowels)
 				{
-					Player.incrementScore(getWordValue($GameWordList[Player.CurrentWord]));
 					Player.CurrentWord++;
 					Player.Streak++;
+					Player.WordsPerRound++;
 					alxPlay("GameAssets:correctSound");
 					%this.FlipWords = false;
 					
@@ -282,6 +274,7 @@ function Game::checkAnswer(%this, %worldPosition)
 					}
 					else if(stricmp(Game.Mode,"Race") == 0)
 					{
+						Player.incrementScore(getWordValue($GameWordList[Player.CurrentWord]));
 						if(Player.Score >= Game.RaceTo)
 						{
 							Game.endRace();
@@ -346,7 +339,7 @@ function Game::checkAnswer(%this, %worldPosition)
 				
 				if(stricmp(Game.Mode,"Battle") == 0)
 				{
-					Player.incrementScore(-5);
+					
 				}
 				else if(stricmp(Game.Mode,"Time") == 0)
 				{

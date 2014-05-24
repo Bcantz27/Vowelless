@@ -1,0 +1,7 @@
+<ImageAsset
+    AssetName="Cloudy"
+    ImageFile="Cloudy.png"
+    CellCountX="16"
+    CellCountY="6"
+    CellWidth="64"
+    CellHeight="64" />
